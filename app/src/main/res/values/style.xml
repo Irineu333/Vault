@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextAppearance.ValueView.Title" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:textColor">#575757</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextAppearance.ValueView.Value" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">#090909</item>
+    </style>
+
+    <style name="TextAppearance.ValueView.Value.Total" parent="TextAppearance.ValueView.Value">
+        <item name="android:textSize">30sp</item>
+    </style>
+    <style name="TextAppearance.ValueView.Value.SubTotal" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textSize">20sp</item>
+    </style>
+</resources>

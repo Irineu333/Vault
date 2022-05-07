@@ -3,11 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/aiqfome/AndroidStudioProjects/NeoUtils/Vault/app/src/main/res/layout/activity_main.xml" value="0.17708333333333334" />
+        <entry key="..\:/Users/aiqfome/AndroidStudioProjects/NeoUtils/Vault/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/aiqfome/AndroidStudioProjects/NeoUtils/Vault/app/src/main/res/layout/fragment_resume.xml" value="0.33" />
+        <entry key="..\:/Users/aiqfome/AndroidStudioProjects/NeoUtils/Vault/app/src/main/res/layout/fragment_values.xml" value="0.3625" />
+        <entry key="..\:/Users/aiqfome/AndroidStudioProjects/NeoUtils/Vault/app/src/main/res/layout/item_resume_total.xml" value="0.25" />
+        <entry key="..\:/Users/aiqfome/AndroidStudioProjects/NeoUtils/Vault/app/src/main/res/layout/item_value.xml" value="0.3625" />
+        <entry key="..\:/Users/aiqfome/AndroidStudioProjects/NeoUtils/Vault/app/src/main/res/layout/item_value_total.xml" value="0.3625" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
