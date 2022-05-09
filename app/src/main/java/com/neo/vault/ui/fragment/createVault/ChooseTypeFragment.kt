@@ -62,9 +62,8 @@ class ChooseTypeFragment : Fragment() {
                 description = "Poupe sem metas"
             ) {
                 findNavController().navigate(
-                    R.id.action_chooseTypeFragment_to_piggyBankFragment,
-
-                    )
+                    R.id.action_chooseTypeFragment_to_piggyBankFragment
+                )
             },
             Type(
                 icon = R.drawable.ic_goal,
