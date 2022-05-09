@@ -38,10 +38,12 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:checkable="true"
-            android:text="BRL" />
+            android:text="BRL"
+            app:chipIcon="@drawable/ic_brazil" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_usd"
+            app:chipIcon="@drawable/ic_eua"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:checkable="true"
@@ -49,6 +51,7 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_eur"
+            app:chipIcon="@drawable/ic_euro"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:checkable="true"
@@ -60,7 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:text="Criar" />
 
 </LinearLayout>
