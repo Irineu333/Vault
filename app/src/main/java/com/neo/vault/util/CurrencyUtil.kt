@@ -5,7 +5,7 @@ import com.neo.vault.app
 import java.util.*
 import java.util.regex.Pattern
 
-object MoneyUtil {
+object CurrencyUtil {
 
     val locale get() = ConfigurationCompat.getLocales(app.resources.configuration)[0]
     val currency get() = Currency.getInstance(locale)

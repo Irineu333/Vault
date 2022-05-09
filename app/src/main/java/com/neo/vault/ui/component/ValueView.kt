@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.core.widget.TextViewCompat
 import com.neo.vault.R
 import com.neo.vault.model.Value
-import com.neo.vault.util.MoneyUtil
+import com.neo.vault.util.CurrencyUtil
 
 class ValueView(
     context: Context,
@@ -43,7 +43,7 @@ class ValueView(
     }
 
     private fun setupValue(value: Value) = with(tvValue) {
-        text = MoneyUtil.toCurrency(value.value)
+        text = CurrencyUtil.toCurrency(value.value)
 
         val textAppearance = when (value) {
             is Value.Total -> R.style.TextAppearance_ValueView_Value_Total

@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.neo.vault.R
 import com.neo.vault.databinding.FragmentPiggyBankBinding
+import com.neo.vault.util.CurrencyUtil
 
 class PiggyBankFragment : Fragment() {
 
@@ -34,7 +36,27 @@ class PiggyBankFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupView()
+    }
 
+    private fun setupView() {
+        setupCurrency()
+    }
+
+    private fun setupCurrency() = with(binding.cgCurrency) {
+        when (CurrencyUtil.currency.currencyCode) {
+            "BRL" -> {
+                check(R.id.chip_brl)
+            }
+
+            "USD" -> {
+                check(R.id.chip_usd)
+            }
+
+            "EUR" -> {
+                check(R.id.chip_eur)
+            }
+        }
     }
 
 }
