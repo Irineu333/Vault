@@ -1,4 +1,4 @@
-package com.neo.vault.ui.fragment.vaults
+package com.neo.vault.ui.fragment.listVaults
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,8 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.neo.vault.databinding.FragmentHomeVaultsBinding
+import com.neo.vault.ui.bottomSheet.CreateVaultBottomSheet
 
-class HomeVaults : Fragment() {
+class HomeVaultsFragment : Fragment() {
 
     private var _binding: FragmentHomeVaultsBinding? = null
     private val binding get() = _binding!!
@@ -28,5 +29,20 @@ class HomeVaults : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupView()
+    }
+
+    private fun setupView() = with(binding) {
+        btnCreateVault.setOnClickListener {
+            CreateVaultBottomSheet().show(
+                parentFragmentManager,
+                "create_vault"
+            )
+        }
     }
 }
