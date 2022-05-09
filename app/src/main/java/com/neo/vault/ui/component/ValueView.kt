@@ -1,4 +1,4 @@
-package com.neo.vault.component
+package com.neo.vault.ui.component
 
 import android.content.Context
 import android.util.AttributeSet

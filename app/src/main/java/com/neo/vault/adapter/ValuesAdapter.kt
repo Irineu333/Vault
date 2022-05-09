@@ -3,7 +3,7 @@ package com.neo.vault.adapter
 import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.neo.vault.component.ValueView
+import com.neo.vault.ui.component.ValueView
 import com.neo.vault.model.Value
 import com.neo.vault.util.extension.dpToPx
 import com.neo.vault.util.extension.updateMargins

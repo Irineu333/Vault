@@ -1,4 +1,4 @@
-package com.neo.vault
+package com.neo.vault.ui.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
