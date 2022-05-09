@@ -9,5 +9,17 @@
         android:id="@+id/chooseTypeFragment"
         android:name="com.neo.vault.ui.fragment.createVault.ChooseTypeFragment"
         android:label="ChooseTypeFragment"
-        tools:layout="@layout/fragment_choose_type" />
+        tools:layout="@layout/fragment_choose_type">
+        <action
+            android:id="@+id/action_chooseTypeFragment_to_piggyBankFragment"
+            app:destination="@id/piggyBankFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/piggyBankFragment"
+        android:name="com.neo.vault.ui.fragment.createVault.PiggyBankFragment"
+        android:label="PiggyBankFragment"
+        tools:layout="@layout/fragment_piggy_bank" />
 </navigation>

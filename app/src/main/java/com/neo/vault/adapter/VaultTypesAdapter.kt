@@ -40,6 +40,10 @@ class VaultTypesAdapter : RecyclerView.Adapter<VaultTypesAdapter.Holder>() {
             ivIcon.setImageResource(type.icon)
             tvTitle.text = type.title
             tvDescription.text = type.description
+
+            itemView.setOnClickListener {
+                type.action()
+            }
         }
     }
 

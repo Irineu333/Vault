@@ -6,5 +6,6 @@ data class Type(
     @DrawableRes
     val icon: Int,
     val title: String,
-    val description: String
+    val description: String,
+    val action: () -> Unit
 )
