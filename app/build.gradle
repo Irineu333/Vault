@@ -42,6 +42,11 @@ dependencies {
     //ktx core
     implementation 'androidx.core:core-ktx:1.7.0'
 
+    //ktx lifecycle
+    implementation ('androidx.lifecycle:lifecycle-runtime-ktx:2.4.1') {
+        because("flow lifecycle aware")
+    }
+
     //navigation component
     def nav_version = '2.4.2'
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"

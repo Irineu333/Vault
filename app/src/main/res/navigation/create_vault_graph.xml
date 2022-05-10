@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/chooseTypeFragment"
-        android:name="com.neo.vault.ui.fragment.createVault.ChooseTypeFragment"
+        android:name="com.neo.vault.ui.feature.createVault.fragments.ChooseTypeFragment"
         android:label="Escolha o tipo"
         tools:layout="@layout/fragment_choose_type">
         <action
@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/piggyBankFragment"
-        android:name="com.neo.vault.ui.fragment.createVault.PiggyBankFragment"
+        android:name="com.neo.vault.ui.feature.createVault.fragments.PiggyBankFragment"
         android:label="Cofrinho"
         tools:layout="@layout/fragment_piggy_bank" />
 </navigation>

@@ -1,4 +1,4 @@
-package com.neo.vault.ui.bottomSheet
+package com.neo.vault.ui.feature.createVault
 
 import android.os.Bundle
 import android.view.LayoutInflater

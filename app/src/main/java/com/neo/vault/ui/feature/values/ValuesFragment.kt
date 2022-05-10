@@ -1,4 +1,4 @@
-package com.neo.vault.ui.fragment
+package com.neo.vault.ui.feature.values
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -22,7 +22,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/container_values"
-        android:name="com.neo.vault.ui.fragment.ValuesFragment"
+        android:name="com.neo.vault.ui.feature.values.ValuesFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:layout="@layout/fragment_values" />

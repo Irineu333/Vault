@@ -1,4 +1,4 @@
-package com.neo.vault.ui.fragment.listVaults
+package com.neo.vault.ui.feature.vaults
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.neo.vault.databinding.FragmentHomeVaultsBinding
-import com.neo.vault.ui.bottomSheet.CreateVaultBottomSheet
+import com.neo.vault.ui.feature.createVault.CreateVaultBottomSheet
 
 class HomeVaultsFragment : Fragment() {
 

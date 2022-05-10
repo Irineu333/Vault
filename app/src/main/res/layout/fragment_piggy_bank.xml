@@ -5,15 +5,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingHorizontal="16dp"
-    android:paddingVertical="16dp">
+    android:paddingTop="16dp">
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_name"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Apelido">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tie_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -24,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Moeda"
-        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/cg_currency"
@@ -43,27 +45,55 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_usd"
-            app:chipIcon="@drawable/ic_eua"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:checkable="true"
-            android:text="USD" />
+            android:text="USD"
+            app:chipIcon="@drawable/ic_eua" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_eur"
-            app:chipIcon="@drawable/ic_euro"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:checkable="true"
-            android:text="EUR" />
+            android:text="EUR"
+            app:chipIcon="@drawable/ic_euro" />
 
     </com.google.android.material.chip.ChipGroup>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Quebrar"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/btn_date_to_break"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:drawableStart="@drawable/ic_edit_calendar"
+        android:drawablePadding="4dp"
+        android:text="Indefinido"
+        android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+        android:textColor="#3A3A3A"
+        app:drawableTint="#3A3A3A" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp" />
+
     <com.google.android.material.button.MaterialButton
+        android:layout_margin="16dp"
+        android:id="@+id/btn_create_vault"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="32dp"
-        android:text="Criar" />
+        android:enabled="false"
+        android:text="Criar"
+        android:textSize="16sp"
+        app:icon="@drawable/ic_add_vector" />
 
 </LinearLayout>
