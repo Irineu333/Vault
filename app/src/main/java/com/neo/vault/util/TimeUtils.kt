@@ -10,17 +10,24 @@ object TimeUtils {
         SimpleDateFormat.getDateInstance()
     }
 
-    fun utcToLocal(utcTimeMillis: Long): Long {
-
-        val formatter = SimpleDateFormat.getDateInstance()
-
-        val utcDate = formatter.apply {
+    val utcFormatter: DateFormat by lazy {
+        SimpleDateFormat.getDateInstance().apply {
             timeZone = TimeZone.getTimeZone("UTC")
-        }.format(Date(utcTimeMillis))
+        }
+    }
 
-        return formatter.apply {
-            timeZone = TimeZone.getDefault()
-        }.parse(utcDate)!!.time
+    fun utcToLocal(utcTimeMillis: Long): Long {
+        val localDate = formatter.parse(
+            utcFormatter.format(
+                Date(utcTimeMillis)
+            )
+        )
+
+        return localDate?.time
+            ?: throw Exception(
+                "cannot convert UTC millis " +
+                        "$utcTimeMillis to local timeZone"
+            )
     }
 
 }
