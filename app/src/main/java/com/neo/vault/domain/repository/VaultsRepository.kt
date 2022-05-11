@@ -8,7 +8,7 @@ interface VaultsRepository {
         name: String,
         currency: Currency,
         dateToBreak: Long?
-    )
+    ): Boolean
 
     suspend fun getVaultByName(name: String): Vault?
 }

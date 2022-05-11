@@ -4,10 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neo.vault.domain.model.Currency
 import com.neo.vault.domain.repository.VaultsRepository
+import com.neo.vault.presentation.model.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -17,29 +16,59 @@ class CreateVaultViewModel @Inject constructor(
     private val vaultsRepository: VaultsRepository
 ) : ViewModel() {
 
-    private val _dateToBreak = MutableStateFlow<Calendar?>(null)
-    val dateToBreak: StateFlow<Calendar?> = _dateToBreak
+    private val _uiState = MutableStateFlow(CreateVaultUiState())
+    val uiState = _uiState.asStateFlow()
+
+    private val _uiEffect = MutableSharedFlow<CreateVaultUiEffect>()
+    val uiEffect = _uiEffect.asSharedFlow()
+
+    val dateToBreak get() = uiState.value.dateToBreak
 
     fun setDateToBreak(
         timeInMillis: Long
     ) {
-        _dateToBreak.update {
-            (it ?: Calendar.getInstance()).apply {
-                this.timeInMillis = timeInMillis
-            }
+        _uiState.update {
+            it.copy(
+                dateToBreak = Calendar.getInstance().apply {
+                    this.timeInMillis = timeInMillis
+                }
+            )
         }
     }
 
     fun createPiggyBank(
         name: String,
         currency: Currency,
-        dateToBreak: Long? = this.dateToBreak.value?.timeInMillis
+        dateToBreak: Long? = this.dateToBreak?.timeInMillis
     ) = viewModelScope.launch {
-        vaultsRepository.createPiggyBank(
+
+        _uiState.update {
+            it.copy(
+                isLoading = true
+            )
+        }
+
+        val success = vaultsRepository.createPiggyBank(
             name = name,
             currency = currency,
             dateToBreak = dateToBreak
         )
+
+        _uiState.update {
+            it.copy(
+                isLoading = false
+            )
+        }
+
+        if (success) {
+            _uiEffect.emit(CreateVaultUiEffect.Success)
+        } else {
+            _uiEffect.emit(
+                CreateVaultUiEffect.Message(
+                    UiText.Raw("Erro ao tentar criar cofre")
+                )
+            )
+        }
     }
 
     suspend fun hasVaultWithName(name: String): Boolean {

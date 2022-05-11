@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -22,7 +22,6 @@ import com.neo.vault.util.extension.addValidationListener
 import com.neo.vault.util.extension.formatted
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class PiggyBankFragment : Fragment() {
@@ -30,7 +29,7 @@ class PiggyBankFragment : Fragment() {
     private var _binding: FragmentPiggyBankBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: CreateVaultViewModel by viewModels()
+    private val viewModel: CreateVaultViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,16 +58,13 @@ class PiggyBankFragment : Fragment() {
     }
 
     private fun setupView() {
+        binding.tieName.requestFocus()
         setupCurrency()
     }
 
     private fun setupListeners() {
         binding.btnDateToBreak.setOnClickListener {
-            showDataPicker {
-                addOnPositiveButtonClickListener {
-                    viewModel.setDateToBreak(it)
-                }
-            }
+            showDataPicker()
         }
 
         binding.btnCreateVault.setOnClickListener {
@@ -113,12 +109,13 @@ class PiggyBankFragment : Fragment() {
         )
     }
 
-    private fun setupObservers() = viewLifecycleOwner.lifecycleScope.launch {
-        viewModel.dateToBreak.flowWithLifecycle(
+    private fun setupObservers() = viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+        viewModel.uiState.flowWithLifecycle(
             viewLifecycleOwner.lifecycle,
             Lifecycle.State.STARTED
         ).collect {
-            binding.btnDateToBreak.text = it?.formatted ?: UNDEFINED_DATE_TEXT
+            binding.btnDateToBreak.text =
+                it.dateToBreak?.formatted ?: UNDEFINED_DATE_TEXT
         }
     }
 
@@ -170,12 +167,15 @@ class PiggyBankFragment : Fragment() {
         }
     }
 
-    private fun showDataPicker(config: MaterialDatePicker<Long>.() -> Unit) {
+    private fun showDataPicker() {
         MaterialDatePicker.Builder
             .datePicker()
+            .setSelection(viewModel.dateToBreak?.timeInMillis)
             .setInputMode(MaterialDatePicker.INPUT_MODE_CALENDAR)
             .build().also { datePicker ->
-                config(datePicker)
+                datePicker.addOnPositiveButtonClickListener {
+                    viewModel.setDateToBreak(it)
+                }
                 datePicker.show(
                     parentFragmentManager,
                     DATA_PICKER_TAG
