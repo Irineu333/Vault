@@ -11,7 +11,7 @@
         android:name="App"
         android:theme="@style/Theme.Vault">
         <activity
-            android:name=".ui.activity.MainActivity"
+            android:name="com.neo.vault.presentation.ui.feature.home.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
