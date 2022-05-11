@@ -17,7 +17,10 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tie_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="1" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -86,11 +89,11 @@
         android:layout_marginTop="16dp" />
 
     <com.google.android.material.button.MaterialButton
-        android:layout_margin="16dp"
         android:id="@+id/btn_create_vault"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_margin="16dp"
         android:enabled="false"
         android:text="Criar"
         android:textSize="16sp"

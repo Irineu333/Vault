@@ -79,18 +79,18 @@ class PiggyBankFragment : Fragment() {
             validation = { value ->
                 when {
                     value.isBlank() -> {
-                        ValidationResult.isInvalid(
+                        ValidationResult.IsInvalid(
                             message = "Nome do cofre não pode ser vazio"
                         )
                     }
 
                     viewModel.hasVaultWithName(value) -> {
-                        ValidationResult.isInvalid(
+                        ValidationResult.IsInvalid(
                             message = "Já existe um cofre com esse nome"
                         )
                     }
 
-                    else -> ValidationResult.isValid
+                    else -> ValidationResult.IsValid
                 }
             },
             isValid = {
@@ -146,7 +146,7 @@ class PiggyBankFragment : Fragment() {
 
     private fun createVault() {
         viewModel.createPiggyBank(
-            name = binding.tilName.editText!!.toString(),
+            name = binding.tilName.editText!!.text.toString(),
             currency = getCurrency()
         )
     }

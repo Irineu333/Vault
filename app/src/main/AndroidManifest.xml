@@ -11,6 +11,7 @@
         android:name="App"
         android:theme="@style/Theme.Vault">
         <activity
+            android:windowSoftInputMode="adjustNothing"
             android:name="com.neo.vault.presentation.ui.feature.home.MainActivity"
             android:exported="true">
             <intent-filter>

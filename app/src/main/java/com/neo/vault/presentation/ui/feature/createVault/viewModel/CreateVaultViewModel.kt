@@ -42,7 +42,7 @@ class CreateVaultViewModel @Inject constructor(
         )
     }
 
-    fun hasVaultWithName(name: String): Boolean {
-        return false
+    suspend fun hasVaultWithName(name: String): Boolean {
+        return vaultsRepository.getVaultByName(name) != null
     }
 }
