@@ -4,5 +4,5 @@ import java.util.*
 
 data class CreateVaultUiState(
     val isLoading : Boolean = false,
-    val dateToBreak : Calendar? = null
+    val dateToBreak : Date? = null
 )

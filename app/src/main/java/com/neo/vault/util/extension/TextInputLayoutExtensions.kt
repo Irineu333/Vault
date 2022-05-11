@@ -32,6 +32,7 @@ fun TextInputLayout.addValidationListener(
 sealed class ValidationResult {
 
     object IsValid : ValidationResult()
+
     data class IsInvalid(
         val message: String
     ) : ValidationResult()

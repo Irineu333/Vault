@@ -29,9 +29,7 @@ class CreateVaultViewModel @Inject constructor(
     ) {
         _uiState.update {
             it.copy(
-                dateToBreak = Calendar.getInstance().apply {
-                    this.timeInMillis = timeInMillis
-                }
+                dateToBreak = Date(timeInMillis)
             )
         }
     }
@@ -39,7 +37,7 @@ class CreateVaultViewModel @Inject constructor(
     fun createPiggyBank(
         name: String,
         currency: Currency,
-        dateToBreak: Long? = this.dateToBreak?.timeInMillis
+        dateToBreak: Long? = this.dateToBreak?.time
     ) = viewModelScope.launch {
 
         _uiState.update {
@@ -62,12 +60,6 @@ class CreateVaultViewModel @Inject constructor(
 
         if (success) {
             _uiEffect.emit(CreateVaultUiEffect.Success)
-        } else {
-            _uiEffect.emit(
-                CreateVaultUiEffect.Message(
-                    UiText.Raw("Erro ao tentar criar cofre")
-                )
-            )
         }
     }
 

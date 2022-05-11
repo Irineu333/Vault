@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -16,10 +16,7 @@ import com.neo.vault.R
 import com.neo.vault.databinding.FragmentCreateVaultBinding
 import com.neo.vault.presentation.ui.feature.createVault.viewModel.CreateVaultUiEffect
 import com.neo.vault.presentation.ui.feature.createVault.viewModel.CreateVaultViewModel
-import com.neo.vault.util.extension.showSnackbar
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 class CreateVaultBottomSheet : BottomSheetDialogFragment() {
 
@@ -76,28 +73,13 @@ class CreateVaultBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun setupObservers() = viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-        viewLifecycleOwner.lifecycle.repeatOnLifecycle(
+        viewModel.uiEffect.flowWithLifecycle(
+            viewLifecycleOwner.lifecycle,
             Lifecycle.State.STARTED
-        ) {
-            launch {
-                viewModel.uiEffect.collectLatest { effect ->
-                    when (effect) {
-                        CreateVaultUiEffect.Success -> {
-                            dismiss()
-                        }
-                        is CreateVaultUiEffect.Message -> {
-                            binding.showSnackbar(
-                                message = effect.message
-                            )
-                        }
-                    }
-                }
-            }
-
-            launch {
-                viewModel.uiState.collect { state ->
-                    isCancelable = !state.isLoading
-                    binding.progress.isVisible = state.isLoading
+        ).collectLatest { effect ->
+            when (effect) {
+                CreateVaultUiEffect.Success -> {
+                    dismiss()
                 }
             }
         }

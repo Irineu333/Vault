@@ -17,6 +17,7 @@ import com.neo.vault.databinding.FragmentPiggyBankBinding
 import com.neo.vault.domain.model.Currency
 import com.neo.vault.presentation.ui.feature.createVault.viewModel.CreateVaultViewModel
 import com.neo.vault.util.CurrencyUtil
+import com.neo.vault.util.TimeUtils
 import com.neo.vault.util.extension.ValidationResult
 import com.neo.vault.util.extension.addValidationListener
 import com.neo.vault.util.extension.formatted
@@ -170,11 +171,11 @@ class PiggyBankFragment : Fragment() {
     private fun showDataPicker() {
         MaterialDatePicker.Builder
             .datePicker()
-            .setSelection(viewModel.dateToBreak?.timeInMillis)
+            .setSelection(viewModel.dateToBreak?.time)
             .setInputMode(MaterialDatePicker.INPUT_MODE_CALENDAR)
             .build().also { datePicker ->
-                datePicker.addOnPositiveButtonClickListener {
-                    viewModel.setDateToBreak(it)
+                datePicker.addOnPositiveButtonClickListener { utcTimeMillis ->
+                    viewModel.setDateToBreak(TimeUtils.utcToLocal(utcTimeMillis))
                 }
                 datePicker.show(
                     parentFragmentManager,
