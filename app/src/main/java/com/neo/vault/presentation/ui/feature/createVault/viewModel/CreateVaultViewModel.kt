@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neo.vault.domain.model.Currency
 import com.neo.vault.domain.repository.VaultsRepository
-import com.neo.vault.presentation.model.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -60,6 +59,8 @@ class CreateVaultViewModel @Inject constructor(
 
         if (success) {
             _uiEffect.emit(CreateVaultUiEffect.Success)
+        } else {
+            _uiEffect.emit(CreateVaultUiEffect.Error)
         }
     }
 

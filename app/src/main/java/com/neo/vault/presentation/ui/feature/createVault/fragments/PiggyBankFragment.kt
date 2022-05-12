@@ -7,22 +7,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.neo.vault.R
 import com.neo.vault.databinding.FragmentPiggyBankBinding
 import com.neo.vault.domain.model.Currency
+import com.neo.vault.presentation.model.UiText
+import com.neo.vault.presentation.ui.feature.createVault.CreateVaultBottomSheet
+import com.neo.vault.presentation.ui.feature.createVault.viewModel.CreateVaultUiEffect
 import com.neo.vault.presentation.ui.feature.createVault.viewModel.CreateVaultViewModel
 import com.neo.vault.util.CurrencyUtil
 import com.neo.vault.util.TimeUtils
 import com.neo.vault.util.extension.ValidationResult
 import com.neo.vault.util.extension.addValidationListener
 import com.neo.vault.util.extension.formatted
+import com.neo.vault.util.extension.showSnackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class PiggyBankFragment : Fragment() {
@@ -30,7 +36,10 @@ class PiggyBankFragment : Fragment() {
     private var _binding: FragmentPiggyBankBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: CreateVaultViewModel by activityViewModels()
+    private val viewModel: CreateVaultViewModel by viewModels()
+
+    private val createVaultBottomSheet
+        get() = parentFragment?.parentFragment as? CreateVaultBottomSheet
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,6 +78,7 @@ class PiggyBankFragment : Fragment() {
         }
 
         binding.btnCreateVault.setOnClickListener {
+            it.isEnabled = false
             createVault()
         }
 
@@ -110,13 +120,39 @@ class PiggyBankFragment : Fragment() {
         )
     }
 
-    private fun setupObservers() = viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-        viewModel.uiState.flowWithLifecycle(
-            viewLifecycleOwner.lifecycle,
+    private fun setupObservers() = viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleOwner.lifecycle.repeatOnLifecycle(
             Lifecycle.State.STARTED
-        ).collect {
-            binding.btnDateToBreak.text =
-                it.dateToBreak?.formatted ?: UNDEFINED_DATE_TEXT
+        ) {
+            launch {
+                viewModel.uiState.collect {
+                    binding.btnDateToBreak.text =
+                        it.dateToBreak?.formatted ?: UNDEFINED_DATE_TEXT
+                }
+            }
+
+            launch {
+                viewModel.uiEffect.collectLatest {
+                    when (it) {
+                        CreateVaultUiEffect.Success -> {
+                            binding.showSnackbar(
+                                message = UiText.Raw(
+                                    value = "Success"
+                                )
+                            )
+                            createVaultBottomSheet?.dismiss()
+                        }
+                        CreateVaultUiEffect.Error -> {
+                            binding.btnCreateVault.isEnabled = true
+                            binding.showSnackbar(
+                                message = UiText.Raw(
+                                    value = "Erro ao criar cofre"
+                                )
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 
