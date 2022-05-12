@@ -1,10 +1,12 @@
-package com.neo.vault.presentation.ui.feature.home.fragments
+package com.neo.vault.presentation.ui.feature.listVault
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import com.neo.vault.R
 import com.neo.vault.presentation.ui.adapter.ValuesAdapter
 import com.neo.vault.databinding.FragmentValuesBinding
 import com.neo.vault.presentation.model.Value
@@ -56,7 +58,9 @@ class ValuesFragment : Fragment() {
             Value.SubTotal(
                 title = "Cofrinhos",
                 value = 1500.0,
-                action = {}
+                action = {
+
+                }
             ),
         )
     }

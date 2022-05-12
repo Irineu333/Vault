@@ -1,16 +1,14 @@
-package com.neo.vault.presentation.ui.feature.home.fragments
+package com.neo.vault.presentation.ui.feature.listVault.piggyBank
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.neo.vault.databinding.FragmentHomeVaultsBinding
-import com.neo.vault.presentation.ui.feature.createVault.CreateVaultBottomSheet
+import com.neo.vault.databinding.FragmentPiggyBankVaultsBinding
 
-class HomeVaultsFragment : Fragment() {
-
-    private var _binding: FragmentHomeVaultsBinding? = null
+class PiggyBankVaultsFragment : Fragment() {
+    private var _binding: FragmentPiggyBankVaultsBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -18,7 +16,7 @@ class HomeVaultsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHomeVaultsBinding.inflate(
+        _binding = FragmentPiggyBankVaultsBinding.inflate(
             inflater,
             container,
             false
@@ -34,15 +32,6 @@ class HomeVaultsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupView()
     }
 
-    private fun setupView() = with(binding) {
-        btnCreateVault.setOnClickListener {
-            CreateVaultBottomSheet().show(
-                parentFragmentManager,
-                "create_vault"
-            )
-        }
-    }
 }

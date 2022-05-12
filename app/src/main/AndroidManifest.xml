@@ -12,7 +12,7 @@
         android:theme="@style/Theme.Vault">
         <activity
             android:windowSoftInputMode="adjustNothing"
-            android:name="com.neo.vault.presentation.ui.feature.home.MainActivity"
+            android:name="com.neo.vault.presentation.ui.acitivity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

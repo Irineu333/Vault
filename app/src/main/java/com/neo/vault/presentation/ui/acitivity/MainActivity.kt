@@ -1,4 +1,4 @@
-package com.neo.vault.presentation.ui.feature.home
+package com.neo.vault.presentation.ui.acitivity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

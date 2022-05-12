@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/piggyBankFragment"
-        android:name="com.neo.vault.presentation.ui.feature.createVault.fragments.PiggyBankFragment"
+        android:name="com.neo.vault.presentation.ui.feature.createVault.fragments.CreatePiggyBankFragment"
         android:label="Cofrinho"
-        tools:layout="@layout/fragment_piggy_bank" />
+        tools:layout="@layout/fragment_create_piggy_bank" />
 </navigation>

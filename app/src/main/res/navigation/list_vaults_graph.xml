@@ -7,7 +7,21 @@
 
     <fragment
         android:id="@+id/homeVaults"
-        android:name="com.neo.vault.presentation.ui.feature.home.fragments.HomeVaultsFragment"
-        android:label="HomeTransactions"
-        tools:layout="@layout/fragment_home_vaults" />
+        android:name="com.neo.vault.presentation.ui.feature.listVault.home.HomeVaultsFragment"
+        android:label="Todos"
+        tools:layout="@layout/fragment_home_vaults">
+        <action
+            android:id="@+id/action_homeVaults_to_piggyBankVaults"
+            app:destination="@id/piggyBankVaults"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/piggyBankVaults"
+        android:name="com.neo.vault.presentation.ui.feature.listVault.piggyBank.PiggyBankVaultsFragment"
+        android:label="Cofrinhos"
+        tools:layout="@layout/fragment_piggy_bank_vaults" />
 </navigation>

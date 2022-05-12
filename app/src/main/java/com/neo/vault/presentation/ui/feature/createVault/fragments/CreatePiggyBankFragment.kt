@@ -13,7 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.neo.vault.R
-import com.neo.vault.databinding.FragmentPiggyBankBinding
+import com.neo.vault.databinding.FragmentCreatePiggyBankBinding
 import com.neo.vault.domain.model.Currency
 import com.neo.vault.presentation.model.UiText
 import com.neo.vault.presentation.ui.feature.createVault.CreateVaultBottomSheet
@@ -31,9 +31,9 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class PiggyBankFragment : Fragment() {
+class CreatePiggyBankFragment : Fragment() {
 
-    private var _binding: FragmentPiggyBankBinding? = null
+    private var _binding: FragmentCreatePiggyBankBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: CreateVaultViewModel by viewModels()
@@ -46,7 +46,7 @@ class PiggyBankFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentPiggyBankBinding.inflate(
+        _binding = FragmentCreatePiggyBankBinding.inflate(
             inflater,
             container,
             false

@@ -27,6 +27,7 @@ sealed class UiText {
     ) : UiText()
 
     data class Res(
-        @StringRes val stringResId: Int
+        @StringRes
+        val stringResId: Int
     ) : UiText()
 }
