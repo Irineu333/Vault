@@ -1,4 +1,4 @@
-package com.neo.vault.presentation.ui.feature.listVault.home
+package com.neo.vault.presentation.ui.feature.homeVaults
 
 import android.os.Bundle
 import android.view.LayoutInflater

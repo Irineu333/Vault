@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeVaults"
-        android:name="com.neo.vault.presentation.ui.feature.listVault.home.HomeVaultsFragment"
+        android:name="com.neo.vault.presentation.ui.feature.homeVaults.HomeVaultsFragment"
         android:label="Todos"
         tools:layout="@layout/fragment_home_vaults">
         <action
@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/piggyBankVaults"
-        android:name="com.neo.vault.presentation.ui.feature.listVault.piggyBank.PiggyBankVaultsFragment"
+        android:name="com.neo.vault.presentation.ui.feature.piggyBanks.PiggyBanksFragment"
         android:label="Cofrinhos"
         tools:layout="@layout/fragment_piggy_bank_vaults" />
 </navigation>
