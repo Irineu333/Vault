@@ -7,12 +7,7 @@ import com.neo.vault.presentation.model.UiText
 fun ViewBinding.showSnackbar(
     message: UiText,
     length: Int = Snackbar.LENGTH_LONG
-): Snackbar {
-    return Snackbar.make(
-        root,
-        message.resolve(root.context),
-        length
-    ).apply {
-        show()
-    }
-}
+) = root.showSnackbar(
+    message = message,
+    length = length
+)

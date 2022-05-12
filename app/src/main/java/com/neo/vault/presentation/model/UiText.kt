@@ -5,6 +5,16 @@ import androidx.annotation.StringRes
 
 sealed class UiText {
 
+    companion object {
+        fun to(value: String) : Raw {
+            return Raw(value = value)
+        }
+
+        fun to(@StringRes stringResId: Int) : Res {
+            return Res(stringResId = stringResId)
+        }
+    }
+
     fun resolve(context: Context): String {
         return when (this) {
             is Raw -> value

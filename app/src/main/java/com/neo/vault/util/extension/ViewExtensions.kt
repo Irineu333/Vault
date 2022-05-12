@@ -3,7 +3,11 @@ package com.neo.vault.util.extension
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.Px
+import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
+import androidx.viewbinding.ViewBinding
+import com.google.android.material.snackbar.Snackbar
+import com.neo.vault.presentation.model.UiText
 
 fun View.updateMargins(
     @Px left: Int = paddingLeft,
@@ -18,9 +22,9 @@ fun View.updateMargins(
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
 
-        when (layoutParams) {
+        when (val params = layoutParams) {
             is ViewGroup.MarginLayoutParams -> {
-                updatePadding(
+                params.updateMargins(
                     left = left,
                     top = top,
                     right = right,
@@ -29,9 +33,22 @@ fun View.updateMargins(
             }
 
             else -> throw ClassCastException(
-                "cannot cast ${layoutParams?.javaClass}" +
+                "cannot cast ${params?.javaClass}" +
                         " to ${ViewGroup.MarginLayoutParams::class.java}"
             )
         }
+    }
+}
+
+fun View.showSnackbar(
+    message: UiText,
+    length: Int = Snackbar.LENGTH_LONG
+): Snackbar {
+    return Snackbar.make(
+        this,
+        message.resolve(context),
+        length
+    ).apply {
+        show()
     }
 }

@@ -48,11 +48,15 @@ class ValuesFragment : Fragment() {
             ),
             Value.SubTotal(
                 title = "Metas",
-                value = 1500.0
+                value = 1500.0,
+                action = {
+
+                }
             ),
             Value.SubTotal(
                 title = "Cofrinhos",
-                value = 1500.0
+                value = 1500.0,
+                action = {}
             ),
         )
     }
