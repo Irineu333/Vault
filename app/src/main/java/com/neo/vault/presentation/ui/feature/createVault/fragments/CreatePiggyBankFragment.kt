@@ -132,18 +132,14 @@ class CreatePiggyBankFragment : Fragment() {
                     when (it) {
                         CreateVaultUiEffect.Success -> {
                             binding.showSnackbar(
-                                message = UiText.Raw(
-                                    value = "Success"
-                                )
+                                message =  "Success".toRaw()
                             )
                             createVaultBottomSheet?.dismiss()
                         }
                         CreateVaultUiEffect.Error -> {
                             binding.btnCreateVault.isEnabled = true
                             binding.showSnackbar(
-                                message = UiText.Raw(
-                                    value = "Erro ao criar cofre"
-                                )
+                                message = "Erro ao criar cofre".toRaw()
                             )
                         }
                     }

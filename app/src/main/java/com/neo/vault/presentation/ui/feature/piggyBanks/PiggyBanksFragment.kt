@@ -15,7 +15,7 @@ class PiggyBanksFragment : Fragment() {
     private var _binding: FragmentPiggyBankVaultsBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel : PiggyBanksViewModel by viewModels()
+    private val viewModel: PiggyBanksViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,5 +40,4 @@ class PiggyBanksFragment : Fragment() {
 
         viewModel.loadPiggyBanks()
     }
-
 }

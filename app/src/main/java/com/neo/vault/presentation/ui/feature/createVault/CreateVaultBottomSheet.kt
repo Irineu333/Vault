@@ -5,19 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.neo.vault.R
 import com.neo.vault.databinding.FragmentCreateVaultBinding
-import com.neo.vault.presentation.ui.feature.createVault.viewModel.CreateVaultUiEffect
-import com.neo.vault.presentation.ui.feature.createVault.viewModel.CreateVaultViewModel
-import kotlinx.coroutines.flow.collectLatest
 
 class CreateVaultBottomSheet : BottomSheetDialogFragment() {
 

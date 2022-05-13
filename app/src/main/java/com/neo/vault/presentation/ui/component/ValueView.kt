@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.withStyledAttributes
 import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
 import com.neo.vault.R
@@ -59,16 +60,13 @@ class ValueView(
     }
 
 
-    private fun AttributeSet.setupAttr() {
-        val typedArray = context.theme.obtainStyledAttributes(
-            this,
-            R.styleable.ValueView,
-            0, 0,
-        )
+    private fun AttributeSet.setupAttr() = context.withStyledAttributes(
+        this,
+        R.styleable.ValueView,
+    ) {
+        val value = getFloat(R.styleable.ValueView_value, 0f)
 
-        val value = typedArray.getFloat(R.styleable.ValueView_value, 0f)
-
-        val currency = when (typedArray.getInt(R.styleable.ValueView_currency, 0)) {
+        val currency = when(getInt(R.styleable.ValueView_currency, 0)) {
             Currency.BRL.code -> {
                 CurrencySupport.BRL
             }
@@ -84,12 +82,10 @@ class ValueView(
             else -> throw IllegalArgumentException("invalid currency")
         }
 
-        val title = typedArray.getString(
-            R.styleable.ValueView_title
-        ) ?: ""
+        val title = getString(R.styleable.ValueView_title) ?: ""
 
         setValue(
-            when (typedArray.getInt(R.styleable.ValueView_type, 0)) {
+            when (getInt(R.styleable.ValueView_type, 0)) {
                 Type.TOTAL.code -> {
                     Value.Total(
                         value = value,
