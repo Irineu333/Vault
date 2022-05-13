@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ValueView">
+        <attr name="value" format="float" />
+        <attr name="title" format="string" />
+        <attr name="type" format="integer" >
+            <enum name="total" value="0"/>
+            <enum name="subtotal" value="1"/>
+        </attr>
+
+        <attr name="currency" format="integer" >
+            <enum name="BRL" value="0"/>
+            <enum name="USD" value="1"/>
+            <enum name="EUR" value="2"/>
+        </attr>
+    </declare-styleable>
+</resources>

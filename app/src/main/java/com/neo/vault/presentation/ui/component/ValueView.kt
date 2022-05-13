@@ -4,8 +4,11 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
 import com.neo.vault.R
+import com.neo.vault.domain.model.CurrencySupport
+import com.neo.vault.presentation.model.UiText
 import com.neo.vault.presentation.model.Value
 import com.neo.vault.util.CurrencyUtil
 
@@ -26,6 +29,8 @@ class ValueView(
         orientation = VERTICAL
         addView(tvTitle)
         addView(tvValue)
+
+        attrs?.setupAttr()
     }
 
     fun setValue(value: Value) {
@@ -34,16 +39,16 @@ class ValueView(
     }
 
     private fun setupTitle(value: Value) = with(tvTitle) {
-        text = when (value) {
-            is Value.Total -> "Guardado"
-            is Value.SubTotal -> value.title
-        }
+        val title = value.title.resolve(context)
+
+        text = title
+        isVisible = title.isNotEmpty()
 
         TextViewCompat.setTextAppearance(this, R.style.TextAppearance_ValueView_Title)
     }
 
     private fun setupValue(value: Value) = with(tvValue) {
-        text = CurrencyUtil.toCurrency(value.value)
+        text = CurrencyUtil.formatter(value.value, value.currency)
 
         val textAppearance = when (value) {
             is Value.Total -> R.style.TextAppearance_ValueView_Value_Total
@@ -52,4 +57,69 @@ class ValueView(
 
         TextViewCompat.setTextAppearance(this, textAppearance)
     }
+
+
+    private fun AttributeSet.setupAttr() {
+        val typedArray = context.theme.obtainStyledAttributes(
+            this,
+            R.styleable.ValueView,
+            0, 0,
+        )
+
+        val value = typedArray.getFloat(R.styleable.ValueView_value, 0f)
+
+        val currency = when (typedArray.getInt(R.styleable.ValueView_currency, 0)) {
+            Currency.BRL.code -> {
+                CurrencySupport.BRL
+            }
+
+            Currency.USD.code -> {
+                CurrencySupport.USD
+            }
+
+            Currency.EUR.code -> {
+                CurrencySupport.EUR
+            }
+
+            else -> throw IllegalArgumentException("invalid currency")
+        }
+
+        val title = typedArray.getString(
+            R.styleable.ValueView_title
+        ) ?: ""
+
+        setValue(
+            when (typedArray.getInt(R.styleable.ValueView_type, 0)) {
+                Type.TOTAL.code -> {
+                    Value.Total(
+                        value = value,
+                        currency = currency,
+                        title = UiText.to(title)
+                    )
+                }
+
+                Type.SUBTOTAL.code -> {
+
+                    Value.SubTotal(
+                        value = value,
+                        currency = currency,
+                        title = UiText.to(title)
+                    )
+                }
+                else -> throw IllegalArgumentException("invalid type")
+            }
+        )
+    }
+
+    enum class Type(val code: Int) {
+        TOTAL(0),
+        SUBTOTAL(1)
+    }
+
+    enum class Currency(val code: Int) {
+        BRL(0),
+        USD(1),
+        EUR(2)
+    }
+
 }

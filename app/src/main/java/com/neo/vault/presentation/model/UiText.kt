@@ -13,6 +13,10 @@ sealed class UiText {
         fun to(@StringRes stringResId: Int) : Res {
             return Res(stringResId = stringResId)
         }
+
+        fun empty(): UiText {
+            return to("")
+        }
     }
 
     fun resolve(context: Context): String {

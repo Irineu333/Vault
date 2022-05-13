@@ -14,17 +14,13 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.neo.vault.R
 import com.neo.vault.databinding.FragmentCreatePiggyBankBinding
-import com.neo.vault.domain.model.Currency
+import com.neo.vault.domain.model.CurrencySupport
 import com.neo.vault.presentation.model.UiText
 import com.neo.vault.presentation.ui.feature.createVault.CreateVaultBottomSheet
 import com.neo.vault.presentation.ui.feature.createVault.viewModel.CreateVaultUiEffect
 import com.neo.vault.presentation.ui.feature.createVault.viewModel.CreateVaultViewModel
-import com.neo.vault.util.CurrencyUtil
 import com.neo.vault.util.TimeUtils
-import com.neo.vault.util.extension.ValidationResult
-import com.neo.vault.util.extension.addValidationListener
-import com.neo.vault.util.extension.formatted
-import com.neo.vault.util.extension.showSnackbar
+import com.neo.vault.util.extension.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -160,7 +156,7 @@ class CreatePiggyBankFragment : Fragment() {
 
         if (checkedChipId != View.NO_ID) return@with
 
-        when (CurrencyUtil.currency.currencyCode) {
+        when (requireContext().locale.currency.currencyCode) {
             "BRL" -> {
                 check(R.id.chip_brl)
             }
@@ -172,6 +168,7 @@ class CreatePiggyBankFragment : Fragment() {
             "EUR" -> {
                 check(R.id.chip_eur)
             }
+
             else -> {
                 check(R.id.chip_usd)
             }
@@ -185,17 +182,17 @@ class CreatePiggyBankFragment : Fragment() {
         )
     }
 
-    private fun getCurrency(): Currency {
+    private fun getCurrency(): CurrencySupport {
         return when (binding.cgCurrency.checkedChipId) {
             R.id.chip_brl -> {
-                Currency.BRL
+                CurrencySupport.BRL
             }
 
             R.id.chip_usd -> {
-                Currency.USD
+                CurrencySupport.USD
             }
             R.id.chip_eur -> {
-                Currency.EUR
+                CurrencySupport.EUR
             }
 
             else -> {

@@ -7,6 +7,8 @@ import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import com.neo.vault.R
 import com.neo.vault.databinding.ActivityMainBinding
+import com.neo.vault.domain.model.CurrencySupport
+import com.neo.vault.presentation.model.UiText
 import com.neo.vault.presentation.model.Value
 import com.neo.vault.presentation.ui.feature.showValues.ShowValuesFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,35 +46,42 @@ class MainActivity : AppCompatActivity() {
 
             binding.toolbar.navigationIcon =
                 if (!destination.isInitialFragment)
-                    ResourcesCompat.getDrawable(resources, R.drawable.ic_back, theme)
-            else null
+                    ResourcesCompat.getDrawable(resources, R.drawable.ic_back, theme) else null
+
+            binding.toolbar.title = destination.label
 
             valuesFragment?.setValues(
                 when (destination.id) {
                     R.id.homeVaults -> {
                         listOf(
                             Value.Total(
-                                value = 3000.0
+                                value = 3000f,
+                                currency = CurrencySupport.BRL,
+                                title = UiText.to("Guardado")
                             ),
                             Value.SubTotal(
-                                title = "Metas",
-                                value = 1500.0,
+                                title = UiText.to("Metas"),
+                                value = 1500f,
+                                currency = CurrencySupport.USD,
                                 action = {
-                                    controller.navigate(R.id.action_homeVaults_to_piggyBankVaults)
+
                                 }
                             ),
                             Value.SubTotal(
-                                title = "Cofrinhos",
-                                value = 1500.0,
+                                title = UiText.to("Cofrinhos"),
+                                value = 1500f,
+                                currency = CurrencySupport.EUR,
                                 action = {
-
+                                    controller.navigate(R.id.action_homeVaults_to_piggyBankVaults)
                                 }
                             ),
                         )
                     }
                     else -> listOf(
                         Value.Total(
-                            value = 0.0
+                            value = 0f,
+                            currency = CurrencySupport.EUR,
+                            title = UiText.to("Total")
                         )
                     )
                 }
