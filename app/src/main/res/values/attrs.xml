@@ -13,5 +13,6 @@
             <enum name="USD" value="1"/>
             <enum name="EUR" value="2"/>
         </attr>
+        <attr name="hidden" format="boolean" />
     </declare-styleable>
 </resources>

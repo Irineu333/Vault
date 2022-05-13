@@ -2,6 +2,7 @@ package com.neo.vault.presentation.ui.component
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.withStyledAttributes
@@ -18,6 +19,14 @@ class ValueView(
     attrs: AttributeSet? = null
 ) : LinearLayout(context, attrs) {
 
+    private var currentValue: Value? = null
+
+    var isHidden: Boolean = false
+        set(value) {
+            field = value
+            currentValue?.let { setValue(it) }
+        }
+
     private val tvTitle by lazy {
         TextView(context)
     }
@@ -28,8 +37,19 @@ class ValueView(
 
     init {
         orientation = VERTICAL
-        addView(tvTitle)
-        addView(tvValue)
+
+        addView(
+            tvTitle, ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+            )
+        )
+        addView(
+            tvValue, ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+            )
+        )
 
         attrs?.setupAttr()
     }
@@ -49,7 +69,12 @@ class ValueView(
     }
 
     private fun setupValue(value: Value) = with(tvValue) {
-        text = CurrencyUtil.formatter(value.value, value.currency)
+        currentValue = value
+
+        val formatted = CurrencyUtil.formatter(value.value, value.currency)
+
+        text = if (isHidden)
+            "${value.currency.currency.symbol} ${"-".repeat(4)}" else formatted
 
         val textAppearance = when (value) {
             is Value.Total -> R.style.TextAppearance_ValueView_Value_Total
@@ -59,14 +84,13 @@ class ValueView(
         TextViewCompat.setTextAppearance(this, textAppearance)
     }
 
-
     private fun AttributeSet.setupAttr() = context.withStyledAttributes(
         this,
         R.styleable.ValueView,
     ) {
         val value = getFloat(R.styleable.ValueView_value, 0f)
 
-        val currency = when(getInt(R.styleable.ValueView_currency, 0)) {
+        val currency = when (getInt(R.styleable.ValueView_currency, 0)) {
             Currency.BRL.code -> {
                 CurrencySupport.BRL
             }
@@ -105,6 +129,8 @@ class ValueView(
                 else -> throw IllegalArgumentException("invalid type")
             }
         )
+
+        isHidden = getBoolean( R.styleable.ValueView_hidden, false)
     }
 
     enum class Type(val code: Int) {

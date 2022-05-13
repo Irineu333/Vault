@@ -5,15 +5,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.neo.vault.R
 import com.neo.vault.databinding.ItemValueBinding
 import com.neo.vault.presentation.model.Value
-import com.neo.vault.presentation.ui.component.ValueView
-import com.neo.vault.util.extension.dpToPx
-import com.neo.vault.util.extension.updateMargins
 
 
 class ValuesAdapter : RecyclerView.Adapter<ValuesAdapter.Holder>() {
+
+    var isHidden: Boolean = false
+        @SuppressLint("NotifyDataSetChanged")
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     var values = emptyList<Value>()
         @SuppressLint("NotifyDataSetChanged")
@@ -35,6 +38,7 @@ class ValuesAdapter : RecyclerView.Adapter<ValuesAdapter.Holder>() {
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val value = values[position]
         holder.bind(value)
+        holder.isHidden = isHidden
     }
 
     override fun getItemCount() = values.size
@@ -42,6 +46,12 @@ class ValuesAdapter : RecyclerView.Adapter<ValuesAdapter.Holder>() {
     class Holder(
         private val binding: ItemValueBinding
     ) : RecyclerView.ViewHolder(binding.root) {
+
+        var isHidden: Boolean = false
+            set(value) {
+                field = value
+                binding.value.isHidden = value
+            }
 
         fun bind(value: Value) {
             binding.value.setValue(value)

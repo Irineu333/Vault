@@ -1,6 +1,7 @@
 package com.neo.vault.data.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
 import com.neo.vault.data.local.AppDatabase
 import com.neo.vault.data.local.dao.VaultDao
@@ -45,5 +46,16 @@ class DataProvidesModule {
         appDatabase: AppDatabase
     ): VaultDao {
         return appDatabase.vaultsDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideSharedPreference(
+        @ApplicationContext context: Context
+    ): SharedPreferences {
+        return context.getSharedPreferences(
+            context.packageName + "_preferences",
+            Context.MODE_PRIVATE
+        )
     }
 }
