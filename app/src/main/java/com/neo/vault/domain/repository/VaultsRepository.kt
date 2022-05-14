@@ -11,4 +11,5 @@ interface VaultsRepository {
     ): Boolean
 
     suspend fun getVaultByName(name: String): Vault?
+    suspend fun loadPiggyBanks(): List<Vault>
 }

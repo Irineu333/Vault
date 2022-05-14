@@ -36,10 +36,16 @@ class VaultsRepositoryIml @Inject constructor(
     }
 
     override suspend fun getVaultByName(name: String): Vault? {
-        return withContext(Dispatchers.IO){
+        return withContext(Dispatchers.IO) {
             vaultDao.findByName(
                 name = name
             )
         }?.toModel()
+    }
+
+    override suspend fun loadPiggyBanks(): List<Vault> {
+        return withContext(Dispatchers.IO) {
+            vaultDao.loadVaultsByType(type = Type.PIGGY_BANK)
+        }.map { it.toModel() }
     }
 }

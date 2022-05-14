@@ -17,12 +17,15 @@ data class VaultEntity(
     @ColumnInfo(name = "currency")
     val currency: CurrencySupport,
     @ColumnInfo(name = "type")
-    val type: Type
+    val type: Type,
+    @ColumnInfo(name = "summation")
+    val summation: Float = 0f
 )
 
 fun VaultEntity.toModel() = Vault(
     name = name,
-    dateToBreak =dateToBreak,
-    currency =currency,
-    type = type
+    dateToBreak = dateToBreak,
+    currency = currency,
+    type = type,
+    summation = summation
 )

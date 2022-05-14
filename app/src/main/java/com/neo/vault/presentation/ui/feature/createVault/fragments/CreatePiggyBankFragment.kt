@@ -152,21 +152,17 @@ class CreatePiggyBankFragment : Fragment() {
 
         if (checkedChipId != View.NO_ID) return@with
 
-        when (requireContext().locale.currency.currencyCode) {
-            "BRL" -> {
+        when (CurrencySupport.default()) {
+            CurrencySupport.BRL -> {
                 check(R.id.chip_brl)
             }
 
-            "USD" -> {
+            CurrencySupport.USD -> {
                 check(R.id.chip_usd)
             }
 
-            "EUR" -> {
+            CurrencySupport.EUR -> {
                 check(R.id.chip_eur)
-            }
-
-            else -> {
-                check(R.id.chip_usd)
             }
         }
     }

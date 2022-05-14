@@ -1,13 +1,15 @@
 package com.neo.vault.presentation.ui.feature.piggyBanks
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import com.neo.vault.R
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.neo.vault.databinding.FragmentPiggyBankVaultsBinding
 import com.neo.vault.domain.model.CurrencySupport
 import com.neo.vault.presentation.model.Summation
@@ -15,6 +17,7 @@ import com.neo.vault.presentation.model.UiText
 import com.neo.vault.presentation.ui.acitivity.MainActivity
 import com.neo.vault.presentation.ui.feature.piggyBanks.viewModel.PiggyBanksViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class PiggyBanksFragment : Fragment() {
@@ -48,18 +51,17 @@ class PiggyBanksFragment : Fragment() {
 
         viewModel.loadPiggyBanks()
 
-        mainActivity?.setSummation(
-            listOf(
-                Summation.Total(
-                    values = listOf(
-                        Summation.Value(
-                            value = 4000f,
-                            currency = CurrencySupport.BRL,
-                        )
-                    ),
-                    title = UiText.to("Testando")
-                ),
+        setupObservers()
+    }
+
+    private fun setupObservers() = viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+        viewModel.uiState.flowWithLifecycle(
+            viewLifecycleOwner.lifecycle,
+            Lifecycle.State.STARTED
+        ).collect { state ->
+            mainActivity?.setSummation(
+               state.summations
             )
-        )
+        }
     }
 }

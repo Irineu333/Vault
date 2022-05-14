@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.neo.vault.databinding.FragmentValuesBinding
+import com.neo.vault.databinding.FragmentSummationBinding
 import com.neo.vault.presentation.model.Summation
 import com.neo.vault.presentation.ui.adapter.ValuesAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,7 +15,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class SummationFragment : Fragment() {
 
-    private var _binding: FragmentValuesBinding? = null
+    private var _binding: FragmentSummationBinding? = null
     private val binding get() = _binding!!
 
     @Inject
@@ -30,7 +30,11 @@ class SummationFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentValuesBinding.inflate(inflater, container, false)
+        _binding = FragmentSummationBinding.inflate(
+            inflater,
+            container,
+            false
+        )
         return binding.root
     }
 
