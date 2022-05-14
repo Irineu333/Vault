@@ -1,7 +1,6 @@
 package com.neo.vault.presentation.ui.feature.piggyBanks
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +9,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ConcatAdapter
 import com.neo.vault.databinding.FragmentPiggyBankVaultsBinding
-import com.neo.vault.domain.model.CurrencySupport
-import com.neo.vault.presentation.model.Summation
-import com.neo.vault.presentation.model.UiText
 import com.neo.vault.presentation.ui.acitivity.MainActivity
+import com.neo.vault.presentation.ui.adapter.PiggyBanksAdapter
 import com.neo.vault.presentation.ui.feature.piggyBanks.viewModel.PiggyBanksViewModel
+import com.neo.vault.util.extension.toRaw
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -27,6 +26,14 @@ class PiggyBanksFragment : Fragment() {
     private val viewModel: PiggyBanksViewModel by viewModels()
 
     private val mainActivity get() = activity as? MainActivity
+
+    private val toBreakPiggyBanksAdapter by lazy {
+        PiggyBanksAdapter("Para quebrar".toRaw())
+    }
+
+    private val joiningPiggyBanksAdapter by lazy {
+        PiggyBanksAdapter("Juntando".toRaw())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,7 +58,15 @@ class PiggyBanksFragment : Fragment() {
 
         viewModel.loadPiggyBanks()
 
+        setupView()
         setupObservers()
+    }
+
+    private fun setupView() = with(binding) {
+        rvPiggyBanks.adapter = ConcatAdapter(
+            toBreakPiggyBanksAdapter,
+            joiningPiggyBanksAdapter
+        )
     }
 
     private fun setupObservers() = viewLifecycleOwner.lifecycleScope.launchWhenStarted {
@@ -60,8 +75,11 @@ class PiggyBanksFragment : Fragment() {
             Lifecycle.State.STARTED
         ).collect { state ->
             mainActivity?.setSummation(
-               state.summations
+                state.summation
             )
+
+            toBreakPiggyBanksAdapter.piggyBanks = state.toBreakPiggyBanks
+            joiningPiggyBanksAdapter.piggyBanks = state.joiningPiggyBanks
         }
     }
 }

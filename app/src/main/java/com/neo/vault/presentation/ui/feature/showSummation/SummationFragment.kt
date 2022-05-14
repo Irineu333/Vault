@@ -5,10 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.neo.vault.databinding.FragmentSummationBinding
 import com.neo.vault.presentation.model.Summation
-import com.neo.vault.presentation.ui.adapter.ValuesAdapter
+import com.neo.vault.presentation.ui.adapter.SummationsAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -22,7 +23,7 @@ class SummationFragment : Fragment() {
     lateinit var sharedPreferences: SharedPreferences
 
     private val valuesAdapter by lazy {
-        ValuesAdapter()
+        SummationsAdapter()
     }
 
     override fun onCreateView(
@@ -66,6 +67,8 @@ class SummationFragment : Fragment() {
     }
 
     fun setValues(summations: List<Summation>) {
-        valuesAdapter.values = summations
+        if (summations.isNotEmpty()) {
+            valuesAdapter.values = summations
+        }
     }
 }

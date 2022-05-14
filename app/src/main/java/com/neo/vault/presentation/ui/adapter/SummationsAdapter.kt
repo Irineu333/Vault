@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.neo.vault.databinding.ItemSummationBinding
 import com.neo.vault.presentation.model.Summation
 
-class ValuesAdapter : RecyclerView.Adapter<ValuesAdapter.Holder>() {
+class SummationsAdapter : RecyclerView.Adapter<SummationsAdapter.Holder>() {
 
     var isHidden: Boolean = false
         @SuppressLint("NotifyDataSetChanged")

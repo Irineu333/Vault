@@ -44,19 +44,17 @@ class PiggyBanksViewModel @Inject constructor(
             }
         }
 
+        val (toBreak, joining) = piggyBanks.partition { it.isToBreak() }
+
         _uiState.update {
             it.copy(
-                piggyBanks = piggyBanks,
-                summations = listOf(
+                toBreakPiggyBanks = toBreak,
+                joiningPiggyBanks = joining,
+                summation = listOf(
                     Summation.Total(
                         title = "Total".toRaw(),
                         values = totalValues.ifEmpty {
-                            listOf(
-                                Summation.Value(
-                                    value = 0f,
-                                    currency = CurrencySupport.default()
-                                )
-                            )
+                            Summation.default.values
                         }
                     )
                 )
