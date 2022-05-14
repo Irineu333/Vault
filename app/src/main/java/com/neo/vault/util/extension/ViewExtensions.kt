@@ -52,3 +52,7 @@ fun View.showSnackbar(
         show()
     }
 }
+
+fun View.removeFromParent() {
+    (this.parent as? ViewGroup)?.removeView(this)
+}

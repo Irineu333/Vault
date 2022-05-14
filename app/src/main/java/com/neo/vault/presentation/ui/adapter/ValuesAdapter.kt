@@ -5,9 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.neo.vault.databinding.ItemValueBinding
-import com.neo.vault.presentation.model.Value
-
+import com.neo.vault.databinding.ItemSummationBinding
+import com.neo.vault.presentation.model.Summation
 
 class ValuesAdapter : RecyclerView.Adapter<ValuesAdapter.Holder>() {
 
@@ -18,7 +17,7 @@ class ValuesAdapter : RecyclerView.Adapter<ValuesAdapter.Holder>() {
             notifyDataSetChanged()
         }
 
-    var values = emptyList<Value>()
+    var values = emptyList<Summation>()
         @SuppressLint("NotifyDataSetChanged")
         set(value) {
             field = value
@@ -29,7 +28,7 @@ class ValuesAdapter : RecyclerView.Adapter<ValuesAdapter.Holder>() {
         parent: ViewGroup,
         viewType: Int
     ) = Holder(
-        ItemValueBinding.inflate(
+        ItemSummationBinding.inflate(
             LayoutInflater.from(parent.context),
             parent, false
         )
@@ -44,7 +43,7 @@ class ValuesAdapter : RecyclerView.Adapter<ValuesAdapter.Holder>() {
     override fun getItemCount() = values.size
 
     class Holder(
-        private val binding: ItemValueBinding
+        private val binding: ItemSummationBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         var isHidden: Boolean = false
@@ -53,11 +52,11 @@ class ValuesAdapter : RecyclerView.Adapter<ValuesAdapter.Holder>() {
                 binding.value.isHidden = value
             }
 
-        fun bind(value: Value) {
-            binding.value.setValue(value)
-            binding.ivArrow.isVisible = value.action != null
+        fun bind(summation: Summation) {
+            binding.value.setValue(summation)
+            binding.ivArrow.isVisible = summation.action != null
 
-            value.action?.let { action ->
+            summation.action?.let { action ->
                 itemView.setOnClickListener {
                     action()
                 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="ValueView">
+    <declare-styleable name="SummationView">
         <attr name="value" format="float" />
         <attr name="title" format="string" />
         <attr name="type" format="integer" >

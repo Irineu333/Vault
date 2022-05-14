@@ -12,7 +12,7 @@
         android:padding="8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="1"
-        tools:listitem="@layout/item_value" />
+        tools:listitem="@layout/item_summation" />
 
     <ImageButton
         android:id="@+id/btn_hide_values"

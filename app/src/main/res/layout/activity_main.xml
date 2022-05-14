@@ -25,10 +25,10 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/container_values"
-        android:name="com.neo.vault.presentation.ui.feature.showValues.ShowValuesFragment"
+        android:name="com.neo.vault.presentation.ui.feature.showSummation.SummationFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:layout="@layout/fragment_values" />
+        tools:layout="@layout/fragment_summation" />
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
@@ -40,6 +40,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/list_vaults_graph" />
+        app:navGraph="@navigation/main_graph" />
 
 </LinearLayout>

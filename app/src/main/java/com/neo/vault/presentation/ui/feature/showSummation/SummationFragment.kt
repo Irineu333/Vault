@@ -1,4 +1,4 @@
-package com.neo.vault.presentation.ui.feature.showValues
+package com.neo.vault.presentation.ui.feature.showSummation
 
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -7,13 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.neo.vault.databinding.FragmentValuesBinding
-import com.neo.vault.presentation.model.Value
+import com.neo.vault.presentation.model.Summation
 import com.neo.vault.presentation.ui.adapter.ValuesAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ShowValuesFragment : Fragment() {
+class SummationFragment : Fragment() {
 
     private var _binding: FragmentValuesBinding? = null
     private val binding get() = _binding!!
@@ -61,7 +61,7 @@ class ShowValuesFragment : Fragment() {
         }
     }
 
-    fun setValues(values: List<Value>) {
-        valuesAdapter.values = values
+    fun setValues(summations: List<Summation>) {
+        valuesAdapter.values = summations
     }
 }

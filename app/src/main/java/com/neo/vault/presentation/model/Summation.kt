@@ -4,24 +4,26 @@ import com.neo.vault.domain.model.CurrencySupport
 
 typealias Action = () -> Unit
 
-sealed class Value {
+sealed class Summation {
 
-    abstract val value: Float
     abstract val action: Action?
-    abstract val currency : CurrencySupport
     abstract val title: UiText
+    abstract val values: List<Value>
 
     data class Total(
-        override val value: Float,
-        override val currency: CurrencySupport,
+        override val values: List<Value>,
         override val action: Action? = null,
         override val title: UiText = UiText.empty()
-    ) : Value()
+    ) : Summation()
 
     data class SubTotal(
-        override val value: Float,
-        override val currency: CurrencySupport,
+        override val values: List<Value>,
         override val action: Action? = null,
         override val title: UiText = UiText.empty()
-    ) : Value()
+    ) : Summation()
+
+    data class Value(
+        val value: Float,
+        val currency: CurrencySupport
+    )
 }
