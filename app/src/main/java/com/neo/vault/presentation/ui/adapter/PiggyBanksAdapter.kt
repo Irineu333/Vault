@@ -3,8 +3,8 @@ package com.neo.vault.presentation.ui.adapter
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.neo.vault.R
 import com.neo.vault.databinding.ItemPiggyBankBinding
 import com.neo.vault.databinding.ItemVaultsTitleBinding
 import com.neo.vault.domain.model.Vault
@@ -102,9 +102,10 @@ class PiggyBanksAdapter(
                 piggyBank.currency
             )
 
-            tvData.text =
-                piggyBank.dateToBreak?.let { Date(it).formatted }
-                    ?: "Indefinido"
+            tvDateToBreak.isVisible =
+                piggyBank.dateToBreak?.let {
+                    tvDateToBreak.text = Date(it).formatted
+                } != null
         }
     }
 

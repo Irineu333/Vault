@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_marginTop="16dp"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
+    android:background="?attr/selectableItemBackground"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_marginTop="8dp"
+    android:padding="4dp"
+    tools:ignore="UseCompoundDrawables">
 
     <TextView
         android:id="@+id/tv_title"
@@ -13,12 +16,12 @@
         android:textAppearance="@style/TextAppearance.Subtitle"
         tools:text="Title here" />
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <ImageView
         android:id="@+id/tv_icon"
-        app:tint="@color/black"
-        android:layout_marginTop="2dp"
-        android:src="@drawable/ic_arrow_right"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_arrow_right"
+        app:tint="@color/black" />
 
 </LinearLayout>

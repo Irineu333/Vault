@@ -35,6 +35,7 @@
         android:layout_height="wrap_content" />
 
     <androidx.fragment.app.FragmentContainerView
+        android:background="#EEEEEE"
         android:id="@+id/vaults_host"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
