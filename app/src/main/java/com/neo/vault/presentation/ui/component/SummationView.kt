@@ -52,7 +52,7 @@ class SummationView(
         text = title
         isVisible = title.isNotEmpty()
 
-        TextViewCompat.setTextAppearance(this, R.style.TextAppearance_ValueView_Title)
+        TextViewCompat.setTextAppearance(this, R.style.TextAppearance_SummationView_Title)
 
         tvTitle.removeFromParent()
 
@@ -76,8 +76,8 @@ class SummationView(
                 "${value.currency.currency.symbol} ${"-".repeat(4)}" else formatted
 
             val textAppearance = when (summation) {
-                is Summation.Total -> R.style.TextAppearance_ValueView_Value_Total
-                is Summation.SubTotal -> R.style.TextAppearance_ValueView_Value_SubTotal
+                is Summation.Total -> R.style.TextAppearance_SummationView_Value_Total
+                is Summation.SubTotal -> R.style.TextAppearance_SummationView_Value_SubTotal
             }
 
             TextViewCompat.setTextAppearance(valueView, textAppearance)

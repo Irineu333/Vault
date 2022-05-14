@@ -11,7 +11,7 @@ import com.neo.vault.databinding.FragmentHomeVaultsBinding
 import com.neo.vault.domain.model.CurrencySupport
 import com.neo.vault.presentation.model.Summation
 import com.neo.vault.presentation.model.UiText
-import com.neo.vault.presentation.ui.acitivity.MainActivity
+import com.neo.vault.presentation.ui.activity.MainActivity
 import com.neo.vault.presentation.ui.feature.createVault.CreateVaultBottomSheet
 
 class HomeVaultsFragment : Fragment() {
@@ -43,6 +43,10 @@ class HomeVaultsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupView()
+    }
+
+    override fun onStart() {
+        super.onStart()
         mainActivity?.setSummation(
             listOf(
                 Summation.Total(

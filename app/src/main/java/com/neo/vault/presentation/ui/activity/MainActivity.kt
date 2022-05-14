@@ -1,6 +1,7 @@
-package com.neo.vault.presentation.ui.acitivity
+package com.neo.vault.presentation.ui.activity
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.NavDestination
@@ -55,6 +56,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setSummation(summations: List<Summation>) {
+
         valuesFragment?.setValues(
             summations = summations
         )
