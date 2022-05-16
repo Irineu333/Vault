@@ -1,62 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
-    android:orientation="vertical"
-    app:cardCornerRadius="4dp"
-    app:cardElevation="2dp"
-    app:contentPadding="8dp">
+    android:layout_margin="8dp"
+    android:background="@drawable/bg_piggy_bank_card"
+    android:elevation="4dp"
+    android:padding="16dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.SummationView.Title"
+        android:textColor="?attr/colorOnPrimary"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Name here" />
 
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.SummationView.Title"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Name here" />
+    <TextView
+        android:id="@+id/tv_summation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textAppearance="@style/TextAppearance.SummationView.Value.Total"
+        android:textColor="?attr/colorOnPrimary"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name"
+        app:layout_constraintVertical_bias="1.0"
+        tools:text="R$ 0,00" />
 
-        <TextView
-            android:id="@+id/tv_summation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textAppearance="@style/TextAppearance.SummationView.Value.Total"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name"
-            app:layout_constraintVertical_bias="1.0"
-            tools:text="R$ 0,00" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="2dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@null"
+        android:padding="2dp"
+        android:src="@drawable/ic_hammer"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_date_to_break"
+        app:layout_constraintEnd_toStartOf="@+id/tv_date_to_break"
+        app:layout_constraintTop_toTopOf="@+id/tv_date_to_break"
+        app:tint="?attr/colorOnPrimary" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:adjustViewBounds="true"
-            android:layout_height="0dp"
-            android:padding="2dp"
-            android:layout_marginEnd="4dp"
-            android:src="@drawable/ic_break_piggy_bank"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/tv_date_to_break"
-            app:layout_constraintTop_toTopOf="@+id/tv_date_to_break"
-            android:contentDescription="@null" />
+    <TextView
+        android:id="@+id/tv_date_to_break"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="?attr/colorOnPrimary"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="date here" />
 
-        <TextView
-            android:id="@+id/tv_date_to_break"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:text="date here" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -37,7 +37,7 @@ class PiggyBanksAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            0 -> {
+            Type.TITLE.code -> {
                 TitleHolder(
                     ItemVaultsTitleBinding.inflate(
                         LayoutInflater.from(parent.context),
@@ -47,7 +47,7 @@ class PiggyBanksAdapter(
                 )
             }
 
-            1 -> {
+            Type.ITEM.code -> {
                 PiggyBankHolder(
                     ItemPiggyBankBinding.inflate(
                         LayoutInflater.from(
@@ -72,23 +72,35 @@ class PiggyBanksAdapter(
 
             is TitleHolder -> {
                 holder.setTitle(title)
-                holder.itemView.setOnClickListener {
-                    collapsed = !collapsed
+
+                fun updateHolder() {
                     holder.isCollapsed = collapsed
                 }
-                holder.isCollapsed = collapsed
+
+                holder.itemView.setOnClickListener {
+                    collapsed = !collapsed
+
+                    updateHolder()
+                }
+
+                updateHolder()
             }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == 0) 0 else 1
+        return if (position == 0) Type.TITLE.code else Type.ITEM.code
     }
 
     override fun getItemCount() = when {
         piggyBanks.isEmpty() -> 0
         collapsed -> 1
         else -> piggyBanks.size + 1
+    }
+
+    enum class Type(val code : Int) {
+        TITLE(0),
+        ITEM(1)
     }
 
     class PiggyBankHolder(
@@ -103,7 +115,7 @@ class PiggyBanksAdapter(
             )
 
             tvDateToBreak.isVisible =
-                piggyBank.dateToBreak?.let {
+                piggyBank.dateToBreak?.also {
                     tvDateToBreak.text = Date(it).formatted
                 } != null
         }

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rv_piggy_banks"
     android:layout_width="match_parent"
-    android:paddingHorizontal="16dp"
+    android:paddingHorizontal="8dp"
+    tools:itemCount="2"
     android:layout_height="match_parent"
     tools:listitem="@layout/item_piggy_bank"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />

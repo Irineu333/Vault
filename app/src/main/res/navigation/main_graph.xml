@@ -23,5 +23,5 @@
         android:id="@+id/piggyBankVaults"
         android:name="com.neo.vault.presentation.ui.feature.piggyBanks.PiggyBanksFragment"
         android:label="Cofrinhos"
-        tools:layout="@layout/fragment_piggy_bank_vaults" />
+        tools:layout="@layout/fragment_piggy_banks" />
 </navigation>
