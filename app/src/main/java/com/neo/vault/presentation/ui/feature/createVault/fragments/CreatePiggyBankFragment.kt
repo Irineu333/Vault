@@ -2,6 +2,7 @@ package com.neo.vault.presentation.ui.feature.createVault.fragments
 
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +37,8 @@ class CreatePiggyBankFragment : Fragment() {
     private val createVaultBottomSheet
         get() = parentFragment?.parentFragment as? CreateVaultBottomSheet
 
+    private var nameTextWatcher : TextWatcher? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -51,6 +54,11 @@ class CreatePiggyBankFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+
+        nameTextWatcher?.let {
+            binding.tilName.removeTextWatcher(it)
+        }
+
         _binding = null
     }
 
@@ -77,7 +85,7 @@ class CreatePiggyBankFragment : Fragment() {
             createVault()
         }
 
-        binding.tilName.addValidationListener(
+        nameTextWatcher = binding.tilName.addValidationListener(
             validation = { value ->
                 when {
                     value.trim().isBlank() -> {

@@ -1,5 +1,6 @@
 package com.neo.vault.util.extension
 
+import android.text.TextWatcher
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
@@ -10,10 +11,10 @@ fun TextInputLayout.addValidationListener(
     validation: suspend (value: String) -> ValidationResult,
     isInvalid: TextInputLayout.(String) -> Unit = {},
     isValid: TextInputLayout.() -> Unit = {}
-) {
+): TextWatcher {
     val textInputLayout = this
 
-    editText?.addTextChangedListener { value ->
+    return editText?.addTextChangedListener { value ->
         if (value != null) {
             CoroutineScope(Dispatchers.Main).launch {
                 when (val result = validation("$value")) {
@@ -27,6 +28,11 @@ fun TextInputLayout.addValidationListener(
             }
         }
     } ?: throw IllegalArgumentException("an edittext is required")
+}
+
+
+fun TextInputLayout.removeTextWatcher(textWatcher: TextWatcher) {
+    editText?.removeTextChangedListener(textWatcher)
 }
 
 sealed class ValidationResult {
