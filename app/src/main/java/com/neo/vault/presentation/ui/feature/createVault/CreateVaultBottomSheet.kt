@@ -10,6 +10,8 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.neo.vault.R
 import com.neo.vault.databinding.FragmentCreateVaultBinding
+import com.neo.vault.util.extension.behavior
+import com.neo.vault.util.extension.expanded
 
 class CreateVaultBottomSheet : BottomSheetDialogFragment() {
 
@@ -46,6 +48,9 @@ class CreateVaultBottomSheet : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        behavior?.expanded()
+        behavior?.skipCollapsed = true
 
         setupView()
         setupListeners()

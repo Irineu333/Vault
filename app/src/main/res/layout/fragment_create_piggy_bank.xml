@@ -86,8 +86,9 @@
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:layout_marginTop="4dp"
-        android:paddingHorizontal="4dp"
+        android:layout_marginTop="6dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="2dp"
         android:id="@+id/btn_date_to_break"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

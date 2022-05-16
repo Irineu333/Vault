@@ -1,11 +1,11 @@
 package com.neo.vault.presentation.ui.feature.createVault.fragments
 
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -15,7 +15,6 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.neo.vault.R
 import com.neo.vault.databinding.FragmentCreatePiggyBankBinding
 import com.neo.vault.domain.model.CurrencySupport
-import com.neo.vault.presentation.model.UiText
 import com.neo.vault.presentation.ui.feature.createVault.CreateVaultBottomSheet
 import com.neo.vault.presentation.ui.feature.createVault.viewModel.CreateVaultUiEffect
 import com.neo.vault.presentation.ui.feature.createVault.viewModel.CreateVaultViewModel
@@ -81,7 +80,7 @@ class CreatePiggyBankFragment : Fragment() {
         binding.tilName.addValidationListener(
             validation = { value ->
                 when {
-                    value.isBlank() -> {
+                    value.trim().isBlank() -> {
                         ValidationResult.IsInvalid(
                             message = "Nome do cofre não pode ser vazio"
                         )
@@ -101,8 +100,13 @@ class CreatePiggyBankFragment : Fragment() {
                 error = null
                 isErrorEnabled = false
 
-                boxStrokeColor = Color.GREEN
-                hintTextColor = ColorStateList.valueOf(Color.GREEN)
+                val colorGreen = ContextCompat.getColor(
+                    requireContext(),
+                    R.color.green
+                )
+
+                boxStrokeColor = colorGreen
+                hintTextColor = ColorStateList.valueOf(colorGreen)
 
                 binding.btnCreateVault.isEnabled = true
             },
@@ -132,7 +136,7 @@ class CreatePiggyBankFragment : Fragment() {
                     when (it) {
                         CreateVaultUiEffect.Success -> {
                             binding.showSnackbar(
-                                message =  "Success".toRaw()
+                                message = "Success".toRaw()
                             )
                             createVaultBottomSheet?.dismiss()
                         }

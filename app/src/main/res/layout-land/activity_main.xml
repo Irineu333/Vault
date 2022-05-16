@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context=".presentation.ui.activity.MainActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="?attr/colorPrimary">
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:background="?attr/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                app:navigationIcon="@drawable/ic_back"
+                app:navigationIconTint="?attr/colorOnPrimary"
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/app_name"
+                app:titleCentered="true"
+                app:titleTextColor="?attr/colorOnPrimary" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/container_values"
+            android:name="com.neo.vault.presentation.ui.feature.showSummation.SummationFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/surface"
+            tools:layout="@layout/fragment_summation" />
+
+    </LinearLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="1dp"
+        android:layout_height="match_parent" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/vaults_host"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/surfaceVariant"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/main_graph" />
+
+</LinearLayout>

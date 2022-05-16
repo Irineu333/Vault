@@ -43,11 +43,17 @@
         android:layout_width="match_parent"
         android:layout_height="0.8dp"/>
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/create_vault_host"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:navGraph="@navigation/create_vault_graph" />
+        android:layout_height="wrap_content">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/create_vault_host"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:navGraph="@navigation/create_vault_graph" />
+
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>
