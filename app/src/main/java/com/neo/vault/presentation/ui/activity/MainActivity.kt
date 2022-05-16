@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupListeners() {
-        navController.addOnDestinationChangedListener { controller, destination, _ ->
+        navController.addOnDestinationChangedListener { _, destination, _ ->
 
             binding.toolbar.navigationIcon =
                 if (!destination.isInitialFragment)

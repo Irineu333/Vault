@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="surface">@color/grey_dark</color>
+    <color name="surfaceVariant">@color/black</color>
+    <color name="onSurface">@color/white</color>
+
+    <color name="onSurfaceSubtitle">#AFAFAF</color>
+
+</resources>

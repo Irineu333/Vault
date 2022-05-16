@@ -71,7 +71,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            app:tint="@color/onVaultsBackground"
+            app:tint="@color/onSurface"
             android:padding="4dp"
             android:src="@drawable/ic_hammer"
             android:layout_width="22dp"
@@ -96,8 +96,8 @@
         android:drawablePadding="4dp"
         android:text="Indefinido"
         android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-        android:textColor="@color/onVaultsBackground"
-        app:drawableTint="@color/onVaultsBackground" />
+        android:textColor="@color/onSurface"
+        app:drawableTint="@color/onSurface" />
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"

@@ -1,27 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
+
     <color name="white">#FFFFFFFF</color>
+    <color name="white_variant">#EEEEEE</color>
 
     <color name="blue_dark">#0047AA</color>
     <color name="blue_normal">#1565c0</color>
     <color name="blue_light">#1D80E3</color>
 
     <color name="grey_light">#212121</color>
-    <color name="grey_normal">#151515</color>
-    <color name="grey_dark">@color/black</color>
-
-    <color name="colorPrimary">@color/blue_normal</color>
-    <color name="colorPrimaryVariant">@color/blue_dark</color>
-    <color name="colorOnPrimary">@color/white</color>
-
-    <color name="vaultsBackground">#EEEEEE</color>
-    <color name="onVaultsBackground">#000000</color>
-
-    <color name="summationBackground">#FFFFFF</color>
-    <color name="valueOnSummation">#000000</color>
-    <color name="titleOnSummation">#424242</color>
-
-    <color name="bottomSheetBackground">@color/white</color>
+    <color name="grey_normal">#1B1B1B</color>
+    <color name="grey_dark">#121212</color>
 
 </resources>
