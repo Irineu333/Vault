@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="vaultsBackground">#191919</color>
+    <color name="onVaultsBackground">#FFFFFF</color>
+
+    <color name="summationBackground">#1C1C1C</color>
+    <color name="valueOnSummation">#FFFFFF</color>
+    <color name="titleOnSummation">#C1C1C1</color>
+
+    <color name="bottomSheetBackground">@color/vaultsBackground</color>
+
+</resources>

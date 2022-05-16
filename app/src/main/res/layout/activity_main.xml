@@ -8,6 +8,7 @@
     tools:context=".presentation.ui.activity.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:background="?attr/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -24,6 +25,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.fragment.app.FragmentContainerView
+        android:background="@color/summationBackground"
         android:id="@+id/container_values"
         android:name="com.neo.vault.presentation.ui.feature.showSummation.SummationFragment"
         android:layout_width="match_parent"
@@ -35,7 +37,7 @@
         android:layout_height="wrap_content" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:background="#EEEEEE"
+        android:background="@color/vaultsBackground"
         android:id="@+id/vaults_host"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
