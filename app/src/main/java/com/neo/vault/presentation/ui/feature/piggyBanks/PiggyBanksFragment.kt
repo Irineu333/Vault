@@ -10,7 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
-import com.neo.vault.databinding.FragmentPiggyBankVaultsBinding
+import com.neo.vault.databinding.FragmentPiggyBanksBinding
 import com.neo.vault.presentation.ui.activity.MainActivity
 import com.neo.vault.presentation.ui.adapter.PiggyBanksAdapter
 import com.neo.vault.presentation.ui.feature.piggyBanks.viewModel.PiggyBanksViewModel
@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class PiggyBanksFragment : Fragment() {
-    private var _binding: FragmentPiggyBankVaultsBinding? = null
+    private var _binding: FragmentPiggyBanksBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: PiggyBanksViewModel by viewModels()
@@ -40,7 +40,7 @@ class PiggyBanksFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentPiggyBankVaultsBinding.inflate(
+        _binding = FragmentPiggyBanksBinding.inflate(
             inflater,
             container,
             false
