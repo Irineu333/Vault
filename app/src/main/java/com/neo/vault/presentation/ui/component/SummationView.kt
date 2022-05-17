@@ -67,6 +67,11 @@ class SummationView(
     private fun setupValues(summation: Summation) {
         currentSummation = summation
 
+        val totalStyle = if (summation.values.size == 1)
+            R.style.TextAppearance_SummationView_Value_Total
+        else
+            R.style.TextAppearance_SummationView_Value_SubTotal
+
         for (value in summation.values) {
             val valueView = TextView(context)
 
@@ -76,7 +81,7 @@ class SummationView(
                 "${value.currency.currency.symbol} ${"-".repeat(4)}" else formatted
 
             val textAppearance = when (summation) {
-                is Summation.Total -> R.style.TextAppearance_SummationView_Value_Total
+                is Summation.Total -> totalStyle
                 is Summation.SubTotal -> R.style.TextAppearance_SummationView_Value_SubTotal
             }
 
