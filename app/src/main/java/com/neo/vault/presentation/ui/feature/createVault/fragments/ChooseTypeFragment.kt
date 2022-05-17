@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.neo.vault.R
 import com.neo.vault.presentation.ui.adapter.VaultTypesAdapter
 import com.neo.vault.databinding.FragmentChooseTypeBinding
-import com.neo.vault.presentation.model.Type
+import com.neo.vault.presentation.model.VaultType
 
 class ChooseTypeFragment : Fragment() {
     private var _binding: FragmentChooseTypeBinding? = null
@@ -56,7 +56,7 @@ class ChooseTypeFragment : Fragment() {
         )
 
         optionsAdapter.types = listOf(
-            Type(
+            VaultType(
                 icon = R.drawable.ic_piggy_bank,
                 title = "Cofrinho",
                 description = "Poupe sem metas"
@@ -65,7 +65,7 @@ class ChooseTypeFragment : Fragment() {
                     R.id.action_chooseTypeFragment_to_piggyBankFragment
                 )
             },
-            Type(
+            VaultType(
                 icon = R.drawable.ic_goal,
                 title = "Meta",
                 description = "Crie metas para seus sonhos"

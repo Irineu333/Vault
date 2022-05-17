@@ -4,7 +4,6 @@ import com.neo.vault.data.local.dao.VaultDao
 import com.neo.vault.data.local.entity.VaultEntity
 import com.neo.vault.data.local.entity.toModel
 import com.neo.vault.domain.model.CurrencySupport
-import com.neo.vault.domain.model.Type
 import com.neo.vault.domain.model.Vault
 import com.neo.vault.domain.repository.VaultsRepository
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +24,7 @@ class VaultsRepositoryIml @Inject constructor(
                     name = name,
                     currency = currency,
                     dateToBreak = dateToBreak,
-                    type = Type.PIGGY_BANK
+                    type = Vault.Type.PIGGY_BANK
                 )
             )
         }
@@ -45,7 +44,7 @@ class VaultsRepositoryIml @Inject constructor(
 
     override suspend fun loadPiggyBanks(): List<Vault> {
         return withContext(Dispatchers.IO) {
-            vaultDao.loadVaultsByType(type = Type.PIGGY_BANK)
+            vaultDao.loadVaultsByType(type = Vault.Type.PIGGY_BANK)
         }.map { it.toModel() }
     }
 }

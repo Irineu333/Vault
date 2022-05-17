@@ -10,4 +10,9 @@ data class Vault(
     val summation: Float
 ) {
     fun isToBreak() = dateToBreak?.let { it < System.currentTimeMillis() } ?: false
+
+    enum class Type {
+        PIGGY_BANK,
+        GOAL
+    }
 }

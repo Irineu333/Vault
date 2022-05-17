@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.neo.vault.data.local.entity.VaultEntity
-import com.neo.vault.domain.model.Type
+import com.neo.vault.domain.model.Vault
 
 @Dao
 interface VaultDao {
@@ -15,5 +15,5 @@ interface VaultDao {
     suspend fun findByName(name: String): VaultEntity?
 
     @Query("SELECT * FROM vault_tb WHERE type LIKE :type")
-    suspend fun loadVaultsByType(type: Type): List<VaultEntity>
+    suspend fun loadVaultsByType(type: Vault.Type): List<VaultEntity>
 }

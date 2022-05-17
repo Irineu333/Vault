@@ -32,7 +32,7 @@ sealed class Summation {
         val default = Total(
             title = "Total".toRaw(),
             values =listOf(
-                Summation.Value(
+                Value(
                     value = 0f,
                     currency = CurrencySupport.default()
                 )

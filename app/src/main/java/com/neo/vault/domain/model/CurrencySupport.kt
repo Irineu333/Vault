@@ -1,6 +1,6 @@
 package com.neo.vault.domain.model
 
-import com.neo.vault.app
+import com.neo.vault.application
 import com.neo.vault.util.extension.currency
 import com.neo.vault.util.extension.locale
 import java.util.*
@@ -15,7 +15,7 @@ enum class CurrencySupport {
     companion object {
         fun default(): CurrencySupport {
             return runCatching {
-                valueOf(app.locale.currency.currencyCode)
+                valueOf(application.locale.currency.currencyCode)
             }.getOrElse {
                 BRL
             }
