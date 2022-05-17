@@ -12,8 +12,19 @@ import com.neo.vault.R
 import com.neo.vault.databinding.FragmentCreateVaultBinding
 import com.neo.vault.util.extension.behavior
 import com.neo.vault.util.extension.expanded
+import java.io.Serializable
 
-class CreateVaultBottomSheet : BottomSheetDialogFragment() {
+class CreateVaultBottomSheet(
+    arguments: (Bundle.() -> Unit)? = null
+) : BottomSheetDialogFragment() {
+
+    init {
+        if (arguments != null) {
+            this.arguments = Bundle().apply {
+                arguments.invoke(this)
+            }
+        }
+    }
 
     private var _binding: FragmentCreateVaultBinding? = null
     private val binding get() = _binding!!
@@ -26,7 +37,13 @@ class CreateVaultBottomSheet : BottomSheetDialogFragment() {
         get() = navHostFragment.navController
 
     private val NavDestination.isInitialFragment
-        get() = id == R.id.chooseTypeFragment
+        get() = id == initialDestination
+
+    private val initialDestination
+        get() = when (arguments?.getSerializable(Navigate.TAG) as? Navigate) {
+            Navigate.CreatePiggyBank -> R.id.piggyBankFragment
+            null -> R.id.chooseTypeFragment
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,6 +71,7 @@ class CreateVaultBottomSheet : BottomSheetDialogFragment() {
 
         setupView()
         setupListeners()
+        processNavigate()
     }
 
     private fun setupView() = with(binding) {
@@ -71,6 +89,24 @@ class CreateVaultBottomSheet : BottomSheetDialogFragment() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             binding.btnToBack.isVisible = !destination.isInitialFragment
             binding.tvTitle.text = destination.label
+        }
+    }
+
+    private fun processNavigate() {
+        when (initialDestination) {
+            R.id.piggyBankFragment -> {
+                navController.navigate(
+                    R.id.action_chooseTypeFragment_to_piggyBankFragment
+                )
+            }
+        }
+    }
+
+    sealed class Navigate : Serializable {
+        object CreatePiggyBank : Navigate()
+
+        companion object {
+            const val TAG = "navigate"
         }
     }
 }

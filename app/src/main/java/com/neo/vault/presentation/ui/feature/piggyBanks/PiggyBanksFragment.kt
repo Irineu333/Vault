@@ -11,8 +11,11 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
 import com.neo.vault.databinding.FragmentPiggyBanksBinding
+import com.neo.vault.databinding.ItemAddButtonBinding
 import com.neo.vault.presentation.ui.activity.MainActivity
 import com.neo.vault.presentation.ui.adapter.PiggyBanksAdapter
+import com.neo.vault.presentation.ui.adapter.genericAdapter
+import com.neo.vault.presentation.ui.feature.createVault.CreateVaultBottomSheet
 import com.neo.vault.presentation.ui.feature.piggyBanks.viewModel.PiggyBanksViewModel
 import com.neo.vault.util.extension.toRaw
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,6 +36,41 @@ class PiggyBanksFragment : Fragment() {
 
     private val joiningPiggyBanksAdapter by lazy {
         PiggyBanksAdapter("Juntando".toRaw())
+    }
+
+    private val concatAdapter by lazy {
+        ConcatAdapter(
+            toBreakPiggyBanksAdapter,
+            joiningPiggyBanksAdapter,
+            genericAdapter(
+                inflater = { inflater, parent ->
+                    ItemAddButtonBinding.inflate(
+                        inflater,
+                        parent,
+                        false
+                    )
+                },
+                onBind = { _, binding ->
+                    binding.tvMessage.text = "Criar cofrinho."
+                    binding.btnAdd.setOnClickListener {
+                        showCreatePiggyBankBottomSheet()
+                    }
+                },
+                itemCount = { 1 }
+            )
+        )
+    }
+
+    private fun showCreatePiggyBankBottomSheet() {
+        CreateVaultBottomSheet {
+            putSerializable(
+                CreateVaultBottomSheet.Navigate.TAG,
+                CreateVaultBottomSheet.Navigate.CreatePiggyBank
+            )
+        }.show(
+            parentFragmentManager,
+            "create_vault"
+        )
     }
 
     override fun onCreateView(
@@ -63,10 +101,7 @@ class PiggyBanksFragment : Fragment() {
     }
 
     private fun setupView() = with(binding) {
-        rvPiggyBanks.adapter = ConcatAdapter(
-            toBreakPiggyBanksAdapter,
-            joiningPiggyBanksAdapter
-        )
+        rvPiggyBanks.adapter = concatAdapter
     }
 
     private fun setupObservers() = viewLifecycleOwner.lifecycleScope.launchWhenStarted {
