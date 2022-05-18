@@ -3,7 +3,7 @@ package com.neo.vault.data.local.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.neo.vault.domain.model.CurrencySupport
+import com.neo.vault.domain.model.CurrencyCompat
 import com.neo.vault.domain.model.Vault
 
 @Entity(tableName = "vault_tb")
@@ -14,7 +14,7 @@ data class VaultEntity(
     @ColumnInfo(name = "dateToBreak")
     val dateToBreak: Long? = null,
     @ColumnInfo(name = "currency")
-    val currency: CurrencySupport,
+    val currency: CurrencyCompat,
     @ColumnInfo(name = "type")
     val type: Vault.Type,
     @ColumnInfo(name = "summation")

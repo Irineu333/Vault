@@ -3,7 +3,7 @@ package com.neo.vault.data.repository
 import com.neo.vault.data.local.dao.VaultDao
 import com.neo.vault.data.local.entity.VaultEntity
 import com.neo.vault.data.local.entity.toModel
-import com.neo.vault.domain.model.CurrencySupport
+import com.neo.vault.domain.model.CurrencyCompat
 import com.neo.vault.domain.model.Vault
 import com.neo.vault.domain.repository.VaultsRepository
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +15,7 @@ class VaultsRepositoryIml @Inject constructor(
 ) : VaultsRepository {
     override suspend fun createPiggyBank(
         name: String,
-        currency: CurrencySupport,
+        currency: CurrencyCompat,
         dateToBreak: Long?
     ) = runCatching {
         withContext(Dispatchers.IO) {

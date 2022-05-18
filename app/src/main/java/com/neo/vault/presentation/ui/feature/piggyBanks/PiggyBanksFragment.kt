@@ -4,19 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Space
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
 import com.neo.vault.databinding.FragmentPiggyBanksBinding
-import com.neo.vault.databinding.ItemAddButtonBinding
 import com.neo.vault.presentation.ui.activity.MainActivity
 import com.neo.vault.presentation.ui.adapter.PiggyBanksAdapter
 import com.neo.vault.presentation.ui.adapter.genericAdapter
 import com.neo.vault.presentation.ui.feature.createVault.CreateVaultBottomSheet
 import com.neo.vault.presentation.ui.feature.piggyBanks.viewModel.PiggyBanksViewModel
+import com.neo.vault.util.extension.dpToPx
 import com.neo.vault.util.extension.toRaw
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -43,33 +45,17 @@ class PiggyBanksFragment : Fragment() {
             toBreakPiggyBanksAdapter,
             joiningPiggyBanksAdapter,
             genericAdapter(
-                inflater = { inflater, parent ->
-                    ItemAddButtonBinding.inflate(
-                        inflater,
-                        parent,
-                        false
-                    )
+                inflater = { _, parent ->
+                    Space(parent.context)
                 },
-                onBind = { _, binding ->
-                    binding.tvMessage.text = "Criar cofrinho."
-                    binding.btnAdd.setOnClickListener {
-                        showCreatePiggyBankBottomSheet()
-                    }
+                onBind = { _, view ->
+                    view.layoutParams = ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        70.dpToPx().toInt()
+                    )
                 },
                 itemCount = { 1 }
             )
-        )
-    }
-
-    private fun showCreatePiggyBankBottomSheet() {
-        CreateVaultBottomSheet {
-            putSerializable(
-                CreateVaultBottomSheet.Navigate.TAG,
-                CreateVaultBottomSheet.Navigate.CreatePiggyBank
-            )
-        }.show(
-            parentFragmentManager,
-            "create_vault"
         )
     }
 
@@ -102,6 +88,28 @@ class PiggyBanksFragment : Fragment() {
 
     private fun setupView() = with(binding) {
         rvPiggyBanks.adapter = concatAdapter
+        fab.setOnClickListener {
+            showCreatePiggyBankBottomSheet()
+        }
+    }
+
+    private fun showCreatePiggyBankBottomSheet() {
+        val createVaultBottomSheet = CreateVaultBottomSheet {
+            putSerializable(
+                CreateVaultBottomSheet.Navigate.TAG,
+                CreateVaultBottomSheet.Navigate.CreatePiggyBank
+            )
+        }
+        createVaultBottomSheet.show(
+            parentFragmentManager,
+            "create_vault"
+        )
+
+        createVaultBottomSheet.setFragmentResultListener(
+            "create_vault"
+        ) { requestKey, bundle ->
+            viewModel.loadPiggyBanks()
+        }
     }
 
     private fun setupObservers() = viewLifecycleOwner.lifecycleScope.launchWhenStarted {

@@ -37,9 +37,9 @@ class CreateVaultBottomSheet(
         get() = navHostFragment.navController
 
     private val NavDestination.isInitialFragment
-        get() = id == initialDestination
+        get() = id == initialDestinationId
 
-    private val initialDestination
+    private val initialDestinationId
         get() = when (arguments?.getSerializable(Navigate.TAG) as? Navigate) {
             Navigate.CreatePiggyBank -> R.id.piggyBankFragment
             null -> R.id.chooseTypeFragment
@@ -93,7 +93,10 @@ class CreateVaultBottomSheet(
     }
 
     private fun processNavigate() {
-        when (initialDestination) {
+
+        if (initialDestinationId == navController.currentDestination?.id) return
+
+        when (initialDestinationId) {
             R.id.piggyBankFragment -> {
                 navController.navigate(
                     R.id.action_chooseTypeFragment_to_piggyBankFragment

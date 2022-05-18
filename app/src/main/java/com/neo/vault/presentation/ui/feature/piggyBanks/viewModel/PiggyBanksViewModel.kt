@@ -2,7 +2,7 @@ package com.neo.vault.presentation.ui.feature.piggyBanks.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.neo.vault.domain.model.CurrencySupport
+import com.neo.vault.domain.model.CurrencyCompat
 import com.neo.vault.domain.repository.VaultsRepository
 import com.neo.vault.presentation.model.Summation
 import com.neo.vault.util.extension.summation
@@ -28,7 +28,7 @@ class PiggyBanksViewModel @Inject constructor(
 
         val totalValues = mutableListOf<Summation.Value>()
 
-        for (currency in CurrencySupport.values()) {
+        for (currency in CurrencyCompat.values()) {
             val filtered = piggyBanks.filter {
                 it.currency == currency
             }

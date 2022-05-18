@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -15,7 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.neo.vault.R
 import com.neo.vault.databinding.FragmentCreatePiggyBankBinding
-import com.neo.vault.domain.model.CurrencySupport
+import com.neo.vault.domain.model.CurrencyCompat
 import com.neo.vault.presentation.ui.feature.createVault.CreateVaultBottomSheet
 import com.neo.vault.presentation.ui.feature.createVault.viewModel.CreateVaultUiEffect
 import com.neo.vault.presentation.ui.feature.createVault.viewModel.CreateVaultViewModel
@@ -37,7 +38,7 @@ class CreatePiggyBankFragment : Fragment() {
     private val createVaultBottomSheet
         get() = parentFragment?.parentFragment as? CreateVaultBottomSheet
 
-    private var nameTextWatcher : TextWatcher? = null
+    private var nameTextWatcher: TextWatcher? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -146,6 +147,10 @@ class CreatePiggyBankFragment : Fragment() {
                             binding.showSnackbar(
                                 message = "Success".toRaw()
                             )
+                            createVaultBottomSheet?.setFragmentResult(
+                                "create_vault",
+                                Bundle()
+                            )
                             createVaultBottomSheet?.dismiss()
                         }
                         CreateVaultUiEffect.Error -> {
@@ -164,16 +169,16 @@ class CreatePiggyBankFragment : Fragment() {
 
         if (checkedChipId != View.NO_ID) return@with
 
-        when (CurrencySupport.default()) {
-            CurrencySupport.BRL -> {
+        when (CurrencyCompat.default()) {
+            CurrencyCompat.BRL -> {
                 check(R.id.chip_brl)
             }
 
-            CurrencySupport.USD -> {
+            CurrencyCompat.USD -> {
                 check(R.id.chip_usd)
             }
 
-            CurrencySupport.EUR -> {
+            CurrencyCompat.EUR -> {
                 check(R.id.chip_eur)
             }
         }
@@ -186,17 +191,17 @@ class CreatePiggyBankFragment : Fragment() {
         )
     }
 
-    private fun getCurrency(): CurrencySupport {
+    private fun getCurrency(): CurrencyCompat {
         return when (binding.cgCurrency.checkedChipId) {
             R.id.chip_brl -> {
-                CurrencySupport.BRL
+                CurrencyCompat.BRL
             }
 
             R.id.chip_usd -> {
-                CurrencySupport.USD
+                CurrencyCompat.USD
             }
             R.id.chip_eur -> {
-                CurrencySupport.EUR
+                CurrencyCompat.EUR
             }
 
             else -> {

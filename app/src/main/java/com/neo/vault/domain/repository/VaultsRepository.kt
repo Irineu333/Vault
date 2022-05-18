@@ -1,12 +1,12 @@
 package com.neo.vault.domain.repository
 
-import com.neo.vault.domain.model.CurrencySupport
+import com.neo.vault.domain.model.CurrencyCompat
 import com.neo.vault.domain.model.Vault
 
 interface VaultsRepository {
     suspend fun createPiggyBank(
         name: String,
-        currency: CurrencySupport,
+        currency: CurrencyCompat,
         dateToBreak: Long?
     ): Boolean
 

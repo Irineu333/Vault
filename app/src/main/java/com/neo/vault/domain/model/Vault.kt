@@ -1,11 +1,9 @@
 package com.neo.vault.domain.model
 
-import com.neo.vault.util.CurrencyUtil
-
 data class Vault(
     val name: String,
     val dateToBreak: Long? = null,
-    val currency: CurrencySupport,
+    val currency: CurrencyCompat,
     val type: Type,
     val summation: Float
 ) {

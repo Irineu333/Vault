@@ -1,6 +1,6 @@
 package com.neo.vault.presentation.model
 
-import com.neo.vault.domain.model.CurrencySupport
+import com.neo.vault.domain.model.CurrencyCompat
 import com.neo.vault.util.extension.toRaw
 
 typealias Action = () -> Unit
@@ -25,7 +25,7 @@ sealed class Summation {
 
     data class Value(
         val value: Float,
-        val currency: CurrencySupport
+        val currency: CurrencyCompat
     )
 
     companion object {
@@ -34,7 +34,7 @@ sealed class Summation {
             values =listOf(
                 Value(
                     value = 0f,
-                    currency = CurrencySupport.default()
+                    currency = CurrencyCompat.default()
                 )
             )
         )

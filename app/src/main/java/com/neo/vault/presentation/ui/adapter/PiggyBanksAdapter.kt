@@ -73,17 +73,12 @@ class PiggyBanksAdapter(
             is TitleHolder -> {
                 holder.setTitle(title)
 
-                fun updateHolder() {
-                    holder.isCollapsed = collapsed
-                }
-
                 holder.itemView.setOnClickListener {
                     collapsed = !collapsed
-
-                    updateHolder()
+                    holder.collapse(collapsed)
                 }
 
-                updateHolder()
+                holder.isCollapsed = collapsed
             }
         }
     }
@@ -98,7 +93,7 @@ class PiggyBanksAdapter(
         else -> piggyBanks.size + 1
     }
 
-    enum class Type(val code : Int) {
+    enum class Type(val code: Int) {
         TITLE(0),
         ITEM(1)
     }
@@ -128,13 +123,17 @@ class PiggyBanksAdapter(
         var isCollapsed: Boolean = false
             set(value) {
                 field = value
-                biding.tvIcon.animate().rotation(
-                    if (value) 0f else 90f
-                ).setDuration(100).start()
+                biding.tvIcon.rotation = if (field) 0f else 90f
             }
 
         fun setTitle(title: UiText) {
             biding.tvTitle.text = title.resolve(itemView.context)
+        }
+
+        fun collapse(collapsed: Boolean) {
+            biding.tvIcon.animate().rotation(
+                if (collapsed) 0f else 90f
+            ).setDuration(100).start()
         }
     }
 }

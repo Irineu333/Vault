@@ -1,11 +1,11 @@
 package com.neo.vault.util
 
-import com.neo.vault.domain.model.CurrencySupport
+import com.neo.vault.domain.model.CurrencyCompat
 import java.text.NumberFormat
 
 object CurrencyUtil {
 
-    fun formatter(value: Float, currency: CurrencySupport): String {
+    fun formatter(value: Float, currency: CurrencyCompat): String {
         val format = NumberFormat.getCurrencyInstance().apply {
             setCurrency(currency.currency)
         }

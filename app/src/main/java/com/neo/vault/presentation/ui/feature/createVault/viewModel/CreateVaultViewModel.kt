@@ -2,7 +2,7 @@ package com.neo.vault.presentation.ui.feature.createVault.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.neo.vault.domain.model.CurrencySupport
+import com.neo.vault.domain.model.CurrencyCompat
 import com.neo.vault.domain.repository.VaultsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -35,7 +35,7 @@ class CreateVaultViewModel @Inject constructor(
 
     fun createPiggyBank(
         name: String,
-        currency: CurrencySupport,
+        currency: CurrencyCompat,
         dateToBreak: Long? = this.dateToBreak?.time
     ) = viewModelScope.launch {
 

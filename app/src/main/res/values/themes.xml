@@ -11,6 +11,10 @@
         <item name="colorSurfaceVariant">@color/surfaceVariant</item>
         <item name="colorOnSurface">@color/onSurface</item>
 
+        <item name="colorSecondary">@color/blue_light</item>
+        <item name="colorSecondaryVariant">@color/blue_dark</item>
+        <item name="colorOnSecondary">@color/white</item>
+
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
 
@@ -21,10 +25,15 @@
 
     <style name="Theme.Vault.BottomSheet" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
+        <item name="snackbarStyle">@style/Widget.MyApp.BottomSheet.Snackbar</item>
     </style>
 
     <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/bg_bottom_sheet</item>
         <item name="android:maxWidth">640dp</item>
+    </style>
+
+    <style name="Widget.MyApp.BottomSheet.Snackbar" parent="Widget.MaterialComponents.Snackbar">
+        <item name="elevation">22dp</item>
     </style>
 </resources>

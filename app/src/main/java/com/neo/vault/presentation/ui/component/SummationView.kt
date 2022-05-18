@@ -9,7 +9,7 @@ import androidx.core.content.withStyledAttributes
 import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
 import com.neo.vault.R
-import com.neo.vault.domain.model.CurrencySupport
+import com.neo.vault.domain.model.CurrencyCompat
 import com.neo.vault.presentation.model.Summation
 import com.neo.vault.presentation.model.UiText
 import com.neo.vault.util.CurrencyUtil
@@ -105,15 +105,15 @@ class SummationView(
 
         val currency = when (getInt(R.styleable.SummationView_currency, 0)) {
             Currency.BRL.code -> {
-                CurrencySupport.BRL
+                CurrencyCompat.BRL
             }
 
             Currency.USD.code -> {
-                CurrencySupport.USD
+                CurrencyCompat.USD
             }
 
             Currency.EUR.code -> {
-                CurrencySupport.EUR
+                CurrencyCompat.EUR
             }
 
             else -> throw IllegalArgumentException("invalid currency")

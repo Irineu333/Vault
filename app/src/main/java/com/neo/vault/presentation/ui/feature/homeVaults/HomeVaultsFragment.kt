@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.neo.vault.R
 import com.neo.vault.databinding.FragmentHomeVaultsBinding
-import com.neo.vault.domain.model.CurrencySupport
+import com.neo.vault.domain.model.CurrencyCompat
 import com.neo.vault.presentation.model.Summation
 import com.neo.vault.presentation.model.UiText
 import com.neo.vault.presentation.ui.activity.MainActivity
@@ -53,7 +53,15 @@ class HomeVaultsFragment : Fragment() {
                     values = listOf(
                         Summation.Value(
                             value = 3000f,
-                            currency = CurrencySupport.BRL,
+                            currency = CurrencyCompat.BRL,
+                        ),
+                        Summation.Value(
+                            value = 3000f,
+                            currency = CurrencyCompat.USD,
+                        ),
+                        Summation.Value(
+                            value = 3000f,
+                            currency = CurrencyCompat.EUR,
                         )
                     ),
                     title = UiText.to("Guardado")
@@ -62,11 +70,15 @@ class HomeVaultsFragment : Fragment() {
                     values = listOf(
                         Summation.Value(
                             value = 1500f,
-                            currency = CurrencySupport.USD,
+                            currency = CurrencyCompat.USD,
                         ),
                         Summation.Value(
                             value = 1500f,
-                            currency = CurrencySupport.BRL,
+                            currency = CurrencyCompat.BRL,
+                        ),
+                        Summation.Value(
+                            value = 1500f,
+                            currency = CurrencyCompat.EUR,
                         )
                     ),
                     title = UiText.to("Metas"),
@@ -78,8 +90,16 @@ class HomeVaultsFragment : Fragment() {
                     values = listOf(
                         Summation.Value(
                             value = 1500f,
-                            currency = CurrencySupport.EUR,
-                        )
+                            currency = CurrencyCompat.USD,
+                        ),
+                        Summation.Value(
+                            value = 1500f,
+                            currency = CurrencyCompat.BRL,
+                        ),
+                        Summation.Value(
+                            value = 1500f,
+                            currency = CurrencyCompat.EUR,
+                        ),
                     ),
                     title = UiText.to("Cofrinhos"),
                     action = {
