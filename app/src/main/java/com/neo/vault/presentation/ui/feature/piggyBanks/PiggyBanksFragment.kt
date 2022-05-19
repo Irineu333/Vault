@@ -1,6 +1,7 @@
 package com.neo.vault.presentation.ui.feature.piggyBanks
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.neo.vault.databinding.FragmentPiggyBanksBinding
 import com.neo.vault.presentation.ui.activity.MainActivity
 import com.neo.vault.presentation.ui.adapter.PiggyBanksAdapter
@@ -87,6 +89,24 @@ class PiggyBanksFragment : Fragment() {
 
         setupView()
         setupObservers()
+        setupListeners()
+    }
+
+    private fun setupListeners() {
+        binding.rvPiggyBanks.addOnScrollListener(
+            object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    Log.d("Irineu", "dx $dx, dy $dy")
+
+                    if (recyclerView.canScrollVertically(1)) {
+                        binding.fab.shrink()
+                    } else {
+                        binding.fab.extend()
+                    }
+                }
+            }
+        )
     }
 
     private fun setupView() = with(binding) {
