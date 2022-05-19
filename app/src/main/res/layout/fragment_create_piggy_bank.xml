@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -24,12 +25,25 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Moeda"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+        android:layout_marginTop="16dp">
+
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:padding="3dp"
+            android:src="@drawable/ic_money"
+            app:tint="@color/onSurface" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Moeda"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+    </LinearLayout>
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/cg_currency"
@@ -65,37 +79,40 @@
     </com.google.android.material.chip.ChipGroup>
 
     <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
-            app:tint="@color/onSurface"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:padding="4dp"
             android:src="@drawable/ic_hammer"
-            android:layout_width="22dp"
-            android:layout_height="22dp"/>
+            app:tint="@color/onSurface"
+            android:contentDescription="@null" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Quebrar"
+            android:text="Quando quebrar"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:layout_marginTop="6dp"
-        android:paddingHorizontal="6dp"
         android:id="@+id/btn_date_to_break"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
         android:background="@drawable/bg_date_button"
         android:drawableStart="@drawable/ic_edit_calendar"
         android:drawablePadding="4dp"
+        android:paddingHorizontal="6dp"
         android:text="Indefinido"
-        android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+        android:textSize="24sp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:textColor="@color/onSurface"
         app:drawableTint="@color/onSurface" />
 

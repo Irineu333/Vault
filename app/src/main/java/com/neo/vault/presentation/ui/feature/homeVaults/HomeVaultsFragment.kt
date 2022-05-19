@@ -13,6 +13,7 @@ import com.neo.vault.presentation.model.Summation
 import com.neo.vault.presentation.model.UiText
 import com.neo.vault.presentation.ui.activity.MainActivity
 import com.neo.vault.presentation.ui.feature.createVault.CreateVaultBottomSheet
+import com.neo.vault.util.extension.checkToShow
 
 class HomeVaultsFragment : Fragment() {
 
@@ -112,7 +113,7 @@ class HomeVaultsFragment : Fragment() {
 
     private fun setupView() = with(binding) {
         btnCreateVault.setOnClickListener {
-            CreateVaultBottomSheet().show(
+            CreateVaultBottomSheet().checkToShow(
                 parentFragmentManager,
                 "create_vault"
             )
