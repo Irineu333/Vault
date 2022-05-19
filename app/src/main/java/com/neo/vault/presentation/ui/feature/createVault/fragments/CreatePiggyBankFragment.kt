@@ -147,10 +147,12 @@ class CreatePiggyBankFragment : Fragment() {
                             binding.showSnackbar(
                                 message = "Success".toRaw()
                             )
+
                             createVaultBottomSheet?.setFragmentResult(
-                                "create_vault",
+                                Event.CREATED_VAULT.name,
                                 Bundle()
                             )
+
                             createVaultBottomSheet?.dismiss()
                         }
                         CreateVaultUiEffect.Error -> {
@@ -231,4 +233,7 @@ class CreatePiggyBankFragment : Fragment() {
         const val DATA_PICKER_TAG = "DATA_PICKER"
     }
 
+    enum class Event {
+        CREATED_VAULT
+    }
 }

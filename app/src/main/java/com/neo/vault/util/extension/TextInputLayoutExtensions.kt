@@ -5,6 +5,7 @@ import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 fun TextInputLayout.addValidationListener(
@@ -13,10 +14,12 @@ fun TextInputLayout.addValidationListener(
     isValid: TextInputLayout.() -> Unit = {}
 ): TextWatcher {
     val textInputLayout = this
+    var job: Job? = null
 
     return editText?.addTextChangedListener { value ->
         if (value != null) {
-            CoroutineScope(Dispatchers.Main).launch {
+            job?.cancel()
+            job = CoroutineScope(Dispatchers.Main).launch {
                 when (val result = validation("$value")) {
                     is ValidationResult.IsInvalid -> {
                         isInvalid(textInputLayout, result.message)
@@ -30,11 +33,6 @@ fun TextInputLayout.addValidationListener(
     } ?: throw IllegalArgumentException("an edittext is required")
 }
 
-
-fun TextInputLayout.removeTextWatcher(textWatcher: TextWatcher) {
-    editText?.removeTextChangedListener(textWatcher)
-}
-
 sealed class ValidationResult {
 
     object IsValid : ValidationResult()
@@ -42,4 +40,8 @@ sealed class ValidationResult {
     data class IsInvalid(
         val message: String
     ) : ValidationResult()
+}
+
+fun TextInputLayout.removeTextWatcher(textWatcher: TextWatcher) {
+    editText?.removeTextChangedListener(textWatcher)
 }

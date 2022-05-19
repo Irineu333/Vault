@@ -8,7 +8,9 @@ import com.neo.vault.domain.model.Vault
 
 @Entity(tableName = "vault_tb")
 data class VaultEntity(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    val id: Int? = null,
     @ColumnInfo(name = "name")
     val name: String,
     @ColumnInfo(name = "dateToBreak")

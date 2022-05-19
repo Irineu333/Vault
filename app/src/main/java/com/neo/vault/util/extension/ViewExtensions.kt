@@ -3,6 +3,8 @@ package com.neo.vault.util.extension
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.Px
+import androidx.core.view.marginBottom
+import androidx.core.view.marginTop
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.viewbinding.ViewBinding
@@ -56,3 +58,5 @@ fun View.showSnackbar(
 fun View.removeFromParent() {
     (this.parent as? ViewGroup)?.removeView(this)
 }
+
+val View.absoluteHeight get() = marginTop + marginBottom + height

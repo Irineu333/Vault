@@ -17,7 +17,10 @@ import com.neo.vault.presentation.ui.activity.MainActivity
 import com.neo.vault.presentation.ui.adapter.PiggyBanksAdapter
 import com.neo.vault.presentation.ui.adapter.genericAdapter
 import com.neo.vault.presentation.ui.feature.createVault.CreateVaultBottomSheet
+import com.neo.vault.presentation.ui.feature.createVault.fragments.CreatePiggyBankFragment
 import com.neo.vault.presentation.ui.feature.piggyBanks.viewModel.PiggyBanksViewModel
+import com.neo.vault.util.extension.absoluteHeight
+import com.neo.vault.util.extension.checkToShow
 import com.neo.vault.util.extension.dpToPx
 import com.neo.vault.util.extension.toRaw
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,7 +54,7 @@ class PiggyBanksFragment : Fragment() {
                 onBind = { _, view ->
                     view.layoutParams = ViewGroup.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
-                        70.dpToPx().toInt()
+                        binding.fab.absoluteHeight.minus(8.dpToPx()).toInt()
                     )
                 },
                 itemCount = { 1 }
@@ -88,6 +91,7 @@ class PiggyBanksFragment : Fragment() {
 
     private fun setupView() = with(binding) {
         rvPiggyBanks.adapter = concatAdapter
+
         fab.setOnClickListener {
             showCreatePiggyBankBottomSheet()
         }
@@ -100,14 +104,15 @@ class PiggyBanksFragment : Fragment() {
                 CreateVaultBottomSheet.Navigate.CreatePiggyBank
             )
         }
-        createVaultBottomSheet.show(
+
+        createVaultBottomSheet.checkToShow(
             parentFragmentManager,
-            "create_vault"
+            "create_piggy_bank"
         )
 
         createVaultBottomSheet.setFragmentResultListener(
-            "create_vault"
-        ) { requestKey, bundle ->
+            CreatePiggyBankFragment.Event.CREATED_VAULT.name
+        ) { _, _ ->
             viewModel.loadPiggyBanks()
         }
     }
