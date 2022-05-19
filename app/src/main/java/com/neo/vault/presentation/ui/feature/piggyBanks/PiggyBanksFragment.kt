@@ -21,7 +21,6 @@ import com.neo.vault.presentation.ui.adapter.genericAdapter
 import com.neo.vault.presentation.ui.feature.createVault.CreateVaultBottomSheet
 import com.neo.vault.presentation.ui.feature.createVault.fragments.CreatePiggyBankFragment
 import com.neo.vault.presentation.ui.feature.piggyBanks.viewModel.PiggyBanksViewModel
-import com.neo.vault.util.extension.absoluteHeight
 import com.neo.vault.util.extension.checkToShow
 import com.neo.vault.util.extension.dpToPx
 import com.neo.vault.util.extension.toRaw
@@ -56,7 +55,7 @@ class PiggyBanksFragment : Fragment() {
                 onBind = { _, view ->
                     view.layoutParams = ViewGroup.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
-                        binding.fab.absoluteHeight.minus(8.dpToPx()).toInt()
+                        74.dpToPx().toInt()
                     )
                 },
                 itemCount = { 1 }
@@ -143,7 +142,7 @@ class PiggyBanksFragment : Fragment() {
             Lifecycle.State.STARTED
         ).collect { state ->
             mainActivity?.setSummation(
-                state.summation
+                state.summations
             )
 
             toBreakPiggyBanksAdapter.piggyBanks = state.toBreakPiggyBanks

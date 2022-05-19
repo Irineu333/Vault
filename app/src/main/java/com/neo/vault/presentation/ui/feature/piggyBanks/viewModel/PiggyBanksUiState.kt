@@ -6,5 +6,5 @@ import com.neo.vault.presentation.model.Summation
 data class PiggyBanksUiState(
     val toBreakPiggyBanks : List<Vault> = emptyList(),
     val joiningPiggyBanks : List<Vault> = emptyList(),
-    val summation: List<Summation> = emptyList()
+    val summations: List<Summation> = emptyList()
 )

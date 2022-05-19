@@ -59,4 +59,4 @@ fun View.removeFromParent() {
     (this.parent as? ViewGroup)?.removeView(this)
 }
 
-val View.absoluteHeight get() = marginTop + marginBottom + height
+val View.totalHeight get() = marginTop + marginBottom + measuredHeight

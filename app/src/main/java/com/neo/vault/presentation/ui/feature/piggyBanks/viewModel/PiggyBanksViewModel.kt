@@ -27,6 +27,7 @@ class PiggyBanksViewModel @Inject constructor(
         val piggyBanks = repository.loadPiggyBanks()
 
         val totalValues = mutableListOf<Summation.Value>()
+        val toBreakValues = mutableListOf<Summation.Value>()
 
         for (currency in CurrencyCompat.values()) {
             val filtered = piggyBanks.filter {
@@ -41,23 +42,50 @@ class PiggyBanksViewModel @Inject constructor(
                         currency = currency
                     )
                 )
+
+                val filteredToBreak = filtered.filter { it.isToBreak() }
+
+                val summation = filteredToBreak.summation { piggyBank ->
+                    piggyBank.summation.toDouble()
+                }
+
+                if (summation > 0) {
+                    toBreakValues.add(
+                        Summation.Value(
+                            value = summation.toFloat(),
+                            currency = currency
+                        )
+                    )
+                }
             }
         }
 
         val (toBreak, joining) = piggyBanks.partition { it.isToBreak() }
 
+        val summations = mutableListOf<Summation>(
+            Summation.Total(
+                title = "Total".toRaw(),
+                values = totalValues.ifEmpty {
+                    Summation.default.values
+                }
+            )
+        )
+
+        if (toBreakValues.isNotEmpty()) {
+            summations.add(
+                Summation.SubTotal(
+                    title = "Para quebrar".toRaw(),
+                    values = toBreakValues
+                )
+            )
+        }
+
         _uiState.update {
+
             it.copy(
                 toBreakPiggyBanks = toBreak,
                 joiningPiggyBanks = joining,
-                summation = listOf(
-                    Summation.Total(
-                        title = "Total".toRaw(),
-                        values = totalValues.ifEmpty {
-                            Summation.default.values
-                        }
-                    )
-                )
+                summations = summations
             )
         }
     }
