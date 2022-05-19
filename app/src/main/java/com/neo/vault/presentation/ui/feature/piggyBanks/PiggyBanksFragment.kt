@@ -1,7 +1,6 @@
 package com.neo.vault.presentation.ui.feature.piggyBanks
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -96,7 +95,6 @@ class PiggyBanksFragment : Fragment() {
             object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    Log.d("Irineu", "dx $dx, dy $dy")
 
                     if (recyclerView.canScrollVertically(1)) {
                         binding.fab.shrink()
@@ -124,15 +122,17 @@ class PiggyBanksFragment : Fragment() {
             )
         }
 
-        createVaultBottomSheet.checkToShow(
-            parentFragmentManager,
-            "create_piggy_bank"
-        )
-
-        createVaultBottomSheet.setFragmentResultListener(
-            CreatePiggyBankFragment.Event.CREATED_VAULT.name
-        ) { _, _ ->
-            viewModel.loadPiggyBanks()
+        if (
+            createVaultBottomSheet.checkToShow(
+                parentFragmentManager,
+                "create_piggy_bank"
+            )
+        ) {
+            createVaultBottomSheet.setFragmentResultListener(
+                CreatePiggyBankFragment.Event.CREATED_VAULT.name
+            ) { _, _ ->
+                viewModel.loadPiggyBanks()
+            }
         }
     }
 

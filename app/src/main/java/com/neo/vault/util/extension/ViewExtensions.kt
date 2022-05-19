@@ -58,5 +58,3 @@ fun View.showSnackbar(
 fun View.removeFromParent() {
     (this.parent as? ViewGroup)?.removeView(this)
 }
-
-val View.totalHeight get() = marginTop + marginBottom + measuredHeight
