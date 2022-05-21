@@ -1,7 +1,7 @@
 package com.neo.vault.presentation.model
 
 import com.neo.vault.domain.model.CurrencyCompat
-import com.neo.vault.util.extension.toRaw
+import com.neo.vault.utils.extension.toRaw
 
 typealias Action = () -> Unit
 

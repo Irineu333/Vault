@@ -15,14 +15,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.neo.vault.R
-import com.neo.vault.core.Resource
 import com.neo.vault.databinding.FragmentCreatePiggyBankBinding
 import com.neo.vault.domain.model.CurrencyCompat
 import com.neo.vault.presentation.ui.feature.createVault.CreateVaultBottomSheet
 import com.neo.vault.presentation.ui.feature.createVault.viewModel.CreateVaultUiEffect
 import com.neo.vault.presentation.ui.feature.createVault.viewModel.CreateVaultViewModel
-import com.neo.vault.util.TimeUtils
-import com.neo.vault.util.extension.*
+import com.neo.vault.utils.TimeUtils
+import com.neo.vault.utils.extension.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest

@@ -1,4 +1,4 @@
-package com.neo.vault.util
+package com.neo.vault.utils
 
 import java.text.DateFormat
 import java.text.SimpleDateFormat

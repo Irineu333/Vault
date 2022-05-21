@@ -10,8 +10,8 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.neo.vault.R
 import com.neo.vault.databinding.FragmentCreateVaultBinding
-import com.neo.vault.util.extension.behavior
-import com.neo.vault.util.extension.expanded
+import com.neo.vault.utils.extension.behavior
+import com.neo.vault.utils.extension.expanded
 import java.io.Serializable
 
 class CreateVaultBottomSheet(

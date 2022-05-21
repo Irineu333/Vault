@@ -1,23 +1,29 @@
 package com.neo.vault.presentation.ui.adapter
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.neo.vault.R
 import com.neo.vault.databinding.ItemPiggyBankBinding
 import com.neo.vault.databinding.ItemVaultsTitleBinding
 import com.neo.vault.domain.model.Vault
+import com.neo.vault.presentation.model.Selection
 import com.neo.vault.presentation.model.UiText
-import com.neo.vault.util.CurrencyUtil
-import com.neo.vault.util.extension.formatted
+import com.neo.vault.utils.CurrencyUtil
+import com.neo.vault.utils.extension.formatted
+import com.neo.vault.utils.extension.modify
 import java.util.*
 
 class PiggyBanksAdapter(
-    private val title: UiText
+    private val title: UiText,
+    private val selection: Selection<Int>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var collapsed: Boolean = false
+    private var isCollapsed: Boolean = false
         @SuppressLint("NotifyDataSetChanged")
         set(value) {
             field = value
@@ -33,6 +39,16 @@ class PiggyBanksAdapter(
         set(value) {
             field = value
             notifyDataSetChanged()
+        }
+
+    private var Vault.selected
+        get() = selection.contains(id)
+        set(value) {
+            if (value) {
+                selection.add(id)
+            } else {
+                selection.remove(id)
+            }
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -67,18 +83,33 @@ class PiggyBanksAdapter(
         when (holder) {
             is PiggyBankHolder -> {
                 val piggyBank = piggyBanks[position - 1]
+
                 holder.bind(piggyBank)
+
+                fun updateItem() {
+                    piggyBank.selected = !piggyBank.selected
+                    holder.bind(piggyBank)
+                }
+
+                holder.itemView.setOnLongClickListener {
+                    updateItem()
+                    true
+                }
+
+                holder.itemView.setOnClickListener {
+                    if (selection.active) {
+                        updateItem()
+                    }
+                }
             }
 
             is TitleHolder -> {
-                holder.setTitle(title)
+                holder.bind(title)
 
                 holder.itemView.setOnClickListener {
-                    collapsed = !collapsed
-                    holder.collapse(collapsed)
+                    isCollapsed = !isCollapsed
+                    holder.collapse(isCollapsed)
                 }
-
-                holder.isCollapsed = collapsed
             }
         }
     }
@@ -89,7 +120,7 @@ class PiggyBanksAdapter(
 
     override fun getItemCount() = when {
         piggyBanks.isEmpty() -> 0
-        collapsed -> 1
+        isCollapsed -> 1
         else -> piggyBanks.size + 1
     }
 
@@ -98,9 +129,11 @@ class PiggyBanksAdapter(
         ITEM(1)
     }
 
-    class PiggyBankHolder(
+    inner class PiggyBankHolder(
         private val binding: ItemPiggyBankBinding
     ) : RecyclerView.ViewHolder(binding.root) {
+
+        private val context get() = itemView.context
 
         fun bind(piggyBank: Vault) = with(binding) {
             tvName.text = piggyBank.name
@@ -113,21 +146,29 @@ class PiggyBanksAdapter(
                 piggyBank.dateToBreak?.also {
                     tvDateToBreak.text = Date(it).formatted
                 } != null
+
+            if (piggyBank.selected) {
+                flRoot.background = ColorDrawable(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.blue_light
+                    ).modify(
+                        alpha = (255 * 0.5).toInt()
+                    )
+                )
+            } else {
+                flRoot.background = null
+            }
         }
     }
 
-    class TitleHolder(
+    inner class TitleHolder(
         private val biding: ItemVaultsTitleBinding
     ) : RecyclerView.ViewHolder(biding.root) {
 
-        var isCollapsed: Boolean = false
-            set(value) {
-                field = value
-                biding.tvIcon.rotation = if (field) 0f else 90f
-            }
-
-        fun setTitle(title: UiText) {
+        fun bind(title: UiText) {
             biding.tvTitle.text = title.resolve(itemView.context)
+            biding.tvIcon.rotation = if (isCollapsed) 0f else 90f
         }
 
         fun collapse(collapsed: Boolean) {

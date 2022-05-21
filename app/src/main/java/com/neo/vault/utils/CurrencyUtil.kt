@@ -1,4 +1,4 @@
-package com.neo.vault.util
+package com.neo.vault.utils
 
 import com.neo.vault.domain.model.CurrencyCompat
 import java.text.NumberFormat

@@ -1,8 +1,8 @@
 package com.neo.vault.domain.model
 
 import com.neo.vault.application
-import com.neo.vault.util.extension.currency
-import com.neo.vault.util.extension.locale
+import com.neo.vault.utils.extension.currency
+import com.neo.vault.utils.extension.locale
 import java.util.*
 
 enum class CurrencyCompat {

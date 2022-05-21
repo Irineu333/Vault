@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.neo.vault.domain.model.CurrencyCompat
 import com.neo.vault.domain.repository.VaultsRepository
 import com.neo.vault.presentation.model.Summation
-import com.neo.vault.util.extension.summation
-import com.neo.vault.util.extension.toRaw
+import com.neo.vault.utils.extension.summation
+import com.neo.vault.utils.extension.toRaw
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

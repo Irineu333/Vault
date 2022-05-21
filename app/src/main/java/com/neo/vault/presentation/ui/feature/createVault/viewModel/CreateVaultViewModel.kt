@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.neo.vault.domain.model.CreatePiggyBankResult
 import com.neo.vault.domain.model.CurrencyCompat
 import com.neo.vault.domain.repository.VaultsRepository
-import com.neo.vault.util.extension.toRaw
+import com.neo.vault.utils.extension.toRaw
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*

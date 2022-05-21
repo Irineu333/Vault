@@ -1,4 +1,4 @@
-package com.neo.vault.util
+package com.neo.vault.utils
 
 import com.neo.vault.R
 import com.neo.vault.application

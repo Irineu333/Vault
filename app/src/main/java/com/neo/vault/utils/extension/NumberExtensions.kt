@@ -1,6 +1,6 @@
-package com.neo.vault.util.extension
+package com.neo.vault.utils.extension
 
-import com.neo.vault.util.DimenUtil
+import com.neo.vault.utils.DimenUtil
 
 fun Number.dpToPx(): Float {
     return DimenUtil.dpToPx(this)

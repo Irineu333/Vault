@@ -1,4 +1,4 @@
-package com.neo.vault.util.extension
+package com.neo.vault.utils.extension
 
 import android.content.Context
 import androidx.core.os.ConfigurationCompat

@@ -13,7 +13,7 @@ import com.neo.vault.presentation.model.Summation
 import com.neo.vault.presentation.model.UiText
 import com.neo.vault.presentation.ui.activity.MainActivity
 import com.neo.vault.presentation.ui.feature.createVault.CreateVaultBottomSheet
-import com.neo.vault.util.extension.checkToShow
+import com.neo.vault.utils.extension.checkToShow
 
 class HomeVaultsFragment : Fragment() {
 

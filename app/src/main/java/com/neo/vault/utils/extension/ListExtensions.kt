@@ -1,4 +1,4 @@
-package com.neo.vault.util.extension
+package com.neo.vault.utils.extension
 
 fun <E> List<E>.summation(sum : (E) -> Double): Double {
 

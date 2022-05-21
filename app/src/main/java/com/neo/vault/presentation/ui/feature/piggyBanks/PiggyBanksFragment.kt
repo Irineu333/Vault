@@ -1,5 +1,6 @@
 package com.neo.vault.presentation.ui.feature.piggyBanks
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,20 +15,20 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.neo.vault.databinding.FragmentPiggyBanksBinding
+import com.neo.vault.presentation.model.Selection
 import com.neo.vault.presentation.ui.activity.MainActivity
 import com.neo.vault.presentation.ui.adapter.PiggyBanksAdapter
 import com.neo.vault.presentation.ui.adapter.genericAdapter
 import com.neo.vault.presentation.ui.feature.createVault.CreateVaultBottomSheet
 import com.neo.vault.presentation.ui.feature.createVault.fragments.CreatePiggyBankFragment
 import com.neo.vault.presentation.ui.feature.piggyBanks.viewModel.PiggyBanksViewModel
-import com.neo.vault.util.extension.checkToShow
-import com.neo.vault.util.extension.dpToPx
-import com.neo.vault.util.extension.toRaw
+import com.neo.vault.utils.extension.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class PiggyBanksFragment : Fragment() {
+
     private var _binding: FragmentPiggyBanksBinding? = null
     private val binding get() = _binding!!
 
@@ -35,12 +36,28 @@ class PiggyBanksFragment : Fragment() {
 
     private val mainActivity get() = activity as? MainActivity
 
+    private val selection by lazy {
+        Selection<Int> {
+            if (active) {
+                binding.fab.hideAnimated()
+            } else {
+                binding.fab.showAnimated()
+            }
+        }
+    }
+
     private val toBreakPiggyBanksAdapter by lazy {
-        PiggyBanksAdapter("Para quebrar".toRaw())
+        PiggyBanksAdapter(
+            title = "Para quebrar".toRaw(),
+            selection = selection
+        )
     }
 
     private val joiningPiggyBanksAdapter by lazy {
-        PiggyBanksAdapter("Juntando".toRaw())
+        PiggyBanksAdapter(
+            title = "Juntando".toRaw(),
+            selection = selection
+        )
     }
 
     private val concatAdapter by lazy {
@@ -137,10 +154,12 @@ class PiggyBanksFragment : Fragment() {
     }
 
     private fun setupObservers() = viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-        viewModel.uiState.flowWithLifecycle(
+        val flowWithLifecycle = viewModel.uiState.flowWithLifecycle(
             viewLifecycleOwner.lifecycle,
             Lifecycle.State.STARTED
-        ).collect { state ->
+        )
+
+        flowWithLifecycle.collect { state ->
             mainActivity?.setSummation(
                 state.summations
             )

@@ -1,4 +1,4 @@
-package com.neo.vault.util.extension
+package com.neo.vault.utils.extension
 
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager

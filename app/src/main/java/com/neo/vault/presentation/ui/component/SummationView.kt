@@ -12,8 +12,8 @@ import com.neo.vault.R
 import com.neo.vault.domain.model.CurrencyCompat
 import com.neo.vault.presentation.model.Summation
 import com.neo.vault.presentation.model.UiText
-import com.neo.vault.util.CurrencyUtil
-import com.neo.vault.util.extension.removeFromParent
+import com.neo.vault.utils.CurrencyUtil
+import com.neo.vault.utils.extension.removeFromParent
 
 class SummationView(
     context: Context,

@@ -1,13 +1,12 @@
-package com.neo.vault.util.extension
+package com.neo.vault.utils.extension
 
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.Px
-import androidx.core.view.marginBottom
+import androidx.core.view.marginEnd
+import androidx.core.view.marginStart
 import androidx.core.view.marginTop
 import androidx.core.view.updateMargins
-import androidx.core.view.updatePadding
-import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
 import com.neo.vault.presentation.model.UiText
 
@@ -58,3 +57,5 @@ fun View.showSnackbar(
 fun View.removeFromParent() {
     (this.parent as? ViewGroup)?.removeView(this)
 }
+
+val View.absoluteWidth get() = width + marginStart + marginEnd
