@@ -36,27 +36,17 @@ class PiggyBanksFragment : Fragment() {
 
     private val mainActivity get() = activity as? MainActivity
 
-    private val selection by lazy {
-        Selection<Int> {
-            if (active) {
-                binding.fab.hideAnimated()
-            } else {
-                binding.fab.showAnimated()
-            }
-        }
-    }
-
     private val toBreakPiggyBanksAdapter by lazy {
         PiggyBanksAdapter(
             title = "Para quebrar".toRaw(),
-            selection = selection
+            selection = viewModel.selection
         )
     }
 
     private val joiningPiggyBanksAdapter by lazy {
         PiggyBanksAdapter(
             title = "Juntando".toRaw(),
-            selection = selection
+            selection = viewModel.selection
         )
     }
 

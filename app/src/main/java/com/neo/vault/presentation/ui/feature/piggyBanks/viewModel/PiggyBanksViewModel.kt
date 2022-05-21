@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neo.vault.domain.model.CurrencyCompat
 import com.neo.vault.domain.repository.VaultsRepository
+import com.neo.vault.presentation.model.Selection
 import com.neo.vault.presentation.model.Summation
 import com.neo.vault.utils.extension.summation
 import com.neo.vault.utils.extension.toRaw
@@ -21,6 +22,16 @@ class PiggyBanksViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(PiggyBanksUiState())
     val uiState = _uiState.asStateFlow()
+
+    val selection by lazy {
+        Selection<Int> {
+            if (active) {
+                //binding.fab.hideAnimated()
+            } else {
+                //binding.fab.showAnimated()
+            }
+        }
+    }
 
     fun loadPiggyBanks() = viewModelScope.launch {
 
