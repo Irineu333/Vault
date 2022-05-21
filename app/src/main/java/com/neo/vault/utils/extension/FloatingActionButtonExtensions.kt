@@ -4,7 +4,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 
 fun ExtendedFloatingActionButton.hideAnimated() {
 
-    isEnabled = false
+    isClickable = false
 
     animate()
         .setDuration(200)
@@ -15,7 +15,7 @@ fun ExtendedFloatingActionButton.hideAnimated() {
 
 fun ExtendedFloatingActionButton.showAnimated() {
 
-    isEnabled = true
+    isClickable = true
 
     animate()
         .setDuration(200)

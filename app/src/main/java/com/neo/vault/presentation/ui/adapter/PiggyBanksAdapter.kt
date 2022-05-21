@@ -23,8 +23,14 @@ class PiggyBanksAdapter(
     private val selection: Selection<Int>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var isCollapsed: Boolean = false
+    var piggyBanks = emptyList<Vault>()
         @SuppressLint("NotifyDataSetChanged")
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    private var isCollapsed: Boolean = false
         set(value) {
             field = value
             if (value) {
@@ -32,13 +38,6 @@ class PiggyBanksAdapter(
             } else {
                 notifyItemRangeInserted(1, piggyBanks.size)
             }
-        }
-
-    var piggyBanks = emptyList<Vault>()
-        @SuppressLint("NotifyDataSetChanged")
-        set(value) {
-            field = value
-            notifyDataSetChanged()
         }
 
     private var Vault.selected
@@ -147,8 +146,8 @@ class PiggyBanksAdapter(
                     tvDateToBreak.text = Date(it).formatted
                 } != null
 
-            if (piggyBank.selected) {
-                flRoot.background = ColorDrawable(
+            flRoot.background = if (piggyBank.selected) {
+                ColorDrawable(
                     ContextCompat.getColor(
                         context,
                         R.color.blue_light
@@ -157,7 +156,7 @@ class PiggyBanksAdapter(
                     )
                 )
             } else {
-                flRoot.background = null
+                null
             }
         }
     }
