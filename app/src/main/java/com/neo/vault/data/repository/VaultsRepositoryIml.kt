@@ -1,16 +1,16 @@
 package com.neo.vault.data.repository
 
-import com.neo.vault.core.Resource
 import com.neo.vault.data.local.dao.VaultDao
 import com.neo.vault.data.local.entity.VaultEntity
 import com.neo.vault.data.local.entity.toModel
+import com.neo.vault.domain.model.CreatePiggyBankResult
 import com.neo.vault.domain.model.CurrencyCompat
 import com.neo.vault.domain.model.Vault
 import com.neo.vault.domain.repository.VaultsRepository
-import com.neo.vault.util.extension.toRaw
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import kotlin.system.measureTimeMillis
 
 class VaultsRepositoryIml @Inject constructor(
     private val vaultDao: VaultDao
@@ -23,25 +23,25 @@ class VaultsRepositoryIml @Inject constructor(
     ) = runCatching {
 
         if (getVaultByName(name) != null) {
-            return@runCatching Resource.Error(
-                "Já existe um cofre com esse nome".toRaw()
-            )
+            return@runCatching CreatePiggyBankResult.Error.SameName
         }
 
-        withContext(Dispatchers.IO) {
-            vaultDao.insertVault(
-                VaultEntity(
-                    name = name,
-                    currency = currency,
-                    dateToBreak = dateToBreak,
-                    type = Vault.Type.PIGGY_BANK
+        val timeMillis = withContext(Dispatchers.IO) {
+            measureTimeMillis {
+                vaultDao.insertVault(
+                    VaultEntity(
+                        name = name,
+                        currency = currency,
+                        dateToBreak = dateToBreak,
+                        type = Vault.Type.PIGGY_BANK
+                    )
                 )
-            )
+            }
         }
 
-        Resource.Success(Unit)
+        CreatePiggyBankResult.Success(timeMillis)
     }.getOrElse {
-        Resource.Error("${it.message}".toRaw())
+        CreatePiggyBankResult.Error.Generic(it)
     }
 
     override suspend fun getVaultByName(name: String): Vault? {

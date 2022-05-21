@@ -2,9 +2,10 @@ package com.neo.vault.presentation.ui.feature.createVault.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.neo.vault.core.Resource
+import com.neo.vault.domain.model.CreatePiggyBankResult
 import com.neo.vault.domain.model.CurrencyCompat
 import com.neo.vault.domain.repository.VaultsRepository
+import com.neo.vault.util.extension.toRaw
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -59,11 +60,17 @@ class CreateVaultViewModel @Inject constructor(
         }
 
         when (result) {
-            is Resource.Error -> {
-                _uiEffect.emit(CreateVaultUiEffect.Error(result.message))
-            }
-            is Resource.Success -> {
+
+            is CreatePiggyBankResult.Success -> {
                 _uiEffect.emit(CreateVaultUiEffect.Success)
+            }
+
+            CreatePiggyBankResult.Error.SameName -> {
+                _uiEffect.emit(CreateVaultUiEffect.Error("Número já existe".toRaw()))
+            }
+
+            is CreatePiggyBankResult.Error.Generic -> {
+                _uiEffect.emit(CreateVaultUiEffect.Error("${result.t.message}".toRaw()))
             }
         }
     }
