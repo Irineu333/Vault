@@ -1,6 +1,5 @@
 package com.neo.vault.presentation.ui.feature.piggyBanks
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,12 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.neo.vault.databinding.FragmentPiggyBanksBinding
-import com.neo.vault.presentation.model.Selection
 import com.neo.vault.presentation.ui.activity.MainActivity
 import com.neo.vault.presentation.ui.adapter.PiggyBanksAdapter
 import com.neo.vault.presentation.ui.adapter.genericAdapter
@@ -25,6 +23,7 @@ import com.neo.vault.presentation.ui.feature.piggyBanks.viewModel.PiggyBanksView
 import com.neo.vault.utils.extension.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class PiggyBanksFragment : Fragment() {
@@ -143,19 +142,32 @@ class PiggyBanksFragment : Fragment() {
         }
     }
 
-    private fun setupObservers() = viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-        val flowWithLifecycle = viewModel.uiState.flowWithLifecycle(
-            viewLifecycleOwner.lifecycle,
+    private fun setupObservers() = viewLifecycleOwner.lifecycleScope.launch {
+
+        viewLifecycleOwner.repeatOnLifecycle(
             Lifecycle.State.STARTED
-        )
+        ) {
+            launch {
+                viewModel.selection.state.collect { isActive ->
+                    if (isActive) {
+                        binding.fab.hideAnimated()
+                    } else {
+                        binding.fab.showAnimated()
+                    }
+                }
+            }
+            launch {
+                viewModel.uiState.collect { state ->
+                    mainActivity?.setSummation(
+                        state.summations
+                    )
 
-        flowWithLifecycle.collect { state ->
-            mainActivity?.setSummation(
-                state.summations
-            )
+                    toBreakPiggyBanksAdapter.piggyBanks = state.toBreakPiggyBanks
+                    joiningPiggyBanksAdapter.piggyBanks = state.joiningPiggyBanks
+                }
+            }
 
-            toBreakPiggyBanksAdapter.piggyBanks = state.toBreakPiggyBanks
-            joiningPiggyBanksAdapter.piggyBanks = state.joiningPiggyBanks
+
         }
     }
 }

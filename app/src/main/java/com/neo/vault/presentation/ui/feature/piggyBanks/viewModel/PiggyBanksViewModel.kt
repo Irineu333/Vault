@@ -23,15 +23,7 @@ class PiggyBanksViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(PiggyBanksUiState())
     val uiState = _uiState.asStateFlow()
 
-    val selection by lazy {
-        Selection<Int> {
-            if (active) {
-                //binding.fab.hideAnimated()
-            } else {
-                //binding.fab.showAnimated()
-            }
-        }
-    }
+    val selection = Selection<Int>()
 
     fun loadPiggyBanks() = viewModelScope.launch {
 

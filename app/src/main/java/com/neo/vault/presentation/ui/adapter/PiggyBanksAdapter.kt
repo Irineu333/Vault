@@ -96,7 +96,7 @@ class PiggyBanksAdapter(
                 }
 
                 holder.itemView.setOnClickListener {
-                    if (selection.active) {
+                    if (selection.state.value) {
                         updateItem()
                     }
                 }
