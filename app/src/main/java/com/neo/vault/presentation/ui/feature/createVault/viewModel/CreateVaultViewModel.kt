@@ -7,6 +7,7 @@ import com.neo.vault.domain.model.CurrencyCompat
 import com.neo.vault.domain.repository.VaultsRepository
 import com.neo.vault.util.extension.toRaw
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
@@ -20,8 +21,8 @@ class CreateVaultViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(CreateVaultUiState())
     val uiState = _uiState.asStateFlow()
 
-    private val _uiEffect = MutableSharedFlow<CreateVaultUiEffect>()
-    val uiEffect = _uiEffect.asSharedFlow()
+    private val _uiEffect = Channel<CreateVaultUiEffect>()
+    val uiEffect = _uiEffect.receiveAsFlow()
 
     val dateToBreak get() = uiState.value.dateToBreak
 
@@ -62,15 +63,15 @@ class CreateVaultViewModel @Inject constructor(
         when (result) {
 
             is CreatePiggyBankResult.Success -> {
-                _uiEffect.emit(CreateVaultUiEffect.Success)
+                _uiEffect.send(CreateVaultUiEffect.Success)
             }
 
             CreatePiggyBankResult.Error.SameName -> {
-                _uiEffect.emit(CreateVaultUiEffect.Error("Número já existe".toRaw()))
+                _uiEffect.send(CreateVaultUiEffect.Error("Número já existe".toRaw()))
             }
 
             is CreatePiggyBankResult.Error.Generic -> {
-                _uiEffect.emit(CreateVaultUiEffect.Error("${result.t.message}".toRaw()))
+                _uiEffect.send(CreateVaultUiEffect.Error("${result.t.message}".toRaw()))
             }
         }
     }
