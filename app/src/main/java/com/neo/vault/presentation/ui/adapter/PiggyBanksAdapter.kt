@@ -41,7 +41,7 @@ class PiggyBanksAdapter(
         }
 
     private var Vault.selected
-        get() = selection.contains(id)
+        get() = selection.selected(id)
         set(value) {
             if (value) {
                 selection.add(id)

@@ -27,5 +27,5 @@ class Selection<T> {
         _state.emit(selection.isNotEmpty())
     }
 
-    fun contains(value: T) = selection.contains(value)
+    fun selected(value: T) = selection.contains(value)
 }
