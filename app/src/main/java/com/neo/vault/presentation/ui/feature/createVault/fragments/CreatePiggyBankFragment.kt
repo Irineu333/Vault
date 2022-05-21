@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.neo.vault.R
+import com.neo.vault.core.Resource
 import com.neo.vault.databinding.FragmentCreatePiggyBankBinding
 import com.neo.vault.domain.model.CurrencyCompat
 import com.neo.vault.presentation.ui.feature.createVault.CreateVaultBottomSheet
@@ -141,8 +142,8 @@ class CreatePiggyBankFragment : Fragment() {
             }
 
             launch {
-                viewModel.uiEffect.collectLatest {
-                    when (it) {
+                viewModel.uiEffect.collectLatest { effect ->
+                    when (effect) {
                         CreateVaultUiEffect.Success -> {
                             binding.showSnackbar(
                                 message = "Success".toRaw()
@@ -155,10 +156,10 @@ class CreatePiggyBankFragment : Fragment() {
 
                             createVaultBottomSheet?.dismiss()
                         }
-                        CreateVaultUiEffect.Error -> {
+                        is CreateVaultUiEffect.Error -> {
                             binding.btnCreateVault.isEnabled = true
                             binding.showSnackbar(
-                                message = "Erro ao criar cofre".toRaw()
+                                message = effect.error
                             )
                         }
                     }

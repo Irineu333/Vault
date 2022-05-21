@@ -24,9 +24,12 @@ data class VaultEntity(
 )
 
 fun VaultEntity.toModel() = Vault(
+    id = id ?: throw NullPointerException("id cannot be null"),
     name = name,
     dateToBreak = dateToBreak,
     currency = currency,
     type = type,
     summation = summation
 )
+
+fun List<VaultEntity>.toModel() = map { it.toModel() }

@@ -2,6 +2,7 @@ package com.neo.vault.presentation.ui.feature.createVault.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.neo.vault.core.Resource
 import com.neo.vault.domain.model.CurrencyCompat
 import com.neo.vault.domain.repository.VaultsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,7 +46,7 @@ class CreateVaultViewModel @Inject constructor(
             )
         }
 
-        val success = vaultsRepository.createPiggyBank(
+        val result = vaultsRepository.createPiggyBank(
             name = name,
             currency = currency,
             dateToBreak = dateToBreak
@@ -57,10 +58,13 @@ class CreateVaultViewModel @Inject constructor(
             )
         }
 
-        if (success) {
-            _uiEffect.emit(CreateVaultUiEffect.Success)
-        } else {
-            _uiEffect.emit(CreateVaultUiEffect.Error)
+        when (result) {
+            is Resource.Error -> {
+                _uiEffect.emit(CreateVaultUiEffect.Error(result.message))
+            }
+            is Resource.Success -> {
+                _uiEffect.emit(CreateVaultUiEffect.Success)
+            }
         }
     }
 
