@@ -90,7 +90,6 @@ class PiggyBanksFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        actionMode?.finish()
         _binding = null
     }
 
