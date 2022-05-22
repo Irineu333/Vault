@@ -21,6 +21,9 @@
         <!-- Customize your theme here. -->
         <item name="bottomSheetDialogTheme">@style/Theme.Vault.BottomSheet</item>
 
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeBackground">?attr/colorPrimary</item>
+
     </style>
 
     <style name="Theme.Vault.BottomSheet" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">

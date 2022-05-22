@@ -3,6 +3,7 @@ package com.neo.vault.presentation.ui.feature.piggyBanks.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neo.vault.domain.model.CurrencyCompat
+import com.neo.vault.domain.model.Vault
 import com.neo.vault.domain.repository.VaultsRepository
 import com.neo.vault.presentation.model.Selection
 import com.neo.vault.presentation.model.Summation
@@ -23,7 +24,7 @@ class PiggyBanksViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(PiggyBanksUiState())
     val uiState = _uiState.asStateFlow()
 
-    val selection = Selection<Int>()
+    val selection = Selection<Vault>()
 
     fun loadPiggyBanks() = viewModelScope.launch {
 
@@ -91,5 +92,28 @@ class PiggyBanksViewModel @Inject constructor(
                 summations = summations
             )
         }
+    }
+
+    fun getValues(selects: List<Vault>): List<Summation.Value> {
+
+        val values = mutableListOf<Summation.Value>()
+
+        for (currency in CurrencyCompat.values()) {
+            val filtered = selects.filter {
+                it.currency == currency
+            }
+            if (filtered.isNotEmpty()) {
+                values.add(
+                    Summation.Value(
+                        value = filtered.summation { piggyBank ->
+                            piggyBank.summation.toDouble()
+                        }.toFloat(),
+                        currency = currency
+                    )
+                )
+            }
+        }
+
+        return values
     }
 }

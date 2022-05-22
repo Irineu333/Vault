@@ -10,8 +10,10 @@ class Selection<T> {
 
     private val selection = mutableSetOf<T>()
 
-    private val _state = MutableStateFlow(false)
-    val state get() = _state.asStateFlow()
+    private val _selectsState = MutableStateFlow(selection.toList())
+    val selectsState get() = _selectsState.asStateFlow()
+
+    val isActive: Boolean get() = selectsState.value.isNotEmpty()
 
     fun add(value: T) {
         selection.add(value)
@@ -23,9 +25,14 @@ class Selection<T> {
         updated()
     }
 
-    private fun updated() = CoroutineScope(Dispatchers.Main).launch {
-        _state.emit(selection.isNotEmpty())
+    fun removeAll() {
+        selection.clear()
+        updated()
     }
 
     fun selected(value: T) = selection.contains(value)
+
+    private fun updated() = CoroutineScope(Dispatchers.Main).launch {
+        _selectsState.emit(selection.toList())
+    }
 }

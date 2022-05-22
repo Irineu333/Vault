@@ -20,7 +20,7 @@ import java.util.*
 
 class PiggyBanksAdapter(
     private val title: UiText,
-    private val selection: Selection<Int>
+    private val selection: Selection<Vault>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var piggyBanks = emptyList<Vault>()
@@ -41,12 +41,12 @@ class PiggyBanksAdapter(
         }
 
     private var Vault.selected
-        get() = selection.selected(id)
+        get() = selection.selected(this)
         set(value) {
             if (value) {
-                selection.add(id)
+                selection.add(this)
             } else {
-                selection.remove(id)
+                selection.remove(this)
             }
         }
 
@@ -96,7 +96,7 @@ class PiggyBanksAdapter(
                 }
 
                 holder.itemView.setOnClickListener {
-                    if (selection.state.value) {
+                    if (selection.isActive) {
                         updateItem()
                     }
                 }

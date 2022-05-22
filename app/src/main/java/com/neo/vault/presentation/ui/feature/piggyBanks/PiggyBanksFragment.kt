@@ -1,10 +1,10 @@
 package com.neo.vault.presentation.ui.feature.piggyBanks
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Space
+import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -13,13 +13,16 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.neo.vault.R
 import com.neo.vault.databinding.FragmentPiggyBanksBinding
+import com.neo.vault.domain.model.Vault
 import com.neo.vault.presentation.ui.activity.MainActivity
 import com.neo.vault.presentation.ui.adapter.PiggyBanksAdapter
 import com.neo.vault.presentation.ui.adapter.genericAdapter
 import com.neo.vault.presentation.ui.feature.createVault.CreateVaultBottomSheet
 import com.neo.vault.presentation.ui.feature.createVault.fragments.CreatePiggyBankFragment
 import com.neo.vault.presentation.ui.feature.piggyBanks.viewModel.PiggyBanksViewModel
+import com.neo.vault.utils.CurrencyUtil
 import com.neo.vault.utils.extension.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -34,6 +37,8 @@ class PiggyBanksFragment : Fragment() {
     private val viewModel: PiggyBanksViewModel by viewModels()
 
     private val mainActivity get() = activity as? MainActivity
+
+    private var actionMode: ActionMode? = null
 
     private val toBreakPiggyBanksAdapter by lazy {
         PiggyBanksAdapter(
@@ -147,11 +152,14 @@ class PiggyBanksFragment : Fragment() {
         viewLifecycleOwner.repeatOnLifecycle(
             Lifecycle.State.STARTED
         ) {
-            launch {
-                viewModel.selection.state.collect { isActive ->
-                    if (isActive) {
+            launch @SuppressLint("NotifyDataSetChanged") {
+                viewModel.selection.selectsState.collect { selects ->
+                    if (selects.isNotEmpty()) {
+                        updateActionMode(selects)
                         binding.fab.hideAnimated()
                     } else {
+                        actionMode?.finish()
+                        concatAdapter.notifyDataSetChanged()
                         binding.fab.showAnimated()
                     }
                 }
@@ -166,8 +174,58 @@ class PiggyBanksFragment : Fragment() {
                     joiningPiggyBanksAdapter.piggyBanks = state.joiningPiggyBanks
                 }
             }
+        }
+    }
 
+    private fun updateActionMode(selects: List<Vault>) {
 
+        if (actionMode == null)
+            actionMode = mainActivity?.startSupportActionMode(
+                object : ActionMode.Callback {
+                    override fun onCreateActionMode(
+                        mode: ActionMode,
+                        menu: Menu
+                    ): Boolean {
+                        mode.menuInflater.inflate(R.menu.selection_vault_options, menu)
+                        return true
+                    }
+
+                    override fun onPrepareActionMode(
+                        mode: ActionMode?,
+                        menu: Menu?
+                    ): Boolean {
+                        return false
+                    }
+
+                    override fun onActionItemClicked(
+                        mode: ActionMode?,
+                        item: MenuItem?
+                    ): Boolean {
+                        return false
+                    }
+
+                    override fun onDestroyActionMode(mode: ActionMode?) {
+                        actionMode = null
+                        viewModel.selection.removeAll()
+                    }
+                }
+            )
+
+        actionMode!!.menu.findItem(R.id.edit).isVisible = selects.size == 1
+
+        actionMode!!.title = "${selects.size} selecionados"
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            val summation = viewModel.getValues(selects)
+
+            actionMode?.subtitle = summation.joinToString(
+                separator = ", "
+            ) {
+                CurrencyUtil.formatter(
+                    it.value,
+                    it.currency
+                )
+            }
         }
     }
 }
