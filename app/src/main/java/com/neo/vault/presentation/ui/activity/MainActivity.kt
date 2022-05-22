@@ -2,8 +2,7 @@ package com.neo.vault.presentation.ui.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.isVisible
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import com.neo.vault.R
@@ -32,10 +31,9 @@ class MainActivity : AppCompatActivity() {
         get() = id == R.id.homeVaults
 
     var actionModeEnabled
-        get() = binding.appbar.actionMode.isVisible
+        get() = binding.appbar.switcher.displayedChild == 1
         set(value) {
-            binding.appbar.actionMode.isVisible = value
-            binding.appbar.toolbar.isVisible = !value
+            binding.appbar.switcher.displayedChild = if (value) 1 else 0
         }
 
     val actionMode get() = binding.appbar.actionMode
@@ -54,7 +52,8 @@ class MainActivity : AppCompatActivity() {
 
             binding.appbar.toolbar.navigationIcon =
                 if (!destination.isInitialFragment)
-                    ResourcesCompat.getDrawable(resources, R.drawable.ic_back, theme) else null
+                    ContextCompat.getDrawable(this, R.drawable.ic_back)
+                else null
 
             binding.appbar.toolbar.title = destination.label
         }

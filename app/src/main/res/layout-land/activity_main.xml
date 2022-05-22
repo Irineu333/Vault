@@ -24,7 +24,6 @@
             android:id="@+id/appbar"
             layout="@layout/custom_appbar" />
 
-
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"

@@ -7,26 +7,32 @@
     android:background="?attr/colorPrimary"
     tools:showIn="@layout/activity_main">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
+    <ViewSwitcher
+        android:id="@+id/switcher"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:navigationIcon="@drawable/ic_back"
-        app:navigationIconTint="?attr/colorOnPrimary"
-        app:title="@string/app_name"
-        app:titleCentered="true"
-        app:titleTextColor="?attr/colorOnPrimary" />
+        android:layout_height="wrap_content">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/action_mode"
-        android:layout_width="match_parent"
-        app:menu="@menu/selection_vault_options"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:navigationIcon="@drawable/ic_close"
-        app:navigationIconTint="?attr/colorOnPrimary"
-        app:titleTextColor="?attr/colorOnPrimary"
-        tools:subtitle="Subtitle here"
-        tools:title="Title here" />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:navigationIcon="@drawable/ic_back"
+            app:navigationIconTint="?attr/colorOnPrimary"
+            app:title="@string/app_name"
+            app:titleCentered="true"
+            app:titleTextColor="?attr/colorOnPrimary" />
 
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/action_mode"
+            android:layout_width="match_parent"
+            app:menu="@menu/selection_vault_options"
+            android:layout_height="wrap_content"
+            app:navigationIcon="@drawable/ic_close"
+            app:navigationIconTint="?attr/colorOnPrimary"
+            app:titleTextColor="?attr/colorOnPrimary"
+            tools:subtitle="Subtitle here"
+            tools:title="Title here" />
+
+
+    </ViewSwitcher>
 </com.google.android.material.appbar.AppBarLayout>
