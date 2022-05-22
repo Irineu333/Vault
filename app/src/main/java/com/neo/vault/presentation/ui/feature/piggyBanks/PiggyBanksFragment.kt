@@ -25,6 +25,7 @@ import com.neo.vault.presentation.ui.feature.piggyBanks.viewModel.PiggyBanksView
 import com.neo.vault.utils.CurrencyUtil
 import com.neo.vault.utils.extension.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -33,12 +34,13 @@ class PiggyBanksFragment : Fragment() {
 
     private var _binding: FragmentPiggyBanksBinding? = null
     private val binding get() = _binding!!
-
     private val viewModel: PiggyBanksViewModel by viewModels()
 
     private val mainActivity get() = activity as? MainActivity
 
     private var actionMode: ActionMode? = null
+
+    private var selectionSummationJob: Job? = null
 
     private val toBreakPiggyBanksAdapter by lazy {
         PiggyBanksAdapter(
@@ -88,6 +90,7 @@ class PiggyBanksFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        actionMode?.finish()
         _binding = null
     }
 
@@ -215,7 +218,8 @@ class PiggyBanksFragment : Fragment() {
 
         actionMode!!.title = "${selects.size} selecionados"
 
-        viewLifecycleOwner.lifecycleScope.launch {
+        selectionSummationJob?.cancel()
+        selectionSummationJob = viewLifecycleOwner.lifecycleScope.launch {
             val summation = viewModel.getValues(selects)
 
             actionMode?.subtitle = summation.joinToString(
