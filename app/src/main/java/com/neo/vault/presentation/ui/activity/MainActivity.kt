@@ -1,10 +1,9 @@
 package com.neo.vault.presentation.ui.activity
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.view.ActionMode
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import com.neo.vault.R
@@ -32,6 +31,15 @@ class MainActivity : AppCompatActivity() {
     private val NavDestination.isInitialFragment
         get() = id == R.id.homeVaults
 
+    var actionModeEnabled
+        get() = binding.appbar.actionMode.isVisible
+        set(value) {
+            binding.appbar.actionMode.isVisible = value
+            binding.appbar.toolbar.isVisible = !value
+        }
+
+    val actionMode get() = binding.appbar.actionMode
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -44,15 +52,19 @@ class MainActivity : AppCompatActivity() {
     private fun setupListeners() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
 
-            binding.toolbar.navigationIcon =
+            binding.appbar.toolbar.navigationIcon =
                 if (!destination.isInitialFragment)
                     ResourcesCompat.getDrawable(resources, R.drawable.ic_back, theme) else null
 
-            binding.toolbar.title = destination.label
+            binding.appbar.toolbar.title = destination.label
         }
 
-        binding.toolbar.setNavigationOnClickListener {
-            navController.popBackStack()
+        binding.appbar.toolbar.setNavigationOnClickListener {
+            onBackPressed()
+        }
+
+        binding.appbar.actionMode.setNavigationOnClickListener {
+            onBackPressed()
         }
     }
 

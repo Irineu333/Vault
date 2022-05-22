@@ -7,29 +7,16 @@
     android:orientation="vertical"
     tools:context=".presentation.ui.activity.MainActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:background="?attr/colorPrimary"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            app:navigationIcon="@drawable/ic_back"
-            app:navigationIconTint="?attr/colorOnPrimary"
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:title="@string/app_name"
-            app:titleCentered="true"
-            app:titleTextColor="?attr/colorOnPrimary" />
-
-    </com.google.android.material.appbar.AppBarLayout>
+    <include
+        android:id="@+id/appbar"
+        layout="@layout/custom_appbar" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:background="@color/surface"
         android:id="@+id/container_values"
         android:name="com.neo.vault.presentation.ui.feature.showSummation.SummationFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/surface"
         tools:layout="@layout/fragment_summation" />
 
     <com.google.android.material.divider.MaterialDivider
@@ -37,11 +24,11 @@
         android:layout_height="wrap_content" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:background="@color/surfaceVariant"
         android:id="@+id/vaults_host"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/surfaceVariant"
         app:defaultNavHost="true"
         app:navGraph="@navigation/main_graph" />
 

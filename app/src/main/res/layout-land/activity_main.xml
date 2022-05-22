@@ -15,42 +15,37 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
-        android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:orientation="vertical">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:background="?attr/colorPrimary"
+        <include
+            android:id="@+id/appbar"
+            layout="@layout/custom_appbar" />
+
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <com.google.android.material.appbar.MaterialToolbar
-                app:navigationIcon="@drawable/ic_back"
-                app:navigationIconTint="?attr/colorOnPrimary"
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:title="@string/app_name"
-                app:titleCentered="true"
-                app:titleTextColor="?attr/colorOnPrimary" />
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/container_values"
+                android:name="com.neo.vault.presentation.ui.feature.showSummation.SummationFragment"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:background="@color/surface"
+                tools:layout="@layout/fragment_summation" />
 
-        </com.google.android.material.appbar.AppBarLayout>
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="1dp"
+                android:layout_height="match_parent" />
 
-
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/container_values"
-            android:name="com.neo.vault.presentation.ui.feature.showSummation.SummationFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/surface"
-            tools:layout="@layout/fragment_summation" />
+        </LinearLayout>
 
     </LinearLayout>
-
-    <com.google.android.material.divider.MaterialDivider
-        android:layout_width="1dp"
-        android:layout_height="match_parent" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/vaults_host"

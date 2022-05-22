@@ -2,15 +2,18 @@ package com.neo.vault.presentation.ui.feature.piggyBanks
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Space
-import androidx.appcompat.view.ActionMode
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.neo.vault.R
@@ -37,8 +40,6 @@ class PiggyBanksFragment : Fragment() {
     private val viewModel: PiggyBanksViewModel by viewModels()
 
     private val mainActivity get() = activity as? MainActivity
-
-    private var actionMode: ActionMode? = null
 
     private var selectionSummationJob: Job? = null
 
@@ -90,6 +91,8 @@ class PiggyBanksFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        mainActivity?.actionModeEnabled = false
+        selectionSummationJob?.cancel()
         _binding = null
     }
 
@@ -117,6 +120,18 @@ class PiggyBanksFragment : Fragment() {
                 }
             }
         )
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (viewModel.selection.isActive) {
+                        viewModel.selection.removeAll()
+                    } else {
+                        findNavController().popBackStack()
+                    }
+                }
+            })
     }
 
     private fun setupView() = with(binding) {
@@ -160,7 +175,7 @@ class PiggyBanksFragment : Fragment() {
                         updateActionMode(selects)
                         binding.fab.hideAnimated()
                     } else {
-                        actionMode?.finish()
+                        mainActivity?.actionModeEnabled = false
                         concatAdapter.notifyDataSetChanged()
                         binding.fab.showAnimated()
                     }
@@ -179,50 +194,20 @@ class PiggyBanksFragment : Fragment() {
         }
     }
 
-    private fun updateActionMode(selects: List<Vault>) {
+    private fun updateActionMode(selects: List<Vault>) = mainActivity?.let { activity ->
 
-        if (actionMode == null)
-            actionMode = mainActivity?.startSupportActionMode(
-                object : ActionMode.Callback {
-                    override fun onCreateActionMode(
-                        mode: ActionMode,
-                        menu: Menu
-                    ): Boolean {
-                        mode.menuInflater.inflate(R.menu.selection_vault_options, menu)
-                        return true
-                    }
+        activity.actionModeEnabled = true
 
-                    override fun onPrepareActionMode(
-                        mode: ActionMode?,
-                        menu: Menu?
-                    ): Boolean {
-                        return false
-                    }
+        activity.actionMode.menu.findItem(R.id.edit)?.isVisible = selects.size == 1
 
-                    override fun onActionItemClicked(
-                        mode: ActionMode?,
-                        item: MenuItem?
-                    ): Boolean {
-                        return false
-                    }
-
-                    override fun onDestroyActionMode(mode: ActionMode?) {
-                        actionMode = null
-                        viewModel.selection.removeAll()
-                    }
-                }
-            )
-
-        actionMode!!.menu.findItem(R.id.edit).isVisible = selects.size == 1
-
-        actionMode!!.title = "${selects.size} selecionados"
+        activity.actionMode.title = "${selects.size} selecionados"
 
         selectionSummationJob?.cancel()
         selectionSummationJob = viewLifecycleOwner.lifecycleScope.launch {
             val summation = viewModel.getValues(selects)
 
-            actionMode?.subtitle = summation.joinToString(
-                separator = ", "
+            activity.actionMode.subtitle = summation.joinToString(
+                separator = " + "
             ) {
                 CurrencyUtil.formatter(
                     it.value,
