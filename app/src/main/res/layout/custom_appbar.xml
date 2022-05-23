@@ -33,6 +33,5 @@
             tools:subtitle="Subtitle here"
             tools:title="Title here" />
 
-
     </ViewSwitcher>
 </com.google.android.material.appbar.AppBarLayout>

@@ -33,7 +33,26 @@ class MainActivity : AppCompatActivity() {
     var actionModeEnabled
         get() = binding.appbar.switcher.displayedChild == 1
         set(value) {
-            binding.appbar.switcher.displayedChild = if (value) 1 else 0
+            val displayChild = if (value) 1 else 0
+
+            val switcher = binding.appbar.switcher
+
+            displayChild.takeIf { it != switcher.displayedChild }?.also {
+
+                when(it) {
+                    0 -> {
+                        switcher.setInAnimation(this, R.anim.slide_in_left_short)
+                        switcher.setOutAnimation(this, R.anim.slide_out_right_short)
+                    }
+
+                    1 -> {
+                        switcher.setInAnimation(this, R.anim.slide_in_right_short)
+                        switcher.setOutAnimation(this, R.anim.slide_out_left_short)
+                    }
+                }
+
+                switcher.displayedChild = it
+            }
         }
 
     val actionMode get() = binding.appbar.actionMode

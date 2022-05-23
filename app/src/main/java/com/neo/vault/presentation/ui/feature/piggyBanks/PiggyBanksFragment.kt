@@ -91,8 +91,10 @@ class PiggyBanksFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+
         mainActivity?.actionModeEnabled = false
         selectionSummationJob?.cancel()
+
         _binding = null
     }
 
@@ -124,9 +126,12 @@ class PiggyBanksFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
+
+                @SuppressLint("NotifyDataSetChanged")
                 override fun handleOnBackPressed() {
                     if (viewModel.selection.isActive) {
                         viewModel.selection.removeAll()
+                        concatAdapter.notifyDataSetChanged()
                     } else {
                         findNavController().popBackStack()
                     }
@@ -169,23 +174,22 @@ class PiggyBanksFragment : Fragment() {
         viewLifecycleOwner.repeatOnLifecycle(
             Lifecycle.State.STARTED
         ) {
-            launch @SuppressLint("NotifyDataSetChanged") {
+            launch {
                 viewModel.selection.selectsState.collect { selects ->
+
+                    updateActionMode(selects)
+
                     if (selects.isNotEmpty()) {
-                        updateActionMode(selects)
                         binding.fab.hideAnimated()
                     } else {
-                        mainActivity?.actionModeEnabled = false
-                        concatAdapter.notifyDataSetChanged()
                         binding.fab.showAnimated()
                     }
                 }
             }
             launch {
                 viewModel.uiState.collect { state ->
-                    mainActivity?.setSummation(
-                        state.summations
-                    )
+
+                    mainActivity?.setSummation(state.summations)
 
                     toBreakPiggyBanksAdapter.piggyBanks = state.toBreakPiggyBanks
                     joiningPiggyBanksAdapter.piggyBanks = state.joiningPiggyBanks
@@ -196,24 +200,29 @@ class PiggyBanksFragment : Fragment() {
 
     private fun updateActionMode(selects: List<Vault>) = mainActivity?.let { activity ->
 
-        activity.actionModeEnabled = true
+        if (selects.isNotEmpty()) {
 
-        activity.actionMode.menu.findItem(R.id.edit)?.isVisible = selects.size == 1
+            activity.actionModeEnabled = true
 
-        activity.actionMode.title = "${selects.size} selecionados"
+            activity.actionMode.menu.findItem(R.id.edit)?.isVisible = selects.size == 1
 
-        selectionSummationJob?.cancel()
-        selectionSummationJob = viewLifecycleOwner.lifecycleScope.launch {
-            val summation = viewModel.getValues(selects)
+            activity.actionMode.title = "${selects.size} selecionados"
 
-            activity.actionMode.subtitle = summation.joinToString(
-                separator = " + "
-            ) {
-                CurrencyUtil.formatter(
-                    it.value,
-                    it.currency
-                )
+            selectionSummationJob?.cancel()
+            selectionSummationJob = viewLifecycleOwner.lifecycleScope.launch {
+                val summation = viewModel.getValues(selects)
+
+                activity.actionMode.subtitle = summation.joinToString(
+                    separator = " + "
+                ) {
+                    CurrencyUtil.formatter(
+                        it.value,
+                        it.currency
+                    )
+                }
             }
+        } else {
+            activity.actionModeEnabled = false
         }
     }
 }
