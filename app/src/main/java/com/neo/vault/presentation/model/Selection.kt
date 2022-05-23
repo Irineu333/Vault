@@ -9,11 +9,12 @@ import kotlinx.coroutines.launch
 class Selection<T> {
 
     private val selection = mutableSetOf<T>()
-
     private val _selectsState = MutableStateFlow(selection.toList())
-    val selectsState get() = _selectsState.asStateFlow()
 
+    val selectsState get() = _selectsState.asStateFlow()
     val isActive: Boolean get() = selectsState.value.isNotEmpty()
+
+    val singleSelection get() = selection.size == 1
 
     fun add(value: T) {
         selection.add(value)

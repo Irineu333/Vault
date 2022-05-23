@@ -22,7 +22,7 @@
             app:titleCentered="true"
             app:titleTextColor="?attr/colorOnPrimary" />
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/action_mode"
             android:layout_width="match_parent"
             app:menu="@menu/selection_vault_options"
@@ -30,6 +30,7 @@
             app:navigationIcon="@drawable/ic_close"
             app:navigationIconTint="?attr/colorOnPrimary"
             app:titleTextColor="?attr/colorOnPrimary"
+            app:subtitleTextColor="?attr/colorOnPrimary"
             tools:subtitle="Subtitle here"
             tools:title="Title here" />
 

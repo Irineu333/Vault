@@ -37,6 +37,7 @@ class PiggyBanksFragment : Fragment() {
 
     private var _binding: FragmentPiggyBanksBinding? = null
     private val binding get() = _binding!!
+
     private val viewModel: PiggyBanksViewModel by viewModels()
 
     private val mainActivity get() = activity as? MainActivity
@@ -137,6 +138,48 @@ class PiggyBanksFragment : Fragment() {
                     }
                 }
             })
+
+        mainActivity?.actionMode?.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.delete -> {
+
+                    val selection = viewModel.selection
+                    val singleSelection = selection.singleSelection
+
+                    val title = if (singleSelection)
+                        "Excluir cofrinho"
+                    else
+                        "Excluir cofrinhos"
+
+                    val selects = selection.selectsState.value
+
+                    val message = if (singleSelection)
+                        "Deseja realmente excluir o cofrinho ${selects[0].name}?"
+                    else
+                        "Deseja realmente excluir os ${selects.size} cofrinhos selecionados?"
+
+                    requireContext().showAlertDialog(
+                        title = title.toRaw(),
+                        message = message.toRaw()
+                    ) {
+
+                        setNegativeButton("Não") { _, _ -> }
+
+                        setPositiveButton("Sim") { _, _ ->
+                            viewModel.removeSelected()
+                        }
+                    }
+
+                    true
+                }
+
+                R.id.edit -> {
+
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun setupView() = with(binding) {

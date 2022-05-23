@@ -2,6 +2,7 @@ package com.neo.vault.data.repository
 
 import com.neo.vault.data.local.dao.VaultDao
 import com.neo.vault.data.local.entity.VaultEntity
+import com.neo.vault.data.local.entity.toEntity
 import com.neo.vault.data.local.entity.toModel
 import com.neo.vault.domain.model.CreatePiggyBankResult
 import com.neo.vault.domain.model.CurrencyCompat
@@ -56,5 +57,11 @@ class VaultsRepositoryIml @Inject constructor(
         return withContext(Dispatchers.IO) {
             vaultDao.loadVaultsByType(type = Vault.Type.PIGGY_BANK)
         }.toModel()
+    }
+
+    override suspend fun removeAll(vaults: List<Vault>) {
+        withContext(Dispatchers.IO) {
+            vaultDao.removeAll(vaults.toEntity())
+        }
     }
 }

@@ -116,4 +116,10 @@ class PiggyBanksViewModel @Inject constructor(
 
         return values
     }
+
+    fun removeSelected() = viewModelScope.launch {
+        repository.removeAll(selection.selectsState.value)
+        selection.removeAll()
+        loadPiggyBanks()
+    }
 }

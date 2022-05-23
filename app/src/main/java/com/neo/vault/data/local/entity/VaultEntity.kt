@@ -33,3 +33,14 @@ fun VaultEntity.toModel() = Vault(
 )
 
 fun List<VaultEntity>.toModel() = map { it.toModel() }
+
+fun Vault.toEntity() = VaultEntity(
+    id = id,
+    name = name,
+    dateToBreak = dateToBreak,
+    currency = currency,
+    type = type,
+    summation = summation
+)
+
+fun List<Vault>.toEntity() = map { it.toEntity() }

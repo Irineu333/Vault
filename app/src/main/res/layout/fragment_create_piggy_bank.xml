@@ -33,7 +33,7 @@
         <ImageView
             android:layout_width="22dp"
             android:layout_height="22dp"
-            android:padding="3dp"
+            android:padding="2.5dp"
             android:src="@drawable/ic_money"
             app:tint="@color/onSurface" />
 

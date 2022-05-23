@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:id="@+id/edit"
         android:icon="@drawable/ic_edit"
         android:title="Editar" />
 
     <item
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:id="@+id/delete"
         android:icon="@drawable/ic_delete"
         android:title="Deletar" />

@@ -14,4 +14,5 @@ interface VaultsRepository {
 
     suspend fun getVaultByName(name: String): Vault?
     suspend fun loadPiggyBanks(): List<Vault>
+    suspend fun removeAll(vaults : List<Vault>)
 }
