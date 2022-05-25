@@ -40,9 +40,15 @@ class CreateVaultBottomSheet(
         get() = id == initialDestinationId
 
     private val initialDestinationId
-        get() = when (arguments?.getSerializable(Navigate.TAG) as? Navigate) {
-            Navigate.CreatePiggyBank -> R.id.piggyBankFragment
+        get() = when (arguments?.getSerializable(StartGraph.TAG) as? StartGraph) {
+            StartGraph.CreatePiggyBank -> R.id.createPiggyBankFragment
             null -> R.id.chooseTypeFragment
+        }
+
+    private val startNavGraphId
+        get() = when (arguments?.getSerializable(StartGraph.TAG) as? StartGraph) {
+            StartGraph.CreatePiggyBank -> R.navigation.create_piggy_bank_graph
+            null -> R.navigation.create_vault_graph
         }
 
     override fun onCreateView(
@@ -66,12 +72,13 @@ class CreateVaultBottomSheet(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        navController.setGraph(startNavGraphId)
+
         behavior?.expanded()
         behavior?.skipCollapsed = true
 
         setupView()
         setupListeners()
-        processNavigate()
     }
 
     private fun setupView() = with(binding) {
@@ -92,24 +99,11 @@ class CreateVaultBottomSheet(
         }
     }
 
-    private fun processNavigate() {
-
-        if (initialDestinationId == navController.currentDestination?.id) return
-
-        when (initialDestinationId) {
-            R.id.piggyBankFragment -> {
-                navController.navigate(
-                    R.id.action_chooseTypeFragment_to_piggyBankFragment
-                )
-            }
-        }
-    }
-
-    sealed class Navigate : Serializable {
-        object CreatePiggyBank : Navigate()
+    sealed class StartGraph : Serializable {
+        object CreatePiggyBank : StartGraph()
 
         companion object {
-            const val TAG = "navigate"
+            const val TAG = "start_graph"
         }
     }
 }

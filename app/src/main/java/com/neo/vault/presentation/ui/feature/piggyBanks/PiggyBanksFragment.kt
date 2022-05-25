@@ -95,6 +95,7 @@ class PiggyBanksFragment : Fragment() {
 
         mainActivity?.actionModeEnabled = false
         selectionSummationJob?.cancel()
+        binding.rvPiggyBanks.adapter = null
 
         _binding = null
     }
@@ -143,12 +144,18 @@ class PiggyBanksFragment : Fragment() {
             when (it.itemId) {
                 R.id.delete -> {
 
-                    showDeletePiggyBankDialog()
+                    showDeletePiggyBankDialog(
+                        viewModel.selection.selectsState.value
+                    )
 
                     true
                 }
 
                 R.id.edit -> {
+
+                    showEditPiggyBankBottomSheet(
+                        viewModel.selection.selectsState.value[0]
+                    )
 
                     true
                 }
@@ -157,21 +164,19 @@ class PiggyBanksFragment : Fragment() {
         }
     }
 
-    private fun showDeletePiggyBankDialog() {
-        val selection = viewModel.selection
-        val singleSelection = selection.singleSelection
+    private fun showDeletePiggyBankDialog(piggyBanks: List<Vault>) {
 
-        val title = if (singleSelection)
+        if (piggyBanks.isEmpty()) return
+
+        val title = if (piggyBanks.size == 1)
             "Excluir cofrinho"
         else
             "Excluir cofrinhos"
 
-        val selects = selection.selectsState.value
-
-        val message = if (singleSelection)
-            "Deseja realmente excluir o cofrinho ${selects[0].name}?"
+        val message = if (piggyBanks.size == 1)
+            "Deseja realmente excluir o cofrinho ${piggyBanks[0].name}?"
         else
-            "Deseja realmente excluir os ${selects.size} cofrinhos selecionados?"
+            "Deseja realmente excluir os ${piggyBanks.size} cofrinhos selecionados?"
 
         requireContext().showAlertDialog(
             title = title.toRaw(),
@@ -197,8 +202,30 @@ class PiggyBanksFragment : Fragment() {
     private fun showCreatePiggyBankBottomSheet() {
         val createVaultBottomSheet = CreateVaultBottomSheet {
             putSerializable(
-                CreateVaultBottomSheet.Navigate.TAG,
-                CreateVaultBottomSheet.Navigate.CreatePiggyBank
+                CreateVaultBottomSheet.StartGraph.TAG,
+                CreateVaultBottomSheet.StartGraph.CreatePiggyBank
+            )
+        }
+
+        if (
+            createVaultBottomSheet.checkToShow(
+                parentFragmentManager,
+                "create_piggy_bank"
+            )
+        ) {
+            createVaultBottomSheet.setFragmentResultListener(
+                CreatePiggyBankFragment.Event.CREATED_VAULT.name
+            ) { _, _ ->
+                viewModel.loadPiggyBanks()
+            }
+        }
+    }
+
+    private fun showEditPiggyBankBottomSheet(vault: Vault) {
+        val createVaultBottomSheet = CreateVaultBottomSheet {
+            putSerializable(
+                CreateVaultBottomSheet.StartGraph.TAG,
+                CreateVaultBottomSheet.StartGraph.CreatePiggyBank
             )
         }
 

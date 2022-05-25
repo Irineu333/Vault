@@ -1,5 +1,7 @@
 package com.neo.vault.domain.model
 
+import java.io.Serializable
+
 data class Vault(
     val id : Int,
     val name: String,
@@ -7,7 +9,7 @@ data class Vault(
     val currency: CurrencyCompat,
     val type: Type,
     val summation: Float
-) {
+) : Serializable {
     fun isToBreak() = dateToBreak?.let { it < System.currentTimeMillis() } ?: false
 
     enum class Type {

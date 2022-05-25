@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/create_piggy_bank_graph"
+    app:startDestination="@id/createPiggyBankFragment">
+
+    <fragment
+        android:id="@+id/createPiggyBankFragment"
+        android:name="com.neo.vault.presentation.ui.feature.createVault.fragments.CreatePiggyBankFragment"
+        android:label="Criar cofrinho"
+        tools:layout="@layout/fragment_create_piggy_bank">
+
+        <argument
+            android:name="edit_vault"
+            android:defaultValue="@null"
+            app:argType="com.neo.vault.domain.model.Vault"
+            app:nullable="true" />
+
+    </fragment>
+
+</navigation>

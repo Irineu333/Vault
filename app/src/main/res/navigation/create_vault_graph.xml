@@ -10,18 +10,17 @@
         android:name="com.neo.vault.presentation.ui.feature.createVault.fragments.ChooseTypeFragment"
         android:label="Escolha o tipo"
         tools:layout="@layout/fragment_choose_type">
+
         <action
-            android:id="@+id/action_chooseTypeFragment_to_piggyBankFragment"
-            app:destination="@id/piggyBankFragment"
+            android:id="@+id/action_chooseTypeFragment_to_create_piggy_bank_graph"
+            app:destination="@id/create_piggy_bank_graph"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+
     </fragment>
 
-    <fragment
-        android:id="@+id/piggyBankFragment"
-        android:name="com.neo.vault.presentation.ui.feature.createVault.fragments.CreatePiggyBankFragment"
-        android:label="Cofrinho"
-        tools:layout="@layout/fragment_create_piggy_bank" />
+    <include app:graph="@navigation/create_piggy_bank_graph" />
+
 </navigation>

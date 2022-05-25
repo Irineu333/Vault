@@ -14,8 +14,6 @@ class Selection<T> {
     val selectsState get() = _selectsState.asStateFlow()
     val isActive: Boolean get() = selectsState.value.isNotEmpty()
 
-    val singleSelection get() = selection.size == 1
-
     fun add(value: T) {
         selection.add(value)
         updated()
