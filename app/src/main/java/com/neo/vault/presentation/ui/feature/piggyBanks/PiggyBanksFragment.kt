@@ -95,7 +95,6 @@ class PiggyBanksFragment : Fragment() {
 
         mainActivity?.actionModeEnabled = false
         selectionSummationJob?.cancel()
-        binding.rvPiggyBanks.adapter = null
 
         _binding = null
     }
@@ -140,7 +139,7 @@ class PiggyBanksFragment : Fragment() {
                 }
             })
 
-        mainActivity?.actionMode?.setOnMenuItemClickListener {
+        mainActivity!!.actionMode.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.delete -> {
 

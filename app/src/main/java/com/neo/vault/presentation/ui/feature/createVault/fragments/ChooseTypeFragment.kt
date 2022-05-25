@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.neo.vault.R
-import com.neo.vault.presentation.ui.adapter.VaultTypesAdapter
 import com.neo.vault.databinding.FragmentChooseTypeBinding
 import com.neo.vault.presentation.model.VaultType
+import com.neo.vault.presentation.ui.adapter.VaultTypesAdapter
 
 class ChooseTypeFragment : Fragment() {
     private var _binding: FragmentChooseTypeBinding? = null
