@@ -3,6 +3,7 @@ package com.neo.vault.presentation.ui.feature.piggyBanks
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Space
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.neo.vault.R
 import com.neo.vault.databinding.FragmentPiggyBanksBinding
 import com.neo.vault.domain.model.Vault
+import com.neo.vault.presentation.contract.ActionModeOnClickListener
 import com.neo.vault.presentation.ui.activity.MainActivity
 import com.neo.vault.presentation.ui.adapter.PiggyBanksAdapter
 import com.neo.vault.presentation.ui.adapter.genericAdapter
@@ -33,7 +35,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class PiggyBanksFragment : Fragment() {
+class PiggyBanksFragment : Fragment(), ActionModeOnClickListener {
 
     private var _binding: FragmentPiggyBanksBinding? = null
     private val binding get() = _binding!!
@@ -138,29 +140,6 @@ class PiggyBanksFragment : Fragment() {
                     }
                 }
             })
-
-        mainActivity!!.actionMode.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.delete -> {
-
-                    showDeletePiggyBankDialog(
-                        viewModel.selection.selectsState.value
-                    )
-
-                    true
-                }
-
-                R.id.edit -> {
-
-                    showEditPiggyBankBottomSheet(
-                        viewModel.selection.selectsState.value[0]
-                    )
-
-                    true
-                }
-                else -> false
-            }
-        }
     }
 
     private fun showDeletePiggyBankDialog(piggyBanks: List<Vault>) {
@@ -220,7 +199,7 @@ class PiggyBanksFragment : Fragment() {
         }
     }
 
-    private fun showEditPiggyBankBottomSheet(vault: Vault) {
+    private fun showEditPiggyBankBottomSheet(piggyBank: Vault) {
         val createVaultBottomSheet = CreateVaultBottomSheet {
             putSerializable(
                 CreateVaultBottomSheet.StartGraph.TAG,
@@ -296,6 +275,29 @@ class PiggyBanksFragment : Fragment() {
             }
         } else {
             activity.actionModeEnabled = false
+        }
+    }
+
+    override fun onClickMenu(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.delete -> {
+
+                showDeletePiggyBankDialog(
+                    piggyBanks = viewModel.selection.selectsState.value
+                )
+
+                true
+            }
+
+            R.id.edit -> {
+
+                showEditPiggyBankBottomSheet(
+                    piggyBank = viewModel.selection.selectsState.value[0]
+                )
+
+                true
+            }
+            else -> false
         }
     }
 }

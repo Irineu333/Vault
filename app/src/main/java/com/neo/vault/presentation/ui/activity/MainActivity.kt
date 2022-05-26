@@ -7,6 +7,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import com.neo.vault.R
 import com.neo.vault.databinding.ActivityMainBinding
+import com.neo.vault.presentation.contract.ActionModeOnClickListener
 import com.neo.vault.presentation.model.Summation
 import com.neo.vault.presentation.ui.feature.showSummation.SummationFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
             displayChild.takeIf { it != switcher.displayedChild }?.also {
 
-                when(it) {
+                when (it) {
                     0 -> {
                         switcher.setInAnimation(this, R.anim.slide_in_left_short)
                         switcher.setOutAnimation(this, R.anim.slide_out_right_short)
@@ -83,6 +84,15 @@ class MainActivity : AppCompatActivity() {
 
         binding.appbar.actionMode.setNavigationOnClickListener {
             onBackPressed()
+        }
+
+        binding.appbar.actionMode.setOnMenuItemClickListener {
+
+            val fragment = navHostFragment.childFragmentManager.fragments[0]
+
+            if (fragment is ActionModeOnClickListener) {
+                fragment.onClickMenu(it)
+            } else false
         }
     }
 
