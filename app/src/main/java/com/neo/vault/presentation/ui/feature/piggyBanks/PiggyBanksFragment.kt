@@ -21,6 +21,7 @@ import com.neo.vault.R
 import com.neo.vault.databinding.FragmentPiggyBanksBinding
 import com.neo.vault.domain.model.Vault
 import com.neo.vault.presentation.contract.ActionModeOnClickListener
+import com.neo.vault.presentation.model.VaultEdit
 import com.neo.vault.presentation.ui.activity.MainActivity
 import com.neo.vault.presentation.ui.adapter.PiggyBanksAdapter
 import com.neo.vault.presentation.ui.adapter.genericAdapter
@@ -32,6 +33,7 @@ import com.neo.vault.utils.extension.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -133,7 +135,7 @@ class PiggyBanksFragment : Fragment(), ActionModeOnClickListener {
                 @SuppressLint("NotifyDataSetChanged")
                 override fun handleOnBackPressed() {
                     if (viewModel.selection.isActive) {
-                        viewModel.selection.removeAll()
+                        viewModel.selection.disableActionMode()
                         concatAdapter.notifyDataSetChanged()
                     } else {
                         findNavController().popBackStack()
@@ -205,17 +207,24 @@ class PiggyBanksFragment : Fragment(), ActionModeOnClickListener {
                 CreateVaultBottomSheet.StartGraph.TAG,
                 CreateVaultBottomSheet.StartGraph.CreatePiggyBank
             )
+            putSerializable(
+                VaultEdit.TAG,
+                piggyBank
+            )
         }
 
         if (
             createVaultBottomSheet.checkToShow(
                 parentFragmentManager,
-                "create_piggy_bank"
+                "edit_piggy_bank"
             )
         ) {
             createVaultBottomSheet.setFragmentResultListener(
                 CreatePiggyBankFragment.Event.CREATED_VAULT.name
-            ) { _, _ ->
+            ) @SuppressLint("NotifyDataSetChanged") { _, _ ->
+
+                viewModel.selection.disableActionMode()
+                concatAdapter.notifyDataSetChanged()
                 viewModel.loadPiggyBanks()
             }
         }
@@ -227,7 +236,7 @@ class PiggyBanksFragment : Fragment(), ActionModeOnClickListener {
             Lifecycle.State.STARTED
         ) {
             launch {
-                viewModel.selection.selectsState.collect { selects ->
+                viewModel.selection.state.collectLatest { selects ->
 
                     updateActionMode(selects)
 
@@ -239,7 +248,7 @@ class PiggyBanksFragment : Fragment(), ActionModeOnClickListener {
                 }
             }
             launch {
-                viewModel.uiState.collect { state ->
+                viewModel.uiState.collectLatest { state ->
 
                     mainActivity?.setSummation(state.summations)
 
@@ -283,7 +292,7 @@ class PiggyBanksFragment : Fragment(), ActionModeOnClickListener {
             R.id.delete -> {
 
                 showDeletePiggyBankDialog(
-                    piggyBanks = viewModel.selection.selectsState.value
+                    piggyBanks = viewModel.selection.state.value
                 )
 
                 true
@@ -292,7 +301,7 @@ class PiggyBanksFragment : Fragment(), ActionModeOnClickListener {
             R.id.edit -> {
 
                 showEditPiggyBankBottomSheet(
-                    piggyBank = viewModel.selection.selectsState.value[0]
+                    piggyBank = viewModel.selection.state.value[0]
                 )
 
                 true

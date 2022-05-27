@@ -11,5 +11,6 @@ sealed class CreatePiggyBankResult {
         ) : Error()
 
         object SameName : Error()
+        object NotFound : Error()
     }
 }

@@ -136,6 +136,7 @@ class PiggyBanksAdapter(
 
         fun bind(piggyBank: Vault) = with(binding) {
             tvName.text = piggyBank.name
+
             tvSummation.text = CurrencyUtil.formatter(
                 piggyBank.summation,
                 piggyBank.currency
@@ -155,9 +156,7 @@ class PiggyBanksAdapter(
                         alpha = (255 * 0.5).toInt()
                     )
                 )
-            } else {
-                null
-            }
+            } else null
         }
     }
 

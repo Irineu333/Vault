@@ -8,14 +8,17 @@ import kotlinx.coroutines.launch
 
 class Selection<T> {
 
-    private val selection = mutableSetOf<T>()
-    private val _selectsState = MutableStateFlow(selection.toList())
+    private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
-    val selectsState get() = _selectsState.asStateFlow()
-    val isActive: Boolean get() = selectsState.value.isNotEmpty()
+    private val selection = mutableSetOf<T>()
+    private val _state = MutableStateFlow(selection.toList())
+
+    val state get() = _state.asStateFlow()
+    val isActive: Boolean get() = state.value.isNotEmpty()
 
     fun add(value: T) {
-        selection.add(value)
+        if (!selection.contains(value))
+            selection.add(value)
         updated()
     }
 
@@ -24,14 +27,14 @@ class Selection<T> {
         updated()
     }
 
-    fun removeAll() {
+    fun disableActionMode() {
         selection.clear()
         updated()
     }
 
     fun selected(value: T) = selection.contains(value)
 
-    private fun updated() = CoroutineScope(Dispatchers.Main).launch {
-        _selectsState.emit(selection.toList())
+    private fun updated() = coroutineScope.launch {
+        _state.emit(selection.toList())
     }
 }

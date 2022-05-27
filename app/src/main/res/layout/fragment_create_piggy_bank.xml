@@ -128,7 +128,7 @@
         android:layout_gravity="center"
         android:layout_margin="16dp"
         android:enabled="false"
-        android:text="Criar"
+        tools:text = "Text here"
         android:textSize="16sp"
         app:icon="@drawable/ic_add_vector" />
 

@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.neo.vault.R
 import com.neo.vault.databinding.FragmentCreateVaultBinding
+import com.neo.vault.domain.model.Vault
+import com.neo.vault.presentation.model.VaultEdit
 import com.neo.vault.utils.extension.behavior
 import com.neo.vault.utils.extension.expanded
 import java.io.Serializable
@@ -28,7 +31,6 @@ class CreateVaultBottomSheet(
 
     private var _binding: FragmentCreateVaultBinding? = null
     private val binding get() = _binding!!
-
     private val navHostFragment
         get() = childFragmentManager
             .findFragmentById(R.id.create_vault_host) as NavHostFragment
@@ -51,6 +53,8 @@ class CreateVaultBottomSheet(
             null -> R.navigation.create_vault_graph
         }
 
+    private var vaultEdit: Vault? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -72,8 +76,6 @@ class CreateVaultBottomSheet(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        navController.setGraph(startNavGraphId)
-
         behavior?.expanded()
         behavior?.skipCollapsed = true
 
@@ -82,6 +84,18 @@ class CreateVaultBottomSheet(
     }
 
     private fun setupView() = with(binding) {
+
+        navController.setGraph(
+            startNavGraphId,
+            arguments?.let {
+
+                vaultEdit = it.getSerializable(VaultEdit.TAG) as? Vault
+
+                bundleOf(
+                    VaultEdit.TAG to vaultEdit
+                )
+            }
+        )
 
         btnToBack.setOnClickListener {
             navController.popBackStack()
@@ -95,7 +109,7 @@ class CreateVaultBottomSheet(
     private fun setupListeners() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             binding.btnToBack.isVisible = !destination.isInitialFragment
-            binding.tvTitle.text = destination.label
+            binding.tvTitle.text = vaultEdit?.let { "Editar ${it.name}" } ?: destination.label
         }
     }
 

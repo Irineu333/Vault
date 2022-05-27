@@ -45,6 +45,42 @@ class VaultsRepositoryIml @Inject constructor(
         CreatePiggyBankResult.Error.Generic(it)
     }
 
+    override suspend fun editPiggyBank(
+        id: Int,
+        name: String,
+        currency: CurrencyCompat,
+        dateToBreak: Long?
+    ) = runCatching {
+
+        val vaultByName = getVaultByName(name)
+
+        if (vaultByName != null && vaultByName.name != name) {
+            return@runCatching CreatePiggyBankResult.Error.SameName
+        }
+
+        if (getVaultById(id) == null) {
+            return@runCatching CreatePiggyBankResult.Error.NotFound
+        }
+
+        val timeMillis = withContext(Dispatchers.IO) {
+            measureTimeMillis {
+                vaultDao.updateVault(
+                    VaultEntity(
+                        id = id,
+                        name = name,
+                        currency = currency,
+                        dateToBreak = dateToBreak,
+                        type = Vault.Type.PIGGY_BANK
+                    )
+                )
+            }
+        }
+
+        CreatePiggyBankResult.Success(timeMillis)
+    }.getOrElse {
+        CreatePiggyBankResult.Error.Generic(it)
+    }
+
     override suspend fun getVaultByName(name: String): Vault? {
         return withContext(Dispatchers.IO) {
             vaultDao.findByName(
@@ -62,6 +98,12 @@ class VaultsRepositoryIml @Inject constructor(
     override suspend fun removeAll(vaults: List<Vault>) {
         withContext(Dispatchers.IO) {
             vaultDao.removeAll(vaults.toEntity())
+        }
+    }
+
+    override suspend fun getVaultById(id: Int): Vault? {
+        return withContext(Dispatchers.IO) {
+            vaultDao.findById(id)
         }
     }
 }

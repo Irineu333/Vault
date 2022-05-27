@@ -8,7 +8,10 @@ import com.neo.vault.domain.repository.VaultsRepository
 import com.neo.vault.utils.extension.toRaw
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -25,6 +28,8 @@ class CreateVaultViewModel @Inject constructor(
     val uiEffect = _uiEffect.receiveAsFlow()
 
     val dateToBreak get() = uiState.value.dateToBreak
+
+    var editVaultId: Int? = null
 
     fun setDateToBreak(
         timeInMillis: Long
@@ -48,11 +53,22 @@ class CreateVaultViewModel @Inject constructor(
             )
         }
 
-        val result = vaultsRepository.createPiggyBank(
-            name = name,
-            currency = currency,
-            dateToBreak = dateToBreak
-        )
+        val editVaultId = editVaultId
+
+        val result = if (editVaultId != null) {
+            vaultsRepository.editPiggyBank(
+                id = editVaultId,
+                name = name,
+                currency = currency,
+                dateToBreak = dateToBreak
+            )
+        } else {
+            vaultsRepository.createPiggyBank(
+                name = name,
+                currency = currency,
+                dateToBreak = dateToBreak
+            )
+        }
 
         _uiState.update {
             it.copy(
@@ -68,6 +84,10 @@ class CreateVaultViewModel @Inject constructor(
 
             CreatePiggyBankResult.Error.SameName -> {
                 _uiEffect.send(CreateVaultUiEffect.Error("Número já existe".toRaw()))
+            }
+
+            CreatePiggyBankResult.Error.NotFound -> {
+                _uiEffect.send(CreateVaultUiEffect.Error("Cofrinho não encontrado".toRaw()))
             }
 
             is CreatePiggyBankResult.Error.Generic -> {

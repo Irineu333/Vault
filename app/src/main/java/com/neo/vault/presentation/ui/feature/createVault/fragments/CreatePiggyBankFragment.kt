@@ -17,6 +17,8 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.neo.vault.R
 import com.neo.vault.databinding.FragmentCreatePiggyBankBinding
 import com.neo.vault.domain.model.CurrencyCompat
+import com.neo.vault.domain.model.Vault
+import com.neo.vault.presentation.model.VaultEdit
 import com.neo.vault.presentation.ui.feature.createVault.CreateVaultBottomSheet
 import com.neo.vault.presentation.ui.feature.createVault.viewModel.CreateVaultUiEffect
 import com.neo.vault.presentation.ui.feature.createVault.viewModel.CreateVaultViewModel
@@ -32,11 +34,12 @@ class CreatePiggyBankFragment : Fragment() {
 
     private var _binding: FragmentCreatePiggyBankBinding? = null
     private val binding get() = _binding!!
-
     private val viewModel: CreateVaultViewModel by viewModels()
 
     private val createVaultBottomSheet
         get() = parentFragment?.parentFragment as? CreateVaultBottomSheet
+
+    private val vaultEdit get() = arguments?.getSerializable(VaultEdit.TAG) as? Vault
 
     private var nameTextWatcher: TextWatcher? = null
 
@@ -66,14 +69,43 @@ class CreatePiggyBankFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupView()
+        viewModel.editVaultId = vaultEdit?.id
+
         setupListeners()
         setupObservers()
+        setupView()
     }
 
-    private fun setupView() {
-        binding.tieName.requestFocus()
+    private fun setupView() = with(binding) {
+
+        tieName.requestFocus()
+
+        vaultEdit?.let { setupVault(it) }
+
+        btnCreateVault.text = if (vaultEdit == null) {
+            "Criar"
+        } else {
+            "Editar"
+        }
+
+        btnCreateVault.setIconResource(
+            if (vaultEdit == null) {
+                R.drawable.ic_add_vector
+            } else {
+                R.drawable.ic_edit_vector
+            }
+        )
+
         setupCurrency()
+    }
+
+    private fun setupVault(vault: Vault) = with(binding) {
+        if (!requireActivity().isChangingConfigurations) {
+            tieName.setText(vault.name)
+
+            if (vault.dateToBreak != null)
+                viewModel.setDateToBreak(vault.dateToBreak)
+        }
     }
 
     private fun setupListeners() {
@@ -93,6 +125,10 @@ class CreatePiggyBankFragment : Fragment() {
                         ValidationResult.IsInvalid(
                             message = "Nome do cofre não pode ser vazio"
                         )
+                    }
+
+                    vaultEdit?.let { it.name == value } ?: false -> {
+                        ValidationResult.IsValid
                     }
 
                     viewModel.hasVaultWithName(value) -> {
@@ -171,7 +207,7 @@ class CreatePiggyBankFragment : Fragment() {
 
         if (checkedChipId != View.NO_ID) return@with
 
-        when (CurrencyCompat.default()) {
+        when (vaultEdit?.currency ?: CurrencyCompat.default()) {
             CurrencyCompat.BRL -> {
                 check(R.id.chip_brl)
             }
