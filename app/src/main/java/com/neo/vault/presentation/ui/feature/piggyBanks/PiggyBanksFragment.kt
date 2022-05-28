@@ -32,7 +32,6 @@ import com.neo.vault.utils.CurrencyUtil
 import com.neo.vault.utils.extension.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -166,7 +165,7 @@ class PiggyBanksFragment : Fragment(), ActionModeOnClickListener {
             setNegativeButton("Não") { _, _ -> }
 
             setPositiveButton("Sim") { _, _ ->
-                viewModel.removeSelected()
+                viewModel.deleteSelected()
             }
         }
     }
@@ -221,10 +220,9 @@ class PiggyBanksFragment : Fragment(), ActionModeOnClickListener {
         ) {
             createVaultBottomSheet.setFragmentResultListener(
                 CreatePiggyBankFragment.Event.CREATED_VAULT.name
-            ) @SuppressLint("NotifyDataSetChanged") { _, _ ->
+            ) { _, _ ->
 
                 viewModel.selection.disableActionMode()
-                concatAdapter.notifyDataSetChanged()
                 viewModel.loadPiggyBanks()
             }
         }

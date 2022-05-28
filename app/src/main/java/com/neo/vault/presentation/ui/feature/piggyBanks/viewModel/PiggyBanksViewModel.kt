@@ -66,26 +66,25 @@ class PiggyBanksViewModel @Inject constructor(
 
         val (toBreak, joining) = piggyBanks.partition { it.isToBreak() }
 
-        val summations = mutableListOf<Summation>(
-            Summation.Total(
+        val summations = buildList {
+            add(Summation.Total(
                 title = "Total".toRaw(),
                 values = totalValues.ifEmpty {
                     Summation.default.values
                 }
-            )
-        )
+            ))
 
-        if (toBreakValues.isNotEmpty()) {
-            summations.add(
-                Summation.SubTotal(
-                    title = "Para quebrar".toRaw(),
-                    values = toBreakValues
+            if (toBreakValues.isNotEmpty()) {
+                add(
+                    Summation.SubTotal(
+                        title = "Para quebrar".toRaw(),
+                        values = toBreakValues
+                    )
                 )
-            )
+            }
         }
 
         _uiState.update {
-
             it.copy(
                 toBreakPiggyBanks = toBreak,
                 joiningPiggyBanks = joining,
@@ -94,16 +93,13 @@ class PiggyBanksViewModel @Inject constructor(
         }
     }
 
-    fun getValues(selects: List<Vault>): List<Summation.Value> {
-
-        val values = mutableListOf<Summation.Value>()
-
+    fun getValues(selects: List<Vault>) = buildList {
         for (currency in CurrencyCompat.values()) {
             val filtered = selects.filter {
                 it.currency == currency
             }
             if (filtered.isNotEmpty()) {
-                values.add(
+                add(
                     Summation.Value(
                         value = filtered.summation { piggyBank ->
                             piggyBank.summation.toDouble()
@@ -113,11 +109,9 @@ class PiggyBanksViewModel @Inject constructor(
                 )
             }
         }
-
-        return values
     }
 
-    fun removeSelected() = viewModelScope.launch {
+    fun deleteSelected() = viewModelScope.launch {
         repository.removeAll(
             selection.state.value
         )

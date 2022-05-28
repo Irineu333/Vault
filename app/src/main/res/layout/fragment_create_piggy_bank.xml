@@ -26,6 +26,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
+        android:id="@+id/label_currency"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp">
@@ -88,10 +89,10 @@
         <ImageView
             android:layout_width="22dp"
             android:layout_height="22dp"
+            android:contentDescription="@null"
             android:padding="4dp"
             android:src="@drawable/ic_hammer"
-            app:tint="@color/onSurface"
-            android:contentDescription="@null" />
+            app:tint="@color/onSurface" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -101,20 +102,31 @@
 
     </LinearLayout>
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <LinearLayout
         android:id="@+id/btn_date_to_break"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:background="@drawable/bg_date_button"
-        android:drawableStart="@drawable/ic_edit_calendar"
-        android:drawablePadding="4dp"
-        android:paddingHorizontal="6dp"
-        android:text="Indefinido"
-        android:textSize="24sp"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textColor="@color/onSurface"
-        app:drawableTint="@color/onSurface" />
+        android:background="@drawable/bg_date_button">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="4dp"
+            android:src="@drawable/ic_edit_calendar"
+            app:tint="@color/onSurface" />
+
+        <TextView
+            android:id="@+id/tv_date_to_break"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingEnd="4dp"
+            android:text="Indefinido"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="@color/onSurface"
+            android:textSize="24sp" />
+
+    </LinearLayout>
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
@@ -128,8 +140,8 @@
         android:layout_gravity="center"
         android:layout_margin="16dp"
         android:enabled="false"
-        tools:text = "Text here"
         android:textSize="16sp"
-        app:icon="@drawable/ic_add_vector" />
+        app:icon="@drawable/ic_add_vector"
+        tools:text="Text here" />
 
 </LinearLayout>

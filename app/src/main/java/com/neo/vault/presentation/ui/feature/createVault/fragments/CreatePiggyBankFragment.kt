@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.neo.vault.R
 import com.neo.vault.databinding.FragmentCreatePiggyBankBinding
@@ -96,7 +97,7 @@ class CreatePiggyBankFragment : Fragment() {
             }
         )
 
-        setupCurrency()
+        binding.cgCurrency.setupCurrency()
     }
 
     private fun setupVault(vault: Vault) = with(binding) {
@@ -171,7 +172,7 @@ class CreatePiggyBankFragment : Fragment() {
         ) {
             launch {
                 viewModel.uiState.collect {
-                    binding.btnDateToBreak.text =
+                    binding.tvDateToBreak.text =
                         it.dateToBreak?.formatted ?: UNDEFINED_DATE_TEXT
                 }
             }
@@ -203,9 +204,9 @@ class CreatePiggyBankFragment : Fragment() {
         }
     }
 
-    private fun setupCurrency() = with(binding.cgCurrency) {
+    private fun ChipGroup.setupCurrency() {
 
-        if (checkedChipId != View.NO_ID) return@with
+        if (checkedChipId != View.NO_ID) return
 
         when (vaultEdit?.currency ?: CurrencyCompat.default()) {
             CurrencyCompat.BRL -> {
@@ -220,6 +221,9 @@ class CreatePiggyBankFragment : Fragment() {
                 check(R.id.chip_eur)
             }
         }
+
+        childrenIsEnable = vaultEdit == null
+        binding.labelCurrency.alpha = if (vaultEdit == null) 1f else 0.5f
     }
 
     private fun createVault() {
