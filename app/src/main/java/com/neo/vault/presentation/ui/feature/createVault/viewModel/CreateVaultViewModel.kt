@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.neo.vault.domain.model.CreatePiggyBankResult
 import com.neo.vault.domain.model.CurrencyCompat
 import com.neo.vault.domain.repository.VaultsRepository
+import com.neo.vault.presentation.ui.sync.Sync
 import com.neo.vault.utils.extension.toRaw
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -80,6 +81,8 @@ class CreateVaultViewModel @Inject constructor(
 
             is CreatePiggyBankResult.Success -> {
                 _uiEffect.send(CreateVaultUiEffect.Success)
+
+                Sync.piggyBanks.emit(Sync.Updated.PiggyBanks)
             }
 
             CreatePiggyBankResult.Error.SameName -> {

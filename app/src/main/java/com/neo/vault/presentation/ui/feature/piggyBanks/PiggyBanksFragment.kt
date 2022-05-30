@@ -185,19 +185,10 @@ class PiggyBanksFragment : Fragment(), ActionModeOnClickListener {
                 CreateVaultBottomSheet.StartGraph.CreatePiggyBank
             )
         }
-
-        if (
-            createVaultBottomSheet.checkToShow(
-                parentFragmentManager,
-                "create_piggy_bank"
-            )
-        ) {
-            createVaultBottomSheet.setFragmentResultListener(
-                CreatePiggyBankFragment.Event.CREATED_VAULT.name
-            ) { _, _ ->
-                viewModel.loadPiggyBanks()
-            }
-        }
+        createVaultBottomSheet.checkToShow(
+            parentFragmentManager,
+            "create_piggy_bank"
+        )
     }
 
     private fun showEditPiggyBankBottomSheet(piggyBank: Vault) {
@@ -219,11 +210,9 @@ class PiggyBanksFragment : Fragment(), ActionModeOnClickListener {
             )
         ) {
             createVaultBottomSheet.setFragmentResultListener(
-                CreatePiggyBankFragment.Event.CREATED_VAULT.name
+                CreatePiggyBankFragment.Event.EDIT_VAULT.name
             ) { _, _ ->
-
                 viewModel.selection.disableActionMode()
-                viewModel.loadPiggyBanks()
             }
         }
     }

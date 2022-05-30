@@ -185,15 +185,18 @@ class CreatePiggyBankFragment : Fragment() {
                                 message = "Success".toRaw()
                             )
 
-                            createVaultBottomSheet?.setFragmentResult(
-                                Event.CREATED_VAULT.name,
-                                Bundle()
-                            )
+                            if (vaultEdit != null) {
+                                createVaultBottomSheet?.setFragmentResult(
+                                    Event.EDIT_VAULT.name,
+                                    Bundle()
+                                )
+                            }
 
                             createVaultBottomSheet?.dismiss()
                         }
                         is CreateVaultUiEffect.Error -> {
                             binding.btnCreateVault.isEnabled = true
+
                             binding.showSnackbar(
                                 message = effect.error
                             )
@@ -274,6 +277,6 @@ class CreatePiggyBankFragment : Fragment() {
     }
 
     enum class Event {
-        CREATED_VAULT
+        EDIT_VAULT
     }
 }

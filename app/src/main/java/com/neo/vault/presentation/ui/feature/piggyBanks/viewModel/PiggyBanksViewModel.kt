@@ -7,11 +7,13 @@ import com.neo.vault.domain.model.Vault
 import com.neo.vault.domain.repository.VaultsRepository
 import com.neo.vault.presentation.model.Selection
 import com.neo.vault.presentation.model.Summation
+import com.neo.vault.presentation.ui.sync.Sync
 import com.neo.vault.utils.extension.summation
 import com.neo.vault.utils.extension.toRaw
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,6 +27,16 @@ class PiggyBanksViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     val selection = Selection<Vault>()
+
+    init {
+        attachSync()
+    }
+
+    private fun attachSync() = viewModelScope.launch {
+        Sync.piggyBanks.collect {
+            loadPiggyBanks()
+        }
+    }
 
     fun loadPiggyBanks() = viewModelScope.launch {
 
@@ -112,12 +124,10 @@ class PiggyBanksViewModel @Inject constructor(
     }
 
     fun deleteSelected() = viewModelScope.launch {
-        repository.removeAll(
-            selection.state.value
-        )
+        repository.removeAll(selection.state.value)
 
         selection.disableActionMode()
 
-        loadPiggyBanks()
+        Sync.piggyBanks.emit(Sync.Updated.PiggyBanks)
     }
 }
