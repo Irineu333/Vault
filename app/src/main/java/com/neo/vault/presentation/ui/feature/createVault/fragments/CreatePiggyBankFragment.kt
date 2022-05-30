@@ -231,7 +231,7 @@ class CreatePiggyBankFragment : Fragment() {
 
     private fun createVault() {
         viewModel.createPiggyBank(
-            name = binding.tilName.editText!!.text.toString(),
+            name = binding.tilName.editText!!.text.toString().trim(),
             currency = getCurrency()
         )
     }
