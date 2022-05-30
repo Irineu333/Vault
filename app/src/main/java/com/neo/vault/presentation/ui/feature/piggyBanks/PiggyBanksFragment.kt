@@ -211,7 +211,8 @@ class PiggyBanksFragment : Fragment(), ActionModeOnClickListener {
         ) {
             createVaultBottomSheet.setFragmentResultListener(
                 CreatePiggyBankFragment.Event.EDIT_VAULT.name
-            ) { _, _ ->
+            ) @SuppressLint("NotifyDataSetChanged") { _, _ ->
+                concatAdapter.notifyDataSetChanged()
                 viewModel.selection.disableActionMode()
             }
         }

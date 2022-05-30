@@ -29,6 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 @AndroidEntryPoint
 class CreatePiggyBankFragment : Fragment() {
@@ -83,13 +84,13 @@ class CreatePiggyBankFragment : Fragment() {
 
         vaultEdit?.let { setupVault(it) }
 
-        btnCreateVault.text = if (vaultEdit == null) {
+        btnConfirm.text = if (vaultEdit == null) {
             "Criar"
         } else {
             "Editar"
         }
 
-        btnCreateVault.setIconResource(
+        btnConfirm.setIconResource(
             if (vaultEdit == null) {
                 R.drawable.ic_add_vector
             } else {
@@ -114,7 +115,7 @@ class CreatePiggyBankFragment : Fragment() {
             showDataPicker()
         }
 
-        binding.btnCreateVault.setOnClickListener {
+        binding.btnConfirm.setOnClickListener {
             it.isEnabled = false
             createVault()
         }
@@ -154,14 +155,14 @@ class CreatePiggyBankFragment : Fragment() {
                 boxStrokeColor = colorGreen
                 hintTextColor = ColorStateList.valueOf(colorGreen)
 
-                binding.btnCreateVault.isEnabled = true
+                binding.btnConfirm.isEnabled = true
             },
             isInvalid = { textError ->
 
                 error = textError
                 isErrorEnabled = true
 
-                binding.btnCreateVault.isEnabled = false
+                binding.btnConfirm.isEnabled = false
             }
         )
     }
@@ -195,7 +196,7 @@ class CreatePiggyBankFragment : Fragment() {
                             createVaultBottomSheet?.dismiss()
                         }
                         is CreateVaultUiEffect.Error -> {
-                            binding.btnCreateVault.isEnabled = true
+                            binding.btnConfirm.isEnabled = true
 
                             binding.showSnackbar(
                                 message = effect.error
@@ -225,7 +226,7 @@ class CreatePiggyBankFragment : Fragment() {
             }
         }
 
-        childrenIsEnable = vaultEdit == null
+        childrenIsEnable = Random.nextBoolean()
         binding.labelCurrency.alpha = if (vaultEdit == null) 1f else 0.5f
     }
 
