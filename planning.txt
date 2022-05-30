@@ -12,19 +12,26 @@ release 1.0.0 : mvp -> modo offline
 [] metas
    ...
 
-[] update manager
+[] notificações
+
+[] gerenciador de atualizações
+[] refactorar strings
+[] crashlytics
+[] analytics
 
 release 1.1.0 -> modo online
 - suporte ao inglês
 - lançar em paises compatíveis
 
+[] notificações remotas
 
 release 1.2.0 -> expansão
 - adicicionar idiomas da zona euro
 - lançar em paises compatíves
 
-
 backlog
 - adicionar libra
 - campanhas
 - divulgações
+- criar dialog lib
+- criar chat lib
