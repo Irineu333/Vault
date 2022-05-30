@@ -1,0 +1,30 @@
+release 1.0.0 : mvp -> modo offline
+- lançar no brasil
+- suporte a português
+- suporte a real, dólar, euro
+
+[] cofrinhos
+   [x] criar, editar e excluir cofrinhos
+       * não permitir editar moeda se tiver transações
+   [] ver cofrinhos
+   [] criar, editar e excluir transações
+
+[] metas
+   ...
+
+[] update manager
+
+release 1.1.0 -> modo online
+- suporte ao inglês
+- lançar em paises compatíveis
+
+
+release 1.2.0 -> expansão
+- adicicionar idiomas da zona euro
+- lançar em paises compatíves
+
+
+backlog
+- adicionar libra
+- campanhas
+- divulgações
