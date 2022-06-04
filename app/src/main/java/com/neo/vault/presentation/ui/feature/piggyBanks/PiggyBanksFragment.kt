@@ -22,7 +22,6 @@ import com.neo.vault.R
 import com.neo.vault.databinding.FragmentPiggyBanksBinding
 import com.neo.vault.domain.model.Vault
 import com.neo.vault.presentation.contract.ActionModeOnClickListener
-import com.neo.vault.presentation.model.VaultEdit
 import com.neo.vault.presentation.ui.activity.MainActivity
 import com.neo.vault.presentation.ui.adapter.PiggyBanksAdapter
 import com.neo.vault.presentation.ui.adapter.genericAdapter
@@ -193,12 +192,10 @@ class PiggyBanksFragment : Fragment(), ActionModeOnClickListener {
     }
 
     private fun showCreatePiggyBankBottomSheet() {
-        val createVaultBottomSheet = CreateVaultBottomSheet {
-            putSerializable(
-                CreateVaultBottomSheet.StartGraph.TAG,
-                CreateVaultBottomSheet.StartGraph.CreatePiggyBank
-            )
-        }
+        val createVaultBottomSheet = CreateVaultBottomSheet(
+            startGraph = CreateVaultBottomSheet.StartGraph.CreatePiggyBank
+        )
+
         createVaultBottomSheet.checkToShow(
             parentFragmentManager,
             "create_piggy_bank"
@@ -206,16 +203,10 @@ class PiggyBanksFragment : Fragment(), ActionModeOnClickListener {
     }
 
     private fun showEditPiggyBankBottomSheet(piggyBank: Vault) {
-        val createVaultBottomSheet = CreateVaultBottomSheet {
-            putSerializable(
-                CreateVaultBottomSheet.StartGraph.TAG,
-                CreateVaultBottomSheet.StartGraph.CreatePiggyBank
-            )
-            putSerializable(
-                VaultEdit.TAG,
-                piggyBank
-            )
-        }
+        val createVaultBottomSheet = CreateVaultBottomSheet(
+            startGraph = CreateVaultBottomSheet.StartGraph.CreatePiggyBank,
+            vaultToEdit = piggyBank
+        )
 
         if (
             createVaultBottomSheet.checkToShow(

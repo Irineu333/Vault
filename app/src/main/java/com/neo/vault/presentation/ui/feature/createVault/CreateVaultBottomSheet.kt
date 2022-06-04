@@ -12,7 +12,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.neo.vault.R
 import com.neo.vault.databinding.FragmentCreateVaultBinding
 import com.neo.vault.domain.model.Vault
-import com.neo.vault.presentation.model.VaultEdit
+import com.neo.vault.presentation.model.VaultToEdit
 import com.neo.vault.utils.extension.behavior
 import com.neo.vault.utils.extension.expanded
 import java.io.Serializable
@@ -20,6 +20,22 @@ import java.io.Serializable
 class CreateVaultBottomSheet(
     arguments: (Bundle.() -> Unit)? = null
 ) : BottomSheetDialogFragment() {
+
+    constructor(
+        startGraph: StartGraph = StartGraph.ChooseVault,
+        vaultToEdit : Vault? = null
+    ) : this(
+        arguments = {
+            putSerializable(
+                StartGraph.TAG,
+                startGraph
+            )
+            putSerializable(
+                VaultToEdit.TAG,
+                vaultToEdit
+            )
+        }
+    )
 
     init {
         if (arguments != null) {
@@ -31,6 +47,7 @@ class CreateVaultBottomSheet(
 
     private var _binding: FragmentCreateVaultBinding? = null
     private val binding get() = _binding!!
+
     private val navHostFragment
         get() = childFragmentManager
             .findFragmentById(R.id.create_vault_host) as NavHostFragment
@@ -42,16 +59,21 @@ class CreateVaultBottomSheet(
         get() = id == initialDestinationId
 
     private val initialDestinationId
-        get() = when (arguments?.getSerializable(StartGraph.TAG) as? StartGraph) {
+        get() = when (startGraph) {
             StartGraph.CreatePiggyBank -> R.id.createPiggyBankFragment
-            null -> R.id.chooseTypeFragment
+            StartGraph.ChooseVault -> R.id.chooseTypeFragment
         }
 
     private val startNavGraphId
-        get() = when (arguments?.getSerializable(StartGraph.TAG) as? StartGraph) {
+        get() = when (startGraph) {
             StartGraph.CreatePiggyBank -> R.navigation.create_piggy_bank_graph
-            null -> R.navigation.create_vault_graph
+            StartGraph.ChooseVault -> R.navigation.create_vault_graph
         }
+
+    private val startGraph
+        get() = arguments?.getSerializable(
+            StartGraph.TAG
+        ) as? StartGraph ?: StartGraph.ChooseVault
 
     private var vaultEdit: Vault? = null
 
@@ -89,10 +111,10 @@ class CreateVaultBottomSheet(
             startNavGraphId,
             arguments?.let {
 
-                vaultEdit = it.getSerializable(VaultEdit.TAG) as? Vault
+                vaultEdit = it.getSerializable(VaultToEdit.TAG) as? Vault
 
                 bundleOf(
-                    VaultEdit.TAG to vaultEdit
+                    VaultToEdit.TAG to vaultEdit
                 )
             }
         )
@@ -115,6 +137,7 @@ class CreateVaultBottomSheet(
 
     sealed class StartGraph : Serializable {
         object CreatePiggyBank : StartGraph()
+        object ChooseVault : StartGraph()
 
         companion object {
             const val TAG = "start_graph"

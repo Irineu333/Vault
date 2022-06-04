@@ -19,7 +19,7 @@ import com.neo.vault.R
 import com.neo.vault.databinding.FragmentCreatePiggyBankBinding
 import com.neo.vault.domain.model.CurrencyCompat
 import com.neo.vault.domain.model.Vault
-import com.neo.vault.presentation.model.VaultEdit
+import com.neo.vault.presentation.model.VaultToEdit
 import com.neo.vault.presentation.ui.feature.createVault.CreateVaultBottomSheet
 import com.neo.vault.presentation.ui.feature.createVault.viewModel.CreateVaultUiEffect
 import com.neo.vault.presentation.ui.feature.createVault.viewModel.CreateVaultViewModel
@@ -42,7 +42,7 @@ class CreatePiggyBankFragment : Fragment() {
     private val createVaultBottomSheet
         get() = parentFragment?.parentFragment as? CreateVaultBottomSheet
 
-    private val vaultEdit get() = arguments?.getSerializable(VaultEdit.TAG) as? Vault
+    private val vaultEdit get() = arguments?.getSerializable(VaultToEdit.TAG) as? Vault
 
     private var nameTextWatcher: TextWatcher? = null
 
