@@ -104,7 +104,7 @@ class HomeVaultsFragment : Fragment() {
                     ),
                     title = UiText.to("Cofrinhos"),
                     action = {
-                        findNavController().navigate(R.id.action_homeVaults_to_piggyBankVaults)
+                        findNavController().navigate(R.id.action_homeVaults_to_piggyBanks)
                     }
                 ),
             )

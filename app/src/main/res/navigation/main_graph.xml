@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/transactions_grath"
-    app:startDestination="@id/homeVaults">
+    app:startDestination="@id/homeVaultsFragment">
 
     <fragment
-        android:id="@+id/homeVaults"
+        android:id="@+id/homeVaultsFragment"
         android:name="com.neo.vault.presentation.ui.feature.homeVaults.HomeVaultsFragment"
         android:label="Todos"
         tools:layout="@layout/fragment_home_vaults">
         <action
-            android:id="@+id/action_homeVaults_to_piggyBankVaults"
-            app:destination="@id/piggyBankVaults"
+            android:id="@+id/action_homeVaults_to_piggyBanks"
+            app:destination="@id/piggyBanksFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -20,8 +20,26 @@
     </fragment>
 
     <fragment
-        android:id="@+id/piggyBankVaults"
+        android:id="@+id/piggyBanksFragment"
         android:name="com.neo.vault.presentation.ui.feature.piggyBanks.PiggyBanksFragment"
         android:label="Cofrinhos"
-        tools:layout="@layout/fragment_piggy_banks" />
+        tools:layout="@layout/fragment_piggy_banks">
+        <action
+            android:id="@+id/action_piggyBanksFragment_to_piggyBankFragment"
+            app:destination="@id/piggyBankFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/piggyBankFragment"
+        android:name="com.neo.vault.presentation.ui.feature.piggyBank.PiggyBankFragment"
+        android:label="Cofrinho"
+        tools:layout="@layout/fragment_piggy_bank" >
+        <argument
+            android:name="piggy_bank"
+            app:argType="com.neo.vault.domain.model.Vault" />
+    </fragment>
 </navigation>

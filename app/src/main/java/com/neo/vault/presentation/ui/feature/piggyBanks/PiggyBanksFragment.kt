@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Space
 import androidx.activity.OnBackPressedCallback
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -28,10 +29,12 @@ import com.neo.vault.presentation.ui.adapter.genericAdapter
 import com.neo.vault.presentation.ui.feature.createVault.CreateVaultBottomSheet
 import com.neo.vault.presentation.ui.feature.createVault.fragments.CreatePiggyBankFragment
 import com.neo.vault.presentation.ui.feature.piggyBanks.viewModel.PiggyBanksViewModel
+import com.neo.vault.presentation.ui.sync.Sync
 import com.neo.vault.utils.CurrencyUtil
 import com.neo.vault.utils.extension.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -50,14 +53,16 @@ class PiggyBanksFragment : Fragment(), ActionModeOnClickListener {
     private val toBreakPiggyBanksAdapter by lazy {
         PiggyBanksAdapter(
             title = "Para quebrar".toRaw(),
-            selection = viewModel.selection
+            selection = viewModel.selection,
+            openPiggyBank = this::openPiggyBank
         )
     }
 
     private val joiningPiggyBanksAdapter by lazy {
         PiggyBanksAdapter(
             title = "Juntando".toRaw(),
-            selection = viewModel.selection
+            selection = viewModel.selection,
+            openPiggyBank = this::openPiggyBank
         )
     }
 
@@ -98,6 +103,8 @@ class PiggyBanksFragment : Fragment(), ActionModeOnClickListener {
 
         mainActivity?.actionModeEnabled = false
         selectionSummationJob?.cancel()
+
+        binding.rvPiggyBanks.adapter = null
 
         _binding = null
     }
@@ -141,6 +148,13 @@ class PiggyBanksFragment : Fragment(), ActionModeOnClickListener {
                     }
                 }
             })
+    }
+
+    private fun openPiggyBank(vault: Vault) {
+        findNavController().navigate(
+            R.id.action_piggyBanksFragment_to_piggyBankFragment,
+            bundleOf("piggy_bank" to vault)
+        )
     }
 
     private fun showDeletePiggyBankDialog(piggyBanks: List<Vault>) {
@@ -242,6 +256,12 @@ class PiggyBanksFragment : Fragment(), ActionModeOnClickListener {
 
                     toBreakPiggyBanksAdapter.piggyBanks = state.toBreakPiggyBanks
                     joiningPiggyBanksAdapter.piggyBanks = state.joiningPiggyBanks
+                }
+            }
+
+            launch {
+                Sync.piggyBanks.collect {
+                    viewModel.loadPiggyBanks()
                 }
             }
         }

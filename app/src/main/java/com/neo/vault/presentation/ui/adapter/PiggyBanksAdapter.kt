@@ -20,7 +20,8 @@ import java.util.*
 
 class PiggyBanksAdapter(
     private val title: UiText,
-    private val selection: Selection<Vault>
+    private val selection: Selection<Vault>,
+    private val openPiggyBank: (Vault) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var piggyBanks = emptyList<Vault>()
@@ -98,6 +99,8 @@ class PiggyBanksAdapter(
                 holder.itemView.setOnClickListener {
                     if (selection.isActive) {
                         updateItem()
+                    } else {
+                        openPiggyBank(piggyBank)
                     }
                 }
             }
@@ -161,16 +164,16 @@ class PiggyBanksAdapter(
     }
 
     inner class TitleHolder(
-        private val biding: ItemVaultsTitleBinding
-    ) : RecyclerView.ViewHolder(biding.root) {
+        private val binding: ItemVaultsTitleBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(title: UiText) {
-            biding.tvTitle.text = title.resolve(itemView.context)
-            biding.tvIcon.rotation = if (isCollapsed) 0f else 90f
+            binding.tvTitle.text = title.resolve(itemView.context)
+            binding.tvIcon.rotation = if (isCollapsed) 0f else 90f
         }
 
         fun collapse(collapsed: Boolean) {
-            biding.tvIcon.animate().rotation(
+            binding.tvIcon.animate().rotation(
                 if (collapsed) 0f else 90f
             ).setDuration(100).start()
         }

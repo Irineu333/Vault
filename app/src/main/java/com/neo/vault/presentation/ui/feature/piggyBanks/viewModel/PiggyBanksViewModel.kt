@@ -28,16 +28,6 @@ class PiggyBanksViewModel @Inject constructor(
 
     val selection = Selection<Vault>()
 
-    init {
-        attachSync()
-    }
-
-    private fun attachSync() = viewModelScope.launch {
-        Sync.piggyBanks.collect {
-            loadPiggyBanks()
-        }
-    }
-
     fun loadPiggyBanks() = viewModelScope.launch {
 
         val piggyBanks = repository.loadPiggyBanks()

@@ -36,6 +36,7 @@ class CreatePiggyBankFragment : Fragment() {
 
     private var _binding: FragmentCreatePiggyBankBinding? = null
     private val binding get() = _binding!!
+
     private val viewModel: CreateVaultViewModel by viewModels()
 
     private val createVaultBottomSheet

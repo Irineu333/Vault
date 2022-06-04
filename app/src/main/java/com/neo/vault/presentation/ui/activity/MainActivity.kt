@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
             .findFragmentById(R.id.container_values) as? SummationFragment
 
     private val NavDestination.isInitialFragment
-        get() = id == R.id.homeVaults
+        get() = id == R.id.homeVaultsFragment
 
     var actionModeEnabled
         get() = binding.appbar.switcher.displayedChild == 1
