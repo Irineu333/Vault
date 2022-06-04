@@ -23,7 +23,7 @@ class CreateVaultBottomSheet(
 
     constructor(
         startGraph: StartGraph = StartGraph.ChooseVault,
-        vaultToEdit : Vault? = null
+        vaultToEdit: Vault? = null
     ) : this(
         arguments = {
             putSerializable(
@@ -75,7 +75,8 @@ class CreateVaultBottomSheet(
             StartGraph.TAG
         ) as? StartGraph ?: StartGraph.ChooseVault
 
-    private var vaultEdit: Vault? = null
+    private val vaultEdit: Vault?
+        get() = arguments?.getSerializable(VaultToEdit.TAG) as? Vault
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -110,9 +111,6 @@ class CreateVaultBottomSheet(
         navController.setGraph(
             startNavGraphId,
             arguments?.let {
-
-                vaultEdit = it.getSerializable(VaultToEdit.TAG) as? Vault
-
                 bundleOf(
                     VaultToEdit.TAG to vaultEdit
                 )
