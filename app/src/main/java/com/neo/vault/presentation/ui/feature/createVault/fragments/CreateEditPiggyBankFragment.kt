@@ -183,7 +183,7 @@ class CreateEditPiggyBankFragment : Fragment() {
             launch {
                 viewModel.uiState.collect {
                     binding.tvDateToBreak.text =
-                        it.dateToBreak?.formatted ?: "Indefinido"
+                        it.dateToBreak?.dateFormatted ?: "Indefinido"
                 }
             }
 

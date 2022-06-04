@@ -14,7 +14,7 @@ import com.neo.vault.domain.model.Vault
 import com.neo.vault.presentation.model.Selection
 import com.neo.vault.presentation.model.UiText
 import com.neo.vault.utils.CurrencyUtil
-import com.neo.vault.utils.extension.formatted
+import com.neo.vault.utils.extension.dateFormatted
 import com.neo.vault.utils.extension.modify
 import java.util.*
 
@@ -147,7 +147,7 @@ class PiggyBanksAdapter(
 
             tvDateToBreak.isVisible =
                 piggyBank.dateToBreak?.also {
-                    tvDateToBreak.text = Date(it).formatted
+                    tvDateToBreak.text = Date(it).dateFormatted
                 } != null
 
             flRoot.background = if (piggyBank.selected) {

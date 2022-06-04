@@ -6,19 +6,23 @@ import java.util.*
 
 object TimeUtils {
 
-    val formatter: DateFormat by lazy {
+    val dateFormatter: DateFormat by lazy {
         SimpleDateFormat.getDateInstance()
     }
 
-    val utcFormatter: DateFormat by lazy {
+    val dateTimeFormatter: DateFormat by lazy {
+        SimpleDateFormat.getDateTimeInstance()
+    }
+
+    val utcDateFormatter: DateFormat by lazy {
         SimpleDateFormat.getDateInstance().apply {
             timeZone = TimeZone.getTimeZone("UTC")
         }
     }
 
     fun utcToLocal(utcTimeMillis: Long): Long {
-        val localDate = formatter.parse(
-            utcFormatter.format(
+        val localDate = dateFormatter.parse(
+            utcDateFormatter.format(
                 Date(utcTimeMillis)
             )
         )

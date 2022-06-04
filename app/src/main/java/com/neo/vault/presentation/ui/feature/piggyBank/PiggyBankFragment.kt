@@ -72,8 +72,8 @@ class PiggyBankFragment : Fragment() {
                 Summation.Total(
                     values = listOf(
                         Summation.Value(
-                            value = 3000f,
-                            currency = CurrencyCompat.BRL,
+                            value = 10.02f,
+                            currency = piggyBank.currency,
                         ),
                     ),
                     title = UiText.to("Guardado")
@@ -84,13 +84,15 @@ class PiggyBankFragment : Fragment() {
         transactionsAdapter.transactions = listOf(
             Transaction(
                 id = 0,
-                value = 20f,
-                date = System.currentTimeMillis()
+                value = -9f,
+                date = System.currentTimeMillis(),
+                summation = 10.02f
             ),
             Transaction(
                 id = 1,
-                value = 19f,
-                date = System.currentTimeMillis()
+                value = 19.02f,
+                date = System.currentTimeMillis(),
+                summation = 19.02f
             )
         )
     }
