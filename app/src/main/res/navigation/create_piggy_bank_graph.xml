@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/create_piggy_bank_graph"
-    app:startDestination="@id/createPiggyBankFragment">
+    app:startDestination="@id/createEditPiggyBankFragment">
 
     <fragment
-        android:id="@+id/createPiggyBankFragment"
-        android:name="com.neo.vault.presentation.ui.feature.createVault.fragments.CreatePiggyBankFragment"
-        android:label="Criar cofrinho"
+        android:id="@+id/createEditPiggyBankFragment"
+        android:name="com.neo.vault.presentation.ui.feature.createVault.fragments.CreateEditPiggyBankFragment"
+        android:label="CreateEditPiggyBankFragment"
         tools:layout="@layout/fragment_create_piggy_bank">
 
         <argument

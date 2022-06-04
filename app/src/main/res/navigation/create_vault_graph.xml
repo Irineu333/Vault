@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/chooseTypeFragment"
         android:name="com.neo.vault.presentation.ui.feature.createVault.fragments.ChooseTypeFragment"
-        android:label="Escolha o tipo"
+        android:label="ChooseTypeFragment"
         tools:layout="@layout/fragment_choose_type">
 
         <action

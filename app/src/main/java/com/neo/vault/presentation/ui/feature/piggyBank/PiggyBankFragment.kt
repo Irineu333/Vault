@@ -13,6 +13,7 @@ import com.neo.vault.presentation.model.Summation
 import com.neo.vault.presentation.model.UiText
 import com.neo.vault.presentation.ui.activity.MainActivity
 import com.neo.vault.presentation.ui.adapter.TransactionsAdapter
+import com.neo.vault.utils.extension.toRaw
 
 class PiggyBankFragment : Fragment() {
 
@@ -66,6 +67,7 @@ class PiggyBankFragment : Fragment() {
         super.onStart()
 
         mainActivity?.setSummation(
+            piggyBank.name.toRaw(),
             listOf(
                 Summation.Total(
                     values = listOf(

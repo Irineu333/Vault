@@ -12,10 +12,16 @@ import com.neo.vault.R
 import com.neo.vault.databinding.FragmentChooseTypeBinding
 import com.neo.vault.presentation.model.VaultType
 import com.neo.vault.presentation.ui.adapter.VaultTypesAdapter
+import com.neo.vault.presentation.ui.feature.createVault.CreateVaultBottomSheet
+import com.neo.vault.utils.extension.toRaw
 
 class ChooseTypeFragment : Fragment() {
+
     private var _binding: FragmentChooseTypeBinding? = null
     private val binding get() = _binding!!
+
+    private val createVaultBottomSheet
+        get() = parentFragment?.parentFragment as? CreateVaultBottomSheet
 
     private val optionsAdapter by lazy {
         VaultTypesAdapter()
@@ -43,6 +49,12 @@ class ChooseTypeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupView()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        createVaultBottomSheet?.updateTitle("Escolha o tipo".toRaw())
     }
 
     private fun setupView() = with(binding) {

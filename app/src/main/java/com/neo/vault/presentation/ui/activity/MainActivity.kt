@@ -9,6 +9,7 @@ import com.neo.vault.R
 import com.neo.vault.databinding.ActivityMainBinding
 import com.neo.vault.presentation.contract.ActionModeOnClickListener
 import com.neo.vault.presentation.model.Summation
+import com.neo.vault.presentation.model.UiText
 import com.neo.vault.presentation.ui.feature.showSummation.SummationFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -74,8 +75,6 @@ class MainActivity : AppCompatActivity() {
                 if (!destination.isInitialFragment)
                     ContextCompat.getDrawable(this, R.drawable.ic_back)
                 else null
-
-            binding.appbar.toolbar.title = destination.label
         }
 
         binding.appbar.toolbar.setNavigationOnClickListener {
@@ -96,7 +95,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun setSummation(summations: List<Summation>) {
+    fun setSummation(title: UiText.Raw, summations: List<Summation>) {
+
+        binding.appbar.toolbar.title = title.resolve(this)
 
         valuesFragment?.setValues(
             summations = summations

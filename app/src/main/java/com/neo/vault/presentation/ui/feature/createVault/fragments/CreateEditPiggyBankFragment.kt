@@ -32,7 +32,7 @@ import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 @AndroidEntryPoint
-class CreatePiggyBankFragment : Fragment() {
+class CreateEditPiggyBankFragment : Fragment() {
 
     private var _binding: FragmentCreatePiggyBankBinding? = null
     private val binding get() = _binding!!
@@ -77,6 +77,14 @@ class CreatePiggyBankFragment : Fragment() {
         setupListeners()
         setupObservers()
         setupView()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val title = vaultEdit?.let { "Editar ${it.name}" } ?: "Criar cofrinho"
+
+        createVaultBottomSheet?.updateTitle(title.toRaw())
     }
 
     private fun setupView() = with(binding) {
@@ -175,7 +183,7 @@ class CreatePiggyBankFragment : Fragment() {
             launch {
                 viewModel.uiState.collect {
                     binding.tvDateToBreak.text =
-                        it.dateToBreak?.formatted ?: UNDEFINED_DATE_TEXT
+                        it.dateToBreak?.formatted ?: "Indefinido"
                 }
             }
 
@@ -274,7 +282,6 @@ class CreatePiggyBankFragment : Fragment() {
     }
 
     companion object {
-        const val UNDEFINED_DATE_TEXT = "Indefinido"
         const val DATA_PICKER_TAG = "DATA_PICKER"
     }
 

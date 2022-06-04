@@ -12,6 +12,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.neo.vault.R
 import com.neo.vault.databinding.FragmentCreateVaultBinding
 import com.neo.vault.domain.model.Vault
+import com.neo.vault.presentation.model.UiText
 import com.neo.vault.presentation.model.VaultToEdit
 import com.neo.vault.utils.extension.behavior
 import com.neo.vault.utils.extension.expanded
@@ -60,7 +61,7 @@ class CreateVaultBottomSheet(
 
     private val initialDestinationId
         get() = when (startGraph) {
-            StartGraph.CreatePiggyBank -> R.id.createPiggyBankFragment
+            StartGraph.CreatePiggyBank -> R.id.createEditPiggyBankFragment
             StartGraph.ChooseVault -> R.id.chooseTypeFragment
         }
 
@@ -129,8 +130,11 @@ class CreateVaultBottomSheet(
     private fun setupListeners() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             binding.btnToBack.isVisible = !destination.isInitialFragment
-            binding.tvTitle.text = vaultEdit?.let { "Editar ${it.name}" } ?: destination.label
         }
+    }
+
+    fun updateTitle(title : UiText) {
+        binding.tvTitle.text = title.resolve(requireContext())
     }
 
     sealed class StartGraph : Serializable {

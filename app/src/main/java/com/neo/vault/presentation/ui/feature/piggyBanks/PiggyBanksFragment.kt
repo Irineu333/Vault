@@ -26,7 +26,7 @@ import com.neo.vault.presentation.ui.activity.MainActivity
 import com.neo.vault.presentation.ui.adapter.PiggyBanksAdapter
 import com.neo.vault.presentation.ui.adapter.genericAdapter
 import com.neo.vault.presentation.ui.feature.createVault.CreateVaultBottomSheet
-import com.neo.vault.presentation.ui.feature.createVault.fragments.CreatePiggyBankFragment
+import com.neo.vault.presentation.ui.feature.createVault.fragments.CreateEditPiggyBankFragment
 import com.neo.vault.presentation.ui.feature.piggyBanks.viewModel.PiggyBanksViewModel
 import com.neo.vault.presentation.ui.sync.Sync
 import com.neo.vault.utils.CurrencyUtil
@@ -215,7 +215,7 @@ class PiggyBanksFragment : Fragment(), ActionModeOnClickListener {
             )
         ) {
             createVaultBottomSheet.setFragmentResultListener(
-                CreatePiggyBankFragment.Event.EDIT_VAULT.name
+                CreateEditPiggyBankFragment.Event.EDIT_VAULT.name
             ) @SuppressLint("NotifyDataSetChanged") { _, _ ->
                 concatAdapter.notifyDataSetChanged()
                 viewModel.selection.disableActionMode()
@@ -243,7 +243,7 @@ class PiggyBanksFragment : Fragment(), ActionModeOnClickListener {
             launch {
                 viewModel.uiState.collectLatest { state ->
 
-                    mainActivity?.setSummation(state.summations)
+                    mainActivity?.setSummation("Cofrinhos".toRaw(), state.summations)
 
                     toBreakPiggyBanksAdapter.piggyBanks = state.toBreakPiggyBanks
                     joiningPiggyBanksAdapter.piggyBanks = state.joiningPiggyBanks
