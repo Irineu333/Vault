@@ -11,21 +11,34 @@ import com.neo.vault.databinding.ItemTransactionBinding
 import com.neo.vault.databinding.ItemVaultsTitleBinding
 import com.neo.vault.domain.model.CurrencyCompat
 import com.neo.vault.domain.model.Transaction
+import com.neo.vault.presentation.model.Session
 import com.neo.vault.utils.CurrencyUtil
 import com.neo.vault.utils.extension.dateFormatted
-import com.neo.vault.utils.extension.timeFormatted
 import java.util.*
 
 class TransactionsAdapter(
     private val currency: CurrencyCompat
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var items = emptyList<Any>()
+    var sessions = emptyList<Session<Transaction>>()
         @SuppressLint("NotifyDataSetChanged")
         set(value) {
             field = value
+            updateCurrent()
             notifyDataSetChanged()
         }
+
+    private var current = emptyList<Any>()
+
+    private fun updateCurrent() {
+        current = buildList {
+            for (session in sessions) {
+                add(session)
+                if (!session.expanded) continue
+                addAll(session.items)
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -57,7 +70,7 @@ class TransactionsAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        val item = items[position]
+        val item = current[position]
 
         when (holder) {
             is TransactionHolder -> {
@@ -66,19 +79,45 @@ class TransactionsAdapter(
                 holder.bind(item)
             }
             is SessionHolder -> {
-                item as Long
+                item as Session<*>
 
                 holder.bind(item)
+
+                fun changeExpanded(item: Session<*>) {
+                    item.expanded = !item.expanded
+
+                    updateCurrent()
+
+                    val startList = position + 1
+                    val endList = position + item.size
+
+                    if (item.expanded) {
+                        notifyItemRangeInserted(
+                            startList,
+                            endList
+                        )
+                    } else {
+                        notifyItemRangeRemoved(
+                            startList,
+                            endList
+                        )
+                    }
+                }
+
+                holder.itemView.setOnClickListener {
+                    changeExpanded(item)
+                    holder.expanded(item.expanded)
+                }
             }
         }
     }
 
-    override fun getItemCount() = items.size
+    override fun getItemCount() = current.size
 
     override fun getItemViewType(position: Int): Int {
-        return when (val item = items[position]) {
+        return when (val item = current[position]) {
             is Transaction -> Type.TRANSACTION.code
-            is Long -> Type.SESSION.code
+            is Session<*> -> Type.SESSION.code
             else -> throw IllegalStateException("invalid type ${item.javaClass}")
         }
     }
@@ -91,7 +130,7 @@ class TransactionsAdapter(
 
         fun bind(transaction: Transaction) = with(binding) {
             tvValue.text = CurrencyUtil.formatter(transaction.value, currency)
-            tvDateToBreak.text = Date(transaction.date).timeFormatted
+            tvDateToBreak.text = Date(transaction.date).dateFormatted
 
             tvNewValue.text = CurrencyUtil.formatter(transaction.summation, currency)
             tvOldValue.text = CurrencyUtil.formatter(transaction.oldSummation, currency)
@@ -106,16 +145,19 @@ class TransactionsAdapter(
         }
     }
 
-    class SessionHolder(
+    inner class SessionHolder(
         private val binding: ItemVaultsTitleBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        init {
-            binding.tvIcon.isVisible = false
+        fun bind(session: Session<*>) = with(binding) {
+            tvTitle.text = Date(session.date).dateFormatted
+            binding.tvIcon.rotation = if (session.expanded) 90f else 0f
         }
 
-        fun bind(dateMillis: Long) = with(binding) {
-            tvTitle.text = Date(dateMillis).dateFormatted
+        fun expanded(expanded: Boolean) {
+            binding.tvIcon.animate().rotation(
+                if (expanded) 90f else 0f
+            ).setDuration(100).start()
         }
     }
 

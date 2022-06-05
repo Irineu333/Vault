@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.neo.vault.databinding.FragmentPiggyBankBinding
 import com.neo.vault.domain.model.Transaction
 import com.neo.vault.domain.model.Vault
+import com.neo.vault.presentation.model.Session
 import com.neo.vault.presentation.model.Summation
 import com.neo.vault.presentation.model.UiText
 import com.neo.vault.presentation.ui.activity.MainActivity
@@ -80,28 +81,35 @@ class PiggyBankFragment : Fragment() {
             )
         )
 
-        transactionsAdapter.items = listOf(
-            System.currentTimeMillis(),
-            Transaction(
-                id = 0,
-                value = -8.1f,
+        transactionsAdapter.sessions = listOf(
+            Session(
                 date = System.currentTimeMillis(),
-                summation = 2.01f
+                listOf(
+                    Transaction(
+                        id = 0,
+                        value = -8.01f,
+                        date = System.currentTimeMillis(),
+                        summation = 2.01f
+                    ),
+                    Transaction(
+                        id = 0,
+                        value = -9f,
+                        date = System.currentTimeMillis(),
+                        summation = 10.02f
+                    ),
+                )
             ),
-            Transaction(
-                id = 0,
-                value = -9f,
-                date = System.currentTimeMillis(),
-                summation = 10.02f
-            ),
-            System.currentTimeMillis() - 20000000,
-            Transaction(
-                id = 1,
-                value = 19.02f,
+            Session(
                 date = System.currentTimeMillis() - 20000000,
-                summation = 19.02f
+                listOf(
+                    Transaction(
+                        id = 1,
+                        value = 19.02f,
+                        date = System.currentTimeMillis() - 20000000,
+                        summation = 19.02f
+                    )
+                )
             )
-
         )
     }
 }
