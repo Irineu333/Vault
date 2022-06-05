@@ -53,7 +53,7 @@ class TransactionsAdapter(
 
         fun bind(transaction: Transaction) = with(binding) {
             tvValue.text = CurrencyUtil.formatter(transaction.value, currency)
-            tvDateToBreak.text = Date(transaction.date).dateTimeFormatted
+            tvDateToBreak.text = Date(transaction.date).dateFormatted
 
             tvNewValue.text = CurrencyUtil.formatter(transaction.summation, currency)
             tvOldValue.text = CurrencyUtil.formatter(transaction.oldSummation, currency)

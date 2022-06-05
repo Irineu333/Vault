@@ -31,15 +31,18 @@
             android:id="@+id/ll_oscillation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/bg_oscillation"
             android:orientation="horizontal"
+            android:paddingHorizontal="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
+                android:textSize="12sp"
                 android:id="@+id/tv_old_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="?attr/colorOnPrimary"
+                android:textColor="?attr/colorOnSurface"
                 tools:text="R$ 0,00" />
 
             <ImageView
@@ -49,13 +52,14 @@
                 android:adjustViewBounds="true"
                 android:padding="2dp"
                 android:src="@drawable/ic_increase_vector"
-                app:tint="?attr/colorOnPrimary" />
+                app:tint="@color/black" />
 
             <TextView
+                android:textSize="12sp"
                 android:id="@+id/tv_new_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="?attr/colorOnPrimary"
+                android:textColor="?attr/colorOnSurface"
                 tools:text="R$ 0,00" />
 
         </LinearLayout>
