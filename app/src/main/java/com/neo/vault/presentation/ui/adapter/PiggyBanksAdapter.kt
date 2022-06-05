@@ -9,7 +9,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.neo.vault.R
 import com.neo.vault.databinding.ItemPiggyBankBinding
-import com.neo.vault.databinding.ItemVaultsTitleBinding
+import com.neo.vault.databinding.ItemSessionTitleBinding
 import com.neo.vault.domain.model.Vault
 import com.neo.vault.presentation.model.Selection
 import com.neo.vault.presentation.model.UiText
@@ -55,7 +55,7 @@ class PiggyBanksAdapter(
         return when (viewType) {
             Type.TITLE.code -> {
                 TitleHolder(
-                    ItemVaultsTitleBinding.inflate(
+                    ItemSessionTitleBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
@@ -164,7 +164,7 @@ class PiggyBanksAdapter(
     }
 
     inner class TitleHolder(
-        private val binding: ItemVaultsTitleBinding
+        private val binding: ItemSessionTitleBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(title: UiText) {

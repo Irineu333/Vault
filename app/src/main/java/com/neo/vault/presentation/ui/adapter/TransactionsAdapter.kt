@@ -7,8 +7,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.neo.vault.R
+import com.neo.vault.databinding.ItemSessionTitleBinding
 import com.neo.vault.databinding.ItemTransactionBinding
-import com.neo.vault.databinding.ItemVaultsTitleBinding
 import com.neo.vault.domain.model.CurrencyCompat
 import com.neo.vault.domain.model.Transaction
 import com.neo.vault.presentation.model.Session
@@ -44,7 +44,7 @@ class TransactionsAdapter(
         return when (viewType) {
             Type.SESSION.code -> {
                 SessionHolder(
-                    ItemVaultsTitleBinding.inflate(
+                    ItemSessionTitleBinding.inflate(
                         LayoutInflater.from(
                             parent.context
                         ),
@@ -146,7 +146,7 @@ class TransactionsAdapter(
     }
 
     inner class SessionHolder(
-        private val binding: ItemVaultsTitleBinding
+        private val binding: ItemSessionTitleBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(session: Session<*>) = with(binding) {
