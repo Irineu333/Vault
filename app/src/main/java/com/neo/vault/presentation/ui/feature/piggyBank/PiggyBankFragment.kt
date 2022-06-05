@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.neo.vault.databinding.FragmentPiggyBankBinding
-import com.neo.vault.domain.model.CurrencyCompat
 import com.neo.vault.domain.model.Transaction
 import com.neo.vault.domain.model.Vault
 import com.neo.vault.presentation.model.Summation
@@ -72,7 +71,7 @@ class PiggyBankFragment : Fragment() {
                 Summation.Total(
                     values = listOf(
                         Summation.Value(
-                            value = 10.02f,
+                            value = 2.01f,
                             currency = piggyBank.currency,
                         ),
                     ),
@@ -81,19 +80,28 @@ class PiggyBankFragment : Fragment() {
             )
         )
 
-        transactionsAdapter.transactions = listOf(
+        transactionsAdapter.items = listOf(
+            System.currentTimeMillis(),
+            Transaction(
+                id = 0,
+                value = -8.1f,
+                date = System.currentTimeMillis(),
+                summation = 2.01f
+            ),
             Transaction(
                 id = 0,
                 value = -9f,
                 date = System.currentTimeMillis(),
                 summation = 10.02f
             ),
+            System.currentTimeMillis() - 20000000,
             Transaction(
                 id = 1,
                 value = 19.02f,
-                date = System.currentTimeMillis(),
+                date = System.currentTimeMillis() - 20000000,
                 summation = 19.02f
             )
+
         )
     }
 }

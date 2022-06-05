@@ -10,6 +10,10 @@ object TimeUtils {
         SimpleDateFormat.getDateInstance()
     }
 
+    val timeFormatter: DateFormat by lazy {
+        SimpleDateFormat.getTimeInstance()
+    }
+
     val dateTimeFormatter: DateFormat by lazy {
         SimpleDateFormat.getDateTimeInstance()
     }
