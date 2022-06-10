@@ -147,6 +147,14 @@ class PiggyBanksFragment : Fragment(), ActionModeOnClickListener {
                     }
                 }
             })
+
+        parentFragmentManager.setFragmentResultListener(
+            CreateEditPiggyBankFragment.Event.EDIT_VAULT.name,
+            viewLifecycleOwner
+        ) @SuppressLint("NotifyDataSetChanged") { _, _ ->
+            concatAdapter.notifyDataSetChanged()
+            viewModel.selection.disableActionMode()
+        }
     }
 
     private fun openPiggyBank(vault: Vault) {
@@ -208,19 +216,10 @@ class PiggyBanksFragment : Fragment(), ActionModeOnClickListener {
             vaultToEdit = piggyBank
         )
 
-        if (
-            createVaultBottomSheet.checkToShow(
-                parentFragmentManager,
-                "edit_piggy_bank"
-            )
-        ) {
-            createVaultBottomSheet.setFragmentResultListener(
-                CreateEditPiggyBankFragment.Event.EDIT_VAULT.name
-            ) @SuppressLint("NotifyDataSetChanged") { _, _ ->
-                concatAdapter.notifyDataSetChanged()
-                viewModel.selection.disableActionMode()
-            }
-        }
+        createVaultBottomSheet.checkToShow(
+            parentFragmentManager,
+            "edit_piggy_bank"
+        )
     }
 
     private fun setupObservers() = viewLifecycleOwner.lifecycleScope.launch {

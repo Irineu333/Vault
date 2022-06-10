@@ -29,7 +29,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlin.random.Random
 
 @AndroidEntryPoint
 class CreateEditPiggyBankFragment : Fragment() {
@@ -126,7 +125,7 @@ class CreateEditPiggyBankFragment : Fragment() {
 
         binding.btnConfirm.setOnClickListener {
             it.isEnabled = false
-            createVault()
+            createOrEditVault()
         }
 
         nameTextWatcher = binding.tilName.addValidationListener(
@@ -235,12 +234,12 @@ class CreateEditPiggyBankFragment : Fragment() {
             }
         }
 
-        childrenIsEnable = Random.nextBoolean()
+        childrenIsEnabled = vaultEdit == null
         binding.labelCurrency.alpha = if (vaultEdit == null) 1f else 0.5f
     }
 
-    private fun createVault() {
-        viewModel.createPiggyBank(
+    private fun createOrEditVault() {
+        viewModel.createOrEditPiggyBank(
             name = binding.tilName.editText!!.text.toString().trim(),
             currency = getCurrency()
         )

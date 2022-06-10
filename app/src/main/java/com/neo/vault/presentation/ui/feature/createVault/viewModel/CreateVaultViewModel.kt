@@ -42,7 +42,7 @@ class CreateVaultViewModel @Inject constructor(
         }
     }
 
-    fun createPiggyBank(
+    fun createOrEditPiggyBank(
         name: String,
         currency: CurrencyCompat,
         dateToBreak: Long? = this.dateToBreak?.time
