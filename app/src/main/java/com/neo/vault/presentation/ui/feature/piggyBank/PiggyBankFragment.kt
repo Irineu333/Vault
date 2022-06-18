@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.neo.vault.databinding.FragmentPiggyBankBinding
 import com.neo.vault.domain.model.Transaction
 import com.neo.vault.domain.model.Vault
@@ -13,6 +14,8 @@ import com.neo.vault.presentation.model.Summation
 import com.neo.vault.presentation.model.UiText
 import com.neo.vault.presentation.ui.activity.MainActivity
 import com.neo.vault.presentation.ui.adapter.TransactionsAdapter
+import com.neo.vault.presentation.ui.feature.createTransaction.CreateTransactionBottomSheet
+import com.neo.vault.utils.extension.checkToShow
 import com.neo.vault.utils.extension.toRaw
 
 class PiggyBankFragment : Fragment() {
@@ -57,10 +60,38 @@ class PiggyBankFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupView()
+        setupListeners()
     }
 
     private fun setupView() = with(binding) {
         rvTransactions.adapter = transactionsAdapter
+    }
+
+    private fun setupListeners() {
+        binding.fab.setOnClickListener {
+            showCreateTransactionBottomSheet()
+        }
+
+        binding.rvTransactions.addOnScrollListener(
+            object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    if (recyclerView.canScrollVertically(1)) {
+                        binding.fab.shrink()
+                    } else {
+                        binding.fab.extend()
+                    }
+                }
+            }
+        )
+    }
+
+    private fun showCreateTransactionBottomSheet() {
+        CreateTransactionBottomSheet().checkToShow(
+            parentFragmentManager,
+            "create_transaction"
+        )
     }
 
     override fun onStart() {

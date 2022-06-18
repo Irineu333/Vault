@@ -104,7 +104,6 @@ class PiggyBanksFragment : Fragment(), ActionModeOnClickListener {
         selectionSummationJob?.cancel()
 
         binding.rvPiggyBanks.adapter = null
-
         _binding = null
     }
 
@@ -119,6 +118,11 @@ class PiggyBanksFragment : Fragment(), ActionModeOnClickListener {
     }
 
     private fun setupListeners() {
+
+        binding.fab.setOnClickListener {
+            showCreatePiggyBankBottomSheet()
+        }
+
         binding.rvPiggyBanks.addOnScrollListener(
             object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -193,10 +197,6 @@ class PiggyBanksFragment : Fragment(), ActionModeOnClickListener {
 
     private fun setupView() = with(binding) {
         rvPiggyBanks.adapter = concatAdapter
-
-        fab.setOnClickListener {
-            showCreatePiggyBankBottomSheet()
-        }
     }
 
     private fun showCreatePiggyBankBottomSheet() {

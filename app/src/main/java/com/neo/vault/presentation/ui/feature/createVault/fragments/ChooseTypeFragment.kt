@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.neo.vault.R
 import com.neo.vault.databinding.FragmentChooseTypeBinding
-import com.neo.vault.presentation.model.VaultType
+import com.neo.vault.presentation.model.UiVaultType
 import com.neo.vault.presentation.ui.adapter.VaultTypesAdapter
 import com.neo.vault.presentation.ui.feature.createVault.CreateVaultBottomSheet
 import com.neo.vault.utils.extension.toRaw
@@ -68,7 +68,7 @@ class ChooseTypeFragment : Fragment() {
         )
 
         optionsAdapter.types = listOf(
-            VaultType(
+            UiVaultType(
                 icon = R.drawable.ic_piggy_bank,
                 title = "Cofrinho",
                 description = "Poupe sem metas"
@@ -77,7 +77,7 @@ class ChooseTypeFragment : Fragment() {
                     R.id.action_chooseTypeFragment_to_create_piggy_bank_graph
                 )
             },
-            VaultType(
+            UiVaultType(
                 icon = R.drawable.ic_goal,
                 title = "Meta",
                 description = "Crie metas para seus sonhos"

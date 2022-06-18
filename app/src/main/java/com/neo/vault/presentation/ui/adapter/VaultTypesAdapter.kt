@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.neo.vault.databinding.ItemVaultTypeBinding
-import com.neo.vault.presentation.model.VaultType
+import com.neo.vault.presentation.model.UiVaultType
 
 class VaultTypesAdapter : RecyclerView.Adapter<VaultTypesAdapter.Holder>() {
 
-    var types = emptyList<VaultType>()
+    var types = emptyList<UiVaultType>()
         @SuppressLint("NotifyDataSetChanged")
         set(value) {
             field = value
@@ -36,7 +36,7 @@ class VaultTypesAdapter : RecyclerView.Adapter<VaultTypesAdapter.Holder>() {
     class Holder(
         private val binding: ItemVaultTypeBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(type: VaultType) = with(binding) {
+        fun bind(type: UiVaultType) = with(binding) {
             ivIcon.setImageResource(type.icon)
             tvTitle.text = type.title
             tvDescription.text = type.description

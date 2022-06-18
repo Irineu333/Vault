@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.neo.vault.presentation.ui.component.KeyboardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/keyboard"
+    android:layout_width="0dp"
+    android:padding="8dp"
+    android:layout_height="match_parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintWidth_percent="0.25" />

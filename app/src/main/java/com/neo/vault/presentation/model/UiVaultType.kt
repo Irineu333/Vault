@@ -2,7 +2,7 @@ package com.neo.vault.presentation.model
 
 import androidx.annotation.DrawableRes
 
-data class VaultType(
+data class UiVaultType(
     @DrawableRes
     val icon: Int,
     val title: String,
