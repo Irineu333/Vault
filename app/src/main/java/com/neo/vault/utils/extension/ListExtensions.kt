@@ -1,6 +1,6 @@
 package com.neo.vault.utils.extension
 
-fun <E> List<E>.summation(sum : (E) -> Double): Double {
+fun <E> List<E>.summation(sum: (E) -> Double): Double {
 
     var result = 0.0
 
@@ -10,3 +10,6 @@ fun <E> List<E>.summation(sum : (E) -> Double): Double {
 
     return result
 }
+
+
+fun <E> List<E>.lastWithIndex() = lastIndex to last()

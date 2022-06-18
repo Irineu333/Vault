@@ -12,4 +12,10 @@ object CurrencyUtil {
 
         return format.format(value)
     }
+
+    fun formatter(value: Float): String {
+        val format = NumberFormat.getInstance()
+
+        return format.format(value)
+    }
 }

@@ -103,6 +103,10 @@ class KeyboardView(
         text.text = key.text
         text.gravity = Gravity.CENTER
 
+        text.setOnClickListener {
+            key.action()
+        }
+
         text.layoutParams = LinearLayout.LayoutParams(
             LayoutParams.MATCH_PARENT,
             LayoutParams.WRAP_CONTENT,

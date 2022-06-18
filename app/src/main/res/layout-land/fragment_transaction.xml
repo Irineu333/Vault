@@ -6,20 +6,12 @@
     android:clipChildren="true"
     android:orientation="horizontal">
 
-    <LinearLayout
+    <com.neo.vault.presentation.ui.component.KeyboardView
+        android:id="@+id/keyboard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:orientation="vertical">
-
-        <fragment
-            android:id="@+id/keyboard_container"
-            android:name="com.neo.vault.presentation.ui.component.NumericKeyboardFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:layout="@layout/fragment_numeric_keyboard" />
-
-    </LinearLayout>
+        android:padding="8dp" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -32,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="16dp"
-            android:paddingVertical="8dp">
+            android:paddingVertical="10dp">
 
             <TextView
                 android:layout_width="35dp"
@@ -48,7 +40,7 @@
                 android:layout_height="0dp"/>
 
             <ImageButton
-                android:id="@+id/btn_close"
+                android:id="@+id/btn_clear"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_gravity="end"
