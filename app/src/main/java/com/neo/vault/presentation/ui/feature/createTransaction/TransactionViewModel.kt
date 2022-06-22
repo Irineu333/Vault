@@ -2,6 +2,7 @@ package com.neo.vault.presentation.ui.feature.createTransaction
 
 import androidx.lifecycle.ViewModel
 import com.neo.vault.utils.CurrencyUtil
+import com.neo.vault.utils.extension.firstWithIndex
 import com.neo.vault.utils.extension.lastWithIndex
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -117,6 +118,50 @@ class TransactionViewModel : ViewModel() {
         }
     }
 
+    fun resolve() {
+        val state = uiState.value
+        var values = state.values
+
+        @Suppress("UNCHECKED_CAST")
+        fun getOperator(): Pair<Int, Value.Operator> {
+
+            val result = values.firstWithIndex {
+                it is Value.Operator.Times || it is Value.Operator.Divider
+            } ?: values.firstWithIndex {
+                it is Value.Operator.Plus || it is Value.Operator.Minus
+            } ?: throw IllegalStateException("no operator found")
+
+            return result as Pair<Int, Value.Operator>
+        }
+
+        while (values.size >= 3) {
+
+            val (index, operator) = getOperator()
+
+            val a = values[index - 1] as Value.Literal
+            val b = values[index + 1] as Value.Literal
+
+            val result = when (operator) {
+                Value.Operator.Divider -> a.value.toBigDecimal().divide(b.value.toBigDecimal())
+                Value.Operator.Minus -> a.value.toBigDecimal().subtract(b.value.toBigDecimal())
+                Value.Operator.Plus -> a.value.toBigDecimal().add(b.value.toBigDecimal())
+                Value.Operator.Times -> a.value.toBigDecimal().multiply(b.value.toBigDecimal())
+            }
+
+            val beforeValues = values.subList(0, index - 1)
+            val afterValues = values.subList(index + 2, values.size)
+
+            values = beforeValues + Value.Literal(result.roundedFloor().toDouble()) + afterValues
+
+            _uiState.update {
+                it.copy(
+                    values = values
+                )
+            }
+        }
+
+    }
+
     data class UiState(
         val values: List<Value> = mutableListOf(Value.Literal(0.00))
     ) {
@@ -160,17 +205,15 @@ class TransactionViewModel : ViewModel() {
             fun updated(number: Int): Literal {
 
                 val up = value.toBigDecimal().multiply(BigDecimal(10.0))
-                val toBigDecimal = number.toBigDecimal()
-                val bigDecimal = toBigDecimal.divide(BigDecimal(100.0))
-                val insert = up + bigDecimal
+                val insert = up.add(number.toBigDecimal().divide(BigDecimal(100.0)))
 
-                return Literal(insert.setScale(2, RoundingMode.FLOOR).toDouble())
+                return Literal(insert.roundedFloor().toDouble())
             }
 
             fun backSpace(): Literal {
                 val down = value.toBigDecimal().divide(BigDecimal(10.0))
 
-                return Literal(down.setScale(2, RoundingMode.FLOOR).toDouble())
+                return Literal(down.roundedFloor().toDouble())
             }
         }
 
@@ -185,4 +228,8 @@ class TransactionViewModel : ViewModel() {
     companion object {
         const val MAX_VALUE = 999_999_999.99
     }
+}
+
+private fun BigDecimal.roundedFloor(scale : Int = 2): BigDecimal {
+    return setScale(scale, RoundingMode.FLOOR)
 }

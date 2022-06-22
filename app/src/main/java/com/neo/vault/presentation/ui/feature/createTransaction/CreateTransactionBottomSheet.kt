@@ -177,7 +177,7 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
                     Item.Key(
                         "="
                     ) {
-
+                        viewModel.resolve()
                         vibrate()
                     },
                     space,
