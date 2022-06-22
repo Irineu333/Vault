@@ -7,6 +7,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 class TransactionViewModel : ViewModel() {
 
@@ -70,58 +72,105 @@ class TransactionViewModel : ViewModel() {
             }
         }
     }
-}
 
-data class UiState(
-    val values: List<Value> = mutableListOf(Value.Literal(0.00))
-) {
-    fun formatted() = buildString {
-        for (value in values) {
-            when (value) {
-                is Value.Literal -> {
-                    append(
-                        CurrencyUtil.formatter(
-                            value.value
+    fun backSpace() {
+        val state = uiState.value
+        val values = state.values
+
+        val (index, last) = values.lastWithIndex()
+
+        when (last) {
+            is Value.Literal -> {
+                if (index > 1 && last.value == 0.00) {
+                    _uiState.update {
+                        it.copy(
+                            values = values.subList(0, index - 1)
                         )
+                    }
+                    return
+                }
+
+                _uiState.update {
+                    it.copy(
+                        values = values.subList(0, index) + last.backSpace()
                     )
                 }
-                Value.Operator.Divider -> {
-                    append(" / ")
-                }
-                Value.Operator.Minus -> {
-                    append(" - ")
-                }
-                Value.Operator.Plus -> {
-                    append(" + ")
-                }
-                Value.Operator.Times -> {
-                    append(" * ")
+            }
+
+            is Value.Operator -> {
+                _uiState.update {
+                    it.copy(
+                        values = values.subList(0, index)
+                    )
                 }
             }
         }
     }
 
-    fun last(): Value {
-        return values.last()
-    }
-}
+    data class UiState(
+        val values: List<Value> = mutableListOf(Value.Literal(0.00))
+    ) {
+        fun formatted() = buildString {
+            for (value in values) {
+                when (value) {
+                    is Value.Literal -> {
+                        append(
+                            CurrencyUtil.formatter(
+                                value.value
+                            )
+                        )
+                    }
+                    Value.Operator.Divider -> {
+                        append(" / ")
+                    }
+                    Value.Operator.Minus -> {
+                        append(" - ")
+                    }
+                    Value.Operator.Plus -> {
+                        append(" + ")
+                    }
+                    Value.Operator.Times -> {
+                        append(" * ")
+                    }
+                }
+            }
+        }
 
-sealed class Value {
-
-    class Literal(
-        val value: Double = 0.0
-    ) : Value() {
-        fun to(number: Int): Literal {
-            val up = value * 10
-            val insert = number / 100.0
-            return Literal(up + insert)
+        fun last(): Value {
+            return values.last()
         }
     }
 
-    sealed class Operator : Value() {
-        object Plus : Operator()
-        object Minus : Operator()
-        object Times : Operator()
-        object Divider : Operator()
+    sealed class Value {
+
+        class Literal(
+            val value: Double = 0.0
+        ) : Value() {
+
+            private val decimalFormat =
+                DecimalFormat("#.##").apply {
+                    roundingMode = RoundingMode.FLOOR
+                }
+
+            fun to(number: Int): Literal {
+                val up = value * 10
+                val insert = up + (number / 100.0)
+
+                return Literal(decimalFormat.format(insert).toDouble())
+            }
+
+            fun backSpace(): Literal {
+                val down = value / 10
+
+                return Literal(decimalFormat.format(down).toDouble())
+            }
+        }
+
+        sealed class Operator : Value() {
+            object Plus : Operator()
+            object Minus : Operator()
+            object Times : Operator()
+            object Divider : Operator()
+        }
     }
 }

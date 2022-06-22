@@ -160,6 +160,7 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
                     Item.Key(
                         R.drawable.ic_backspace
                     ) {
+                        viewModel.backSpace()
                         vibrate()
                     },
                     Item.Key(
