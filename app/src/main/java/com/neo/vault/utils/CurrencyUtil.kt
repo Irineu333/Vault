@@ -16,6 +16,7 @@ object CurrencyUtil {
     fun formatter(value: Number): String {
         val format = NumberFormat.getNumberInstance().apply {
             minimumFractionDigits = 2
+            maximumFractionDigits = 10
         }
 
         return format.format(value)

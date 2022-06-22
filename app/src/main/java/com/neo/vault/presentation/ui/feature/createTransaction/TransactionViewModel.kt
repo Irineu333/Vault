@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import java.math.BigDecimal
 import java.math.RoundingMode
-import java.text.DecimalFormat
 
 class TransactionViewModel : ViewModel() {
 
@@ -24,21 +24,23 @@ class TransactionViewModel : ViewModel() {
         when (last) {
             is Value.Literal -> {
 
-                if (last.value >= 1_000_000_000) {
+                val updated = last.updated(number)
+
+                if (updated.value > MAX_VALUE) {
                     //error
                     return
                 }
 
                 _uiState.update {
                     it.copy(
-                        values = values.subList(0, index) + last.to(number)
+                        values = values.subList(0, index) + updated
                     )
                 }
             }
 
             is Value.Operator -> {
 
-                val newLiteral = Value.Literal(0.00).to(number)
+                val newLiteral = Value.Literal(0.00).updated(number)
 
                 _uiState.update {
                     it.copy(
@@ -147,22 +149,20 @@ class TransactionViewModel : ViewModel() {
             val value: Double = 0.0
         ) : Value() {
 
-            private val decimalFormat =
-                DecimalFormat("#.##").apply {
-                    roundingMode = RoundingMode.FLOOR
-                }
+            fun updated(number: Int): Literal {
 
-            fun to(number: Int): Literal {
-                val up = value * 10
-                val insert = up + (number / 100.0)
+                val up = value.toBigDecimal().multiply(BigDecimal(10.0))
+                val toBigDecimal = number.toBigDecimal()
+                val bigDecimal = toBigDecimal.divide(BigDecimal(100.0))
+                val insert = up + bigDecimal
 
-                return Literal(decimalFormat.format(insert).toDouble())
+                return Literal(insert.setScale(2, RoundingMode.FLOOR).toDouble())
             }
 
             fun backSpace(): Literal {
-                val down = value / 10
+                val down = value.toBigDecimal().divide(BigDecimal(10.0))
 
-                return Literal(decimalFormat.format(down).toDouble())
+                return Literal(down.setScale(2, RoundingMode.FLOOR).toDouble())
             }
         }
 
@@ -172,5 +172,9 @@ class TransactionViewModel : ViewModel() {
             object Times : Operator()
             object Divider : Operator()
         }
+    }
+
+    companion object {
+        const val MAX_VALUE = 999_999_999.99
     }
 }
