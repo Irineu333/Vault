@@ -9,9 +9,7 @@ import android.widget.LinearLayout
 import android.widget.Space
 import androidx.annotation.DrawableRes
 import androidx.annotation.Px
-import androidx.core.content.ContextCompat
 import androidx.core.view.updateMargins
-import com.neo.vault.R
 import com.neo.vault.presentation.model.UiText
 import com.neo.vault.utils.extension.dpToPx
 import com.neo.vault.utils.extension.toRaw
@@ -133,7 +131,14 @@ class KeyboardView(
         }
 
         button.setOnClickListener {
-            key.action()
+            key.onClick()
+        }
+
+        key.onLongClick?.let { action ->
+            button.setOnLongClickListener {
+                action()
+                true
+            }
         }
 
         button.layoutParams = LinearLayout.LayoutParams(
@@ -160,18 +165,21 @@ sealed class Item {
 
     data class Key(
         val icon: Icon,
-        val action: () -> Unit = {}
+        val onLongClick: (() -> Unit)? = null,
+        val onClick: () -> Unit = {}
     ) : Item() {
         constructor(
-            text : String,
-            action: () -> Unit = {}
-        ) : this(Icon.Text(text.toRaw()), action)
+            text: String,
+            onLongClick: () -> Unit = {},
+            onClick: () -> Unit = {}
+        ) : this(Icon.Text(text.toRaw()), onLongClick, onClick)
 
         constructor(
             @DrawableRes
-            icon : Int,
-            action: () -> Unit = {}
-        ) : this(Icon.Image(icon), action)
+            icon: Int,
+            onLongClick: () -> Unit = {},
+            onClick: () -> Unit = {}
+        ) : this(Icon.Image(icon), onLongClick, onClick)
     }
 
     data class Group(

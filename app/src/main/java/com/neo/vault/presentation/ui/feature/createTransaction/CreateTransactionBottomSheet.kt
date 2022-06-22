@@ -158,11 +158,16 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
                 ),
                 Item.Group.horizontal(
                     Item.Key(
-                        R.drawable.ic_backspace
-                    ) {
-                        viewModel.backSpace()
-                        vibrate()
-                    },
+                        R.drawable.ic_backspace,
+                        onClick =  {
+                            viewModel.backSpace()
+                            vibrate()
+                        },
+                        onLongClick = {
+                            viewModel.clearAll()
+                            vibrate()
+                        }
+                    ),
                     Item.Key(
                         "0"
                     ) {

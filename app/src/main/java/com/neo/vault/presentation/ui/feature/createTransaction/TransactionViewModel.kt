@@ -109,6 +109,14 @@ class TransactionViewModel : ViewModel() {
         }
     }
 
+    fun clearAll() {
+        _uiState.update {
+            it.copy(
+                values = listOf(Value.Literal())
+            )
+        }
+    }
+
     data class UiState(
         val values: List<Value> = mutableListOf(Value.Literal(0.00))
     ) {
