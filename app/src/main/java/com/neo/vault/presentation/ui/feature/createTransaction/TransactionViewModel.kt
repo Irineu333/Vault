@@ -122,7 +122,6 @@ class TransactionViewModel : ViewModel() {
         val state = uiState.value
         var values = state.values
 
-        @Suppress("UNCHECKED_CAST")
         fun getOperator(): Pair<Int, Value.Operator> {
 
             val result = values.firstWithIndex {
@@ -131,6 +130,7 @@ class TransactionViewModel : ViewModel() {
                 it is Value.Operator.Plus || it is Value.Operator.Minus
             } ?: throw IllegalStateException("no operator found")
 
+            @Suppress("UNCHECKED_CAST")
             return result as Pair<Int, Value.Operator>
         }
 
@@ -141,23 +141,24 @@ class TransactionViewModel : ViewModel() {
             val a = values[index - 1] as Value.Literal
             val b = values[index + 1] as Value.Literal
 
+            val aBigDecimal = a.value.toBigDecimal()
+            val bBigDecimal = b.value.toBigDecimal()
+
             val result = when (operator) {
-                Value.Operator.Divider -> a.value.toBigDecimal().divide(b.value.toBigDecimal())
-                Value.Operator.Minus -> a.value.toBigDecimal().subtract(b.value.toBigDecimal())
-                Value.Operator.Plus -> a.value.toBigDecimal().add(b.value.toBigDecimal())
-                Value.Operator.Times -> a.value.toBigDecimal().multiply(b.value.toBigDecimal())
+                Value.Operator.Divider -> aBigDecimal.divide(bBigDecimal)
+                Value.Operator.Minus -> aBigDecimal.subtract(bBigDecimal)
+                Value.Operator.Plus -> aBigDecimal.add(bBigDecimal)
+                Value.Operator.Times -> aBigDecimal.multiply(bBigDecimal)
             }
 
             val beforeValues = values.subList(0, index - 1)
             val afterValues = values.subList(index + 2, values.size)
 
-            values = beforeValues + Value.Literal(result.roundedFloor().toDouble()) + afterValues
+            val newLiteral = Value.Literal(result.roundedFloor().toDouble())
 
-            _uiState.update {
-                it.copy(
-                    values = values
-                )
-            }
+            values = beforeValues + newLiteral + afterValues
+
+            _uiState.update { it.copy(values = values) }
         }
 
     }
@@ -230,6 +231,6 @@ class TransactionViewModel : ViewModel() {
     }
 }
 
-private fun BigDecimal.roundedFloor(scale : Int = 2): BigDecimal {
+private fun BigDecimal.roundedFloor(scale: Int = 2): BigDecimal {
     return setScale(scale, RoundingMode.FLOOR)
 }
