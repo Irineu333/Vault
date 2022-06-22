@@ -5,7 +5,7 @@ import java.text.NumberFormat
 
 object CurrencyUtil {
 
-    fun formatter(value: Float, currency: CurrencyCompat): String {
+    fun formatter(value: Number, currency: CurrencyCompat): String {
         val format = NumberFormat.getCurrencyInstance().apply {
             setCurrency(currency.currency)
         }
@@ -13,8 +13,11 @@ object CurrencyUtil {
         return format.format(value)
     }
 
-    fun formatter(value: Float): String {
-        val format = NumberFormat.getInstance()
+    fun formatter(value: Number): String {
+        val format = NumberFormat.getNumberInstance().apply {
+            minimumFractionDigits = 2
+            maximumFractionDigits = 2
+        }
 
         return format.format(value)
     }

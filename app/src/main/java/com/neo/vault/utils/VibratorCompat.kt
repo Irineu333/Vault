@@ -26,7 +26,11 @@ object VibratorCompat {
 
     fun getInstance(context: Context): Vibrator {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            (context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager).defaultVibrator
+            val vibratorManager = context.getSystemService(
+                Context.VIBRATOR_MANAGER_SERVICE
+            ) as VibratorManager
+
+            vibratorManager.defaultVibrator
         } else {
             context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         }

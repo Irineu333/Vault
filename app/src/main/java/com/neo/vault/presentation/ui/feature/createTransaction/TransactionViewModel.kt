@@ -22,49 +22,21 @@ class TransactionViewModel : ViewModel() {
         when (last) {
             is Value.Literal -> {
 
-                val newLiteral = Value.Literal("${last.value}$number")
+                if (last.value >= 1_000_000_000) {
+                    //error
+                    return
+                }
 
                 _uiState.update {
                     it.copy(
-                        values = values.subList(0, index) + newLiteral
+                        values = values.subList(0, index) + last.to(number)
                     )
                 }
             }
 
             is Value.Operator -> {
 
-                val newLiteral = Value.Literal(number.toString())
-
-                _uiState.update {
-                    it.copy(
-                        values = values + newLiteral
-                    )
-                }
-            }
-        }
-    }
-
-    fun insertComma() {
-        val state = uiState.value
-        val values = state.values
-
-        val (index, last) = values.lastWithIndex()
-
-        when (last) {
-            is Value.Literal -> {
-
-                val newLiteral = Value.Literal("${last.value}.")
-
-                _uiState.update {
-                    it.copy(
-                        values = values.subList(0, index) + newLiteral
-                    )
-                }
-            }
-
-            is Value.Operator -> {
-
-                val newLiteral = Value.Literal("0.")
+                val newLiteral = Value.Literal(0.00).to(number)
 
                 _uiState.update {
                     it.copy(
@@ -88,7 +60,7 @@ class TransactionViewModel : ViewModel() {
             is Value.Literal -> {
                 _uiState.update {
                     it.copy(
-                        values = it.values + operator
+                        values = it.values + operator + Value.Literal()
                     )
                 }
             }
@@ -101,7 +73,7 @@ class TransactionViewModel : ViewModel() {
 }
 
 data class UiState(
-    val values: List<Value> = mutableListOf(Value.Literal("0"))
+    val values: List<Value> = mutableListOf(Value.Literal(0.00))
 ) {
     fun formatted() = buildString {
         for (value in values) {
@@ -109,7 +81,7 @@ data class UiState(
                 is Value.Literal -> {
                     append(
                         CurrencyUtil.formatter(
-                            value.value.toFloat()
+                            value.value
                         )
                     )
                 }
@@ -132,17 +104,19 @@ data class UiState(
     fun last(): Value {
         return values.last()
     }
-
-    fun lastWithIndex(): Pair<Int, Value> {
-        return values.lastWithIndex()
-    }
 }
 
 sealed class Value {
 
     class Literal(
-        val value: String
-    ) : Value()
+        val value: Double = 0.0
+    ) : Value() {
+        fun to(number: Int): Literal {
+            val up = value * 10
+            val insert = number / 100.0
+            return Literal(up + insert)
+        }
+    }
 
     sealed class Operator : Value() {
         object Plus : Operator()

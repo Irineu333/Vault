@@ -9,10 +9,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.neo.vault.R
 import com.neo.vault.databinding.FragmentTransactionBinding
 import com.neo.vault.presentation.ui.component.Item
 import com.neo.vault.utils.VibratorCompat
 import com.neo.vault.utils.extension.behavior
+import com.neo.vault.utils.extension.dpToPx
 import com.neo.vault.utils.extension.expanded
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -63,14 +65,13 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun setupListeners() {
-        binding.btnClear.setOnClickListener {
-
+        binding.btnClose.setOnClickListener {
+            dismiss()
         }
 
-        binding.btnClear.setOnLongClickListener {
-
-            true
-        }
+        val space = Item.Space(
+            16.dpToPx().toInt()
+        )
 
         binding.keyboard.setKeys(
             Item.Group.vertical(
@@ -93,6 +94,7 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
                         insertNumber(3)
                         vibrate()
                     },
+                    space,
                     Item.Key(
                         "+"
                     ) {
@@ -119,6 +121,7 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
                         insertNumber(6)
                         vibrate()
                     },
+                    space,
                     Item.Key(
                         "-"
                     ) {
@@ -145,6 +148,7 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
                         insertNumber(9)
                         vibrate()
                     },
+                    space,
                     Item.Key(
                         "*"
                     ) {
@@ -154,9 +158,8 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
                 ),
                 Item.Group.horizontal(
                     Item.Key(
-                        "."
+                        R.drawable.ic_backspace
                     ) {
-                        viewModel.insertComma()
                         vibrate()
                     },
                     Item.Key(
@@ -171,6 +174,7 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
 
                         vibrate()
                     },
+                    space,
                     Item.Key(
                         "/"
                     ) {
