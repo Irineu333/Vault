@@ -69,7 +69,7 @@ dependencies {
 
     //recycler view
     implementation ("androidx.recyclerview:recyclerview:1.2.1") {
-        because("concat adapter available 1.2.0")
+        because("concat adapter available 1.2.0+")
     }
 
     //facebook shimmer

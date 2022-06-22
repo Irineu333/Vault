@@ -1,6 +1,7 @@
 package com.neo.vault.presentation.ui.feature.createTransaction
 
 import androidx.lifecycle.ViewModel
+import com.neo.vault.presentation.model.Coin
 import com.neo.vault.utils.CurrencyUtil
 import com.neo.vault.utils.extension.firstWithIndex
 import com.neo.vault.utils.extension.lastWithIndex
@@ -26,11 +27,6 @@ class TransactionViewModel : ViewModel() {
             is Value.Literal -> {
 
                 val updated = last.updated(number)
-
-                if (updated.value > MAX_VALUE) {
-                    //error
-                    return
-                }
 
                 _uiState.update {
                     it.copy(
@@ -66,7 +62,7 @@ class TransactionViewModel : ViewModel() {
         when (val last = value.last()) {
             is Value.Literal -> {
 
-                if (last.value == 0.00) {
+                if (last.value.coin == 0) {
                     //error
                     return
                 }
@@ -92,7 +88,7 @@ class TransactionViewModel : ViewModel() {
 
         when (last) {
             is Value.Literal -> {
-                if (index > 1 && last.value == 0.00) {
+                if (index > 1 && last.value.coin == 0) {
                     _uiState.update {
                         it.copy(
                             values = values.subList(0, index - 1)
@@ -149,20 +145,17 @@ class TransactionViewModel : ViewModel() {
             val a = values[index - 1] as Value.Literal
             val b = values[index + 1] as Value.Literal
 
-            val aBigDecimal = a.value.toBigDecimal()
-            val bBigDecimal = b.value.toBigDecimal()
-
             val result = when (operator) {
-                Value.Operator.Divider -> aBigDecimal.divide(bBigDecimal)
-                Value.Operator.Minus -> aBigDecimal.subtract(bBigDecimal)
-                Value.Operator.Plus -> aBigDecimal.add(bBigDecimal)
-                Value.Operator.Times -> aBigDecimal.multiply(bBigDecimal)
+                Value.Operator.Times -> a.value * b.value
+                Value.Operator.Divider -> a.value / b.value
+                Value.Operator.Minus -> a.value - b.value
+                Value.Operator.Plus -> a.value + b.value
             }
 
             val beforeValues = values.subList(0, index - 1)
             val afterValues = values.subList(index + 2, values.size)
 
-            val newLiteral = Value.Literal(result.roundedFloor().toDouble())
+            val newLiteral = Value.Literal(result)
 
             values = beforeValues + newLiteral + afterValues
 
@@ -180,7 +173,7 @@ class TransactionViewModel : ViewModel() {
                     is Value.Literal -> {
                         append(
                             CurrencyUtil.formatter(
-                                value.value
+                                value.value.toMoney()
                             )
                         )
                     }
@@ -208,22 +201,25 @@ class TransactionViewModel : ViewModel() {
     sealed class Value {
 
         class Literal(
-            val value: Double = 0.0
+            val value: Coin = Coin(0)
         ) : Value() {
 
             fun updated(number: Int): Literal {
 
-                val up = value.toBigDecimal().multiply(BigDecimal(10.0))
-                val decimal = number.toBigDecimal().divide(BigDecimal(100.0))
-                val insert = up.add(decimal)
+                val up = value.coin * 10L
+                val coin = up + number
 
-                return Literal(insert.roundedFloor().toDouble())
+                if (coin > Int.MAX_VALUE) {
+                    return this
+                }
+
+                return Literal(Coin(coin.toInt()))
             }
 
             fun backSpace(): Literal {
-                val down = value.toBigDecimal().divide(BigDecimal(10.0))
+                val down = value.coin / 10
 
-                return Literal(down.roundedFloor().toDouble())
+                return Literal(Coin(down))
             }
         }
 
@@ -234,12 +230,4 @@ class TransactionViewModel : ViewModel() {
             object Divider : Operator()
         }
     }
-
-    companion object {
-        const val MAX_VALUE = 999_999_999.99
-    }
-}
-
-private fun BigDecimal.roundedFloor(scale: Int = 2): BigDecimal {
-    return setScale(scale, RoundingMode.FLOOR)
 }
