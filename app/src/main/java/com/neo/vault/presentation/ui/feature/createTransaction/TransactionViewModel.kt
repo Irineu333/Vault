@@ -41,7 +41,7 @@ class TransactionViewModel : ViewModel() {
 
             is Value.Operator -> {
 
-                val newLiteral = Value.Literal(0.00).updated(number)
+                val newLiteral = Value.Literal().updated(number)
 
                 _uiState.update {
                     it.copy(
@@ -61,8 +61,16 @@ class TransactionViewModel : ViewModel() {
     fun insertDivider() = insertOperator(Value.Operator.Divider)
 
     private fun insertOperator(operator: Value.Operator) {
-        when (uiState.value.last()) {
+        val value = uiState.value
+
+        when (val last = value.last()) {
             is Value.Literal -> {
+
+                if (last.value == 0.00) {
+                    //error
+                    return
+                }
+
                 _uiState.update {
                     it.copy(
                         values = it.values + operator + Value.Literal()
@@ -164,7 +172,7 @@ class TransactionViewModel : ViewModel() {
     }
 
     data class UiState(
-        val values: List<Value> = mutableListOf(Value.Literal(0.00))
+        val values: List<Value> = mutableListOf(Value.Literal())
     ) {
         fun formatted() = buildString {
             for (value in values) {
@@ -206,7 +214,8 @@ class TransactionViewModel : ViewModel() {
             fun updated(number: Int): Literal {
 
                 val up = value.toBigDecimal().multiply(BigDecimal(10.0))
-                val insert = up.add(number.toBigDecimal().divide(BigDecimal(100.0)))
+                val decimal = number.toBigDecimal().divide(BigDecimal(100.0))
+                val insert = up.add(decimal)
 
                 return Literal(insert.roundedFloor().toDouble())
             }
