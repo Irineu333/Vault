@@ -9,8 +9,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import java.math.BigDecimal
-import java.math.RoundingMode
 
 class TransactionViewModel : ViewModel() {
 
@@ -209,15 +207,11 @@ class TransactionViewModel : ViewModel() {
                 val up = value.coin * 10L
                 val coin = up + number
 
-                if (coin > Int.MAX_VALUE) {
-                    return this
-                }
-
-                return Literal(Coin(coin.toInt()))
+                return Literal(Coin(coin))
             }
 
             fun backSpace(): Literal {
-                val down = value.coin / 10
+                val down = value.coin / 10L
 
                 return Literal(Coin(down))
             }

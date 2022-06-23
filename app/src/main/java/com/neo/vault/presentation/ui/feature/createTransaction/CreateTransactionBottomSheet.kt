@@ -53,7 +53,7 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
 
         behavior?.expanded()
         behavior?.skipCollapsed = true
-        isCancelable = false
+        behavior?.isHideable = false
 
         setupView()
         setupListeners()
