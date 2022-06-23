@@ -2,6 +2,7 @@ package com.neo.vault.presentation.model
 
 import kotlin.math.roundToLong
 
+@Throws(IllegalStateException::class)
 private fun Long.checkAndToInt(): Int {
 
     if (this > Int.MAX_VALUE) {
@@ -20,7 +21,7 @@ private fun Long.checkAndToInt(): Int {
 }
 
 data class Coin(
-    val coin: Int
+    val coin: Int = 0
 ) {
 
     constructor(coin: Long) : this(coin.checkAndToInt())
@@ -53,7 +54,7 @@ data class Coin(
 
     operator fun minus(value: Coin): Coin {
 
-        val result = coin - value.coin
+        val result = coin.toLong() - value.coin.toLong()
 
         return Coin(result)
     }

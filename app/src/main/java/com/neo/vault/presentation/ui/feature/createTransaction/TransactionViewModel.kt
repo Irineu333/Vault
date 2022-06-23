@@ -24,7 +24,9 @@ class TransactionViewModel : ViewModel() {
         when (last) {
             is Value.Literal -> {
 
-                val updated = last.updated(number)
+                val updated = runCatching {
+                    last.updated(number)
+                }.getOrNull() ?: return
 
                 _uiState.update {
                     it.copy(
@@ -201,7 +203,7 @@ class TransactionViewModel : ViewModel() {
     sealed class Value {
 
         class Literal(
-            val value: Coin = Coin(0)
+            val value: Coin = Coin()
         ) : Value() {
 
             fun updated(number: Int): Literal {
