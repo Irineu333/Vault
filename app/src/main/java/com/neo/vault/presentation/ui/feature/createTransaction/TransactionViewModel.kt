@@ -143,12 +143,14 @@ class TransactionViewModel : ViewModel() {
             val a = values[index - 1] as Value.Literal
             val b = values[index + 1] as Value.Literal
 
-            val result = when (operator) {
-                Value.Operator.Times -> a.value * b.value
-                Value.Operator.Divider -> a.value / b.value
-                Value.Operator.Minus -> a.value - b.value
-                Value.Operator.Plus -> a.value + b.value
-            }
+            val result = runCatching {
+                when (operator) {
+                    Value.Operator.Times -> a.value * b.value
+                    Value.Operator.Divider -> a.value / b.value
+                    Value.Operator.Minus -> a.value - b.value
+                    Value.Operator.Plus -> a.value + b.value
+                }
+            }.getOrNull() ?: break
 
             val beforeValues = values.subList(0, index - 1)
             val afterValues = values.subList(index + 2, values.size)
