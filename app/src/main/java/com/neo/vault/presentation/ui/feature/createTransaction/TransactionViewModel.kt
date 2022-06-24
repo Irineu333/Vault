@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import java.math.BigInteger
 
 class TransactionViewModel : ViewModel() {
 
@@ -62,7 +63,7 @@ class TransactionViewModel : ViewModel() {
         when (val last = value.last()) {
             is Value.Literal -> {
 
-                if (last.value.coin == 0) {
+                if (last.value.coin == BigInteger.ZERO) {
                     // error
                     return
                 }
@@ -88,7 +89,7 @@ class TransactionViewModel : ViewModel() {
 
         when (last) {
             is Value.Literal -> {
-                if (index > 1 && last.value.coin == 0) {
+                if (index > 1 && last.value.coin == BigInteger.ZERO) {
                     _uiState.update {
                         it.copy(
                             values = values.subList(0, index - 1)
@@ -212,14 +213,14 @@ class TransactionViewModel : ViewModel() {
 
             fun updated(number: Int): Literal {
 
-                val up = value.coin * 10L
-                val coin = up + number
+                val up = value.coin * BigInteger.TEN
+                val coin = up + BigInteger("$number")
 
                 return Literal(Coin(coin))
             }
 
             fun backSpace(): Literal {
-                val down = value.coin / 10L
+                val down = value.coin / BigInteger.TEN
 
                 return Literal(Coin(down))
             }

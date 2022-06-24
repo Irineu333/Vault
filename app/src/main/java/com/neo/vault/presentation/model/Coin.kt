@@ -1,60 +1,38 @@
 package com.neo.vault.presentation.model
 
-import kotlin.math.roundToLong
-
-@Throws(IllegalStateException::class)
-private fun Long.checkAndToInt(): Int {
-
-    if (this > Int.MAX_VALUE) {
-        throw IllegalStateException(
-            "$this overflow to ${Int::class.java.simpleName}, max value is ${Int.MAX_VALUE}"
-        )
-    }
-
-    if (this < Int.MIN_VALUE) {
-        throw IllegalStateException(
-            "$this underflow to ${Int::class.java.simpleName}, min value is ${Int.MIN_VALUE}"
-        )
-    }
-
-    return toInt()
-}
+import java.math.BigDecimal
+import java.math.BigInteger
 
 data class Coin(
-    val coin: Int = 0
+    val coin: BigInteger = BigInteger.ZERO
 ) {
 
-    constructor(coin: Long) : this(coin.checkAndToInt())
-
-    @Suppress("UNUSED")
-    constructor(money: Double) : this((money * 100).roundToLong())
-
-    fun toMoney(): Double = coin / 100.0
+    fun toMoney(): BigDecimal = BigDecimal(coin).divide(BigDecimal.valueOf(100))
 
     operator fun times(value: Coin): Coin {
 
-        val result = (coin.toLong() * value.coin.toLong()) / 100L
+        val result = (coin * value.coin) / BigInteger.valueOf(100)
 
         return Coin(result)
     }
 
     operator fun div(value: Coin): Coin {
 
-        val result = (coin * 100L / value.coin.toLong())
+        val result = (coin * BigInteger.valueOf(100) / value.coin)
 
         return Coin(result)
     }
 
     operator fun plus(value: Coin): Coin {
 
-        val result = coin.toLong() + value.coin.toLong()
+        val result = coin + value.coin
 
         return Coin(result)
     }
 
     operator fun minus(value: Coin): Coin {
 
-        val result = coin.toLong() - value.coin.toLong()
+        val result = coin - value.coin
 
         return Coin(result)
     }
