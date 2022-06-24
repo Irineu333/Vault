@@ -1,4 +1,4 @@
-package com.neo.vault.presentation.model
+package com.neo.vault.domain.model
 
 import java.math.BigDecimal
 import java.math.BigInteger

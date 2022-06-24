@@ -1,7 +1,7 @@
 package com.neo.vault.presentation.ui.feature.createTransaction
 
 import androidx.lifecycle.ViewModel
-import com.neo.vault.presentation.model.Coin
+import com.neo.vault.domain.model.Coin
 import com.neo.vault.utils.CurrencyUtil
 import com.neo.vault.utils.extension.firstWithIndex
 import com.neo.vault.utils.extension.lastWithIndex
