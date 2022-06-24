@@ -63,7 +63,7 @@ class TransactionViewModel : ViewModel() {
             is Value.Literal -> {
 
                 if (last.value.coin == 0) {
-                    //error
+                    // error
                     return
                 }
 
@@ -75,7 +75,7 @@ class TransactionViewModel : ViewModel() {
             }
 
             is Value.Operator -> {
-                //error
+                // error
             }
         }
     }
@@ -132,7 +132,7 @@ class TransactionViewModel : ViewModel() {
                 it is Value.Operator.Times || it is Value.Operator.Divider
             } ?: values.firstWithIndex {
                 it is Value.Operator.Plus || it is Value.Operator.Minus
-            } ?: throw IllegalStateException("no operator found")
+            } ?: error("no operator found")
 
             @Suppress("UNCHECKED_CAST")
             return result as Pair<Int, Value.Operator>
@@ -163,13 +163,15 @@ class TransactionViewModel : ViewModel() {
 
             _uiState.update { it.copy(values = values) }
         }
-
     }
 
     data class UiState(
         val values: List<Value> = mutableListOf(Value.Literal())
     ) {
-        fun formatted() = buildString {
+        fun formatted(separator : String) = buildString {
+
+            append("  ")
+
             for (value in values) {
                 when (value) {
                     is Value.Literal -> {
@@ -180,19 +182,21 @@ class TransactionViewModel : ViewModel() {
                         )
                     }
                     Value.Operator.Divider -> {
-                        append(" / ")
+                        append(" /$separator")
                     }
                     Value.Operator.Minus -> {
-                        append(" - ")
+                        append(" -$separator")
                     }
                     Value.Operator.Plus -> {
-                        append(" + ")
+                        append(" +$separator")
                     }
                     Value.Operator.Times -> {
-                        append(" * ")
+                        append(" *$separator")
                     }
                 }
             }
+
+            append("  ")
         }
 
         fun last(): Value {

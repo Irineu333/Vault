@@ -26,13 +26,13 @@
             android:layout_marginHorizontal="8dp"
             android:layout_weight="1">
 
-            <TextView
-                android:id="@+id/et_value"
+            <androidx.appcompat.widget.AppCompatEditText
+                android:focusable="false"
+                android:id="@+id/et_value_portrait"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:background="@android:color/transparent"
-                android:ellipsize="none"
                 android:gravity="center"
                 android:saveEnabled="false"
                 android:singleLine="true"

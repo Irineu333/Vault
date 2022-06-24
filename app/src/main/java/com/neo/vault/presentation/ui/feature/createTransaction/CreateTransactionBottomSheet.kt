@@ -160,7 +160,7 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
                 Item.Group.horizontal(
                     Item.Key(
                         R.drawable.ic_backspace,
-                        onClick =  {
+                        onClick = {
                             viewModel.backSpace()
                             vibrate()
                         },
@@ -200,7 +200,14 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
             ) {
                 launch {
                     viewModel.uiState.collect { state ->
-                        binding.etValue.text = state.formatted()
+                        binding.etValuePortrait?.apply {
+                            setText(state.formatted(" "))
+                            setSelection(length())
+                        }
+                        binding.etValueLand?.apply {
+                            setText(state.formatted("\n"))
+                            setSelection(length())
+                        }
                     }
                 }
             }
