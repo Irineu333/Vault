@@ -52,17 +52,11 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         behavior?.expanded()
-        behavior?.skipCollapsed = true
+        behavior?.isDraggable = false
         behavior?.isHideable = false
 
-        setupView()
         setupListeners()
         setupObservers()
-    }
-
-    private fun setupView() = with(binding) {
-
-
     }
 
     private fun setupListeners() {
