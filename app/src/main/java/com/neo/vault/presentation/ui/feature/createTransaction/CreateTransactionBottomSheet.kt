@@ -12,10 +12,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.neo.vault.R
 import com.neo.vault.databinding.FragmentTransactionBinding
 import com.neo.vault.presentation.ui.component.Item
+import com.neo.vault.presentation.ui.feature.createTransaction.viewModel.TransactionUiEffect
+import com.neo.vault.presentation.ui.feature.createTransaction.viewModel.TransactionViewModel
 import com.neo.vault.utils.VibratorCompat
-import com.neo.vault.utils.extension.behavior
-import com.neo.vault.utils.extension.dpToPx
-import com.neo.vault.utils.extension.expanded
+import com.neo.vault.utils.extension.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -208,6 +208,19 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
                             setText(state.formatted("\n"))
                             setSelection(length())
                         }
+                    }
+                }
+
+                launch {
+                    viewModel.uiEffect.collect { effect ->
+                        val message = when (effect) {
+                            is TransactionUiEffect.Error.InvalidOperation ->
+                                "Operação inválida".toRaw()
+                            is TransactionUiEffect.Error.Notice ->
+                                effect.message
+                        }
+
+                        binding.showSnackbar(message)
                     }
                 }
             }

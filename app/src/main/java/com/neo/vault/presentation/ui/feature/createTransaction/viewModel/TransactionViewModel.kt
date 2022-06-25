@@ -1,20 +1,23 @@
-package com.neo.vault.presentation.ui.feature.createTransaction
+package com.neo.vault.presentation.ui.feature.createTransaction.viewModel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.neo.vault.domain.model.Coin
-import com.neo.vault.utils.CurrencyUtil
 import com.neo.vault.utils.extension.firstWithIndex
 import com.neo.vault.utils.extension.lastWithIndex
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import com.neo.vault.utils.extension.toRaw
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import java.math.BigInteger
 
-class TransactionViewModel : ViewModel() {
+internal class TransactionViewModel : ViewModel() {
 
-    private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState())
-    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
+    private val _uiState: MutableStateFlow<TransactionUiState> = MutableStateFlow(TransactionUiState())
+    val uiState: StateFlow<TransactionUiState> = _uiState.asStateFlow()
+
+    private val _uiEffect: Channel<TransactionUiEffect> = Channel()
+    val uiEffect = _uiEffect.receiveAsFlow()
 
     fun insertNumber(number: Int) {
         val state = uiState.value
@@ -64,7 +67,13 @@ class TransactionViewModel : ViewModel() {
             is Value.Literal -> {
 
                 if (last.value.coin == BigInteger.ZERO) {
-                    // error
+                    viewModelScope.launch {
+                        _uiEffect.send(
+                            TransactionUiEffect.Error.Notice(
+                                "Digite um valor maior que zero".toRaw()
+                            )
+                        )
+                    }
                     return
                 }
 
@@ -75,9 +84,7 @@ class TransactionViewModel : ViewModel() {
                 }
             }
 
-            is Value.Operator -> {
-                // error
-            }
+            is Value.Operator -> error("invalid values state ${value.values}")
         }
     }
 
@@ -153,6 +160,12 @@ class TransactionViewModel : ViewModel() {
                     Value.Operator.Minus -> a.value - b.value
                     Value.Operator.Plus -> a.value + b.value
                 }
+            }.onFailure {
+                viewModelScope.launch {
+                    _uiEffect.send(
+                        TransactionUiEffect.Error.InvalidOperation
+                    )
+                }
             }.getOrNull() ?: break
 
             val beforeValues = values.subList(0, index - 1)
@@ -163,45 +176,6 @@ class TransactionViewModel : ViewModel() {
             values = beforeValues + newLiteral + afterValues
 
             _uiState.update { it.copy(values = values) }
-        }
-    }
-
-    data class UiState(
-        val values: List<Value> = mutableListOf(Value.Literal())
-    ) {
-        fun formatted(separator : String) = buildString {
-
-            append("  ")
-
-            for (value in values) {
-                when (value) {
-                    is Value.Literal -> {
-                        append(
-                            CurrencyUtil.formatter(
-                                value.value.toMoney()
-                            )
-                        )
-                    }
-                    Value.Operator.Divider -> {
-                        append(" /$separator")
-                    }
-                    Value.Operator.Minus -> {
-                        append(" -$separator")
-                    }
-                    Value.Operator.Plus -> {
-                        append(" +$separator")
-                    }
-                    Value.Operator.Times -> {
-                        append(" *$separator")
-                    }
-                }
-            }
-
-            append("  ")
-        }
-
-        fun last(): Value {
-            return values.last()
         }
     }
 
