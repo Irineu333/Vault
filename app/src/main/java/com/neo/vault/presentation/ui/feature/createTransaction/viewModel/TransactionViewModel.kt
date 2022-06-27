@@ -3,7 +3,6 @@ package com.neo.vault.presentation.ui.feature.createTransaction.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neo.vault.core.Resource
-import com.neo.vault.domain.model.Coin
 import com.neo.vault.utils.extension.firstWithIndex
 import com.neo.vault.utils.extension.lastWithIndex
 import com.neo.vault.utils.extension.toRaw
@@ -32,7 +31,7 @@ internal class TransactionViewModel : ViewModel() {
         val (index, last) = values.lastWithIndex()
 
         when (last) {
-            is Value.Literal -> {
+            is TransactionUiState.Value.Literal -> {
 
                 val updated = runCatching {
                     last.updated(number)
@@ -45,9 +44,9 @@ internal class TransactionViewModel : ViewModel() {
                 }
             }
 
-            is Value.Operator -> {
+            is TransactionUiState.Value.Operator -> {
 
-                val newLiteral = Value.Literal().updated(number)
+                val newLiteral = TransactionUiState.Value.Literal().updated(number)
 
                 _uiState.update {
                     it.copy(
@@ -58,19 +57,11 @@ internal class TransactionViewModel : ViewModel() {
         }
     }
 
-    fun insertPlus() = insertOperator(Value.Operator.Plus)
-
-    fun insertTimes() = insertOperator(Value.Operator.Times)
-
-    fun insertMinus() = insertOperator(Value.Operator.Minus)
-
-    fun insertDivider() = insertOperator(Value.Operator.Divider)
-
-    private fun insertOperator(operator: Value.Operator) {
+    fun insertOperator(operator: TransactionUiState.Value.Operator) {
         val value = uiState.value
 
         when (val last = value.last()) {
-            is Value.Literal -> {
+            is TransactionUiState.Value.Literal -> {
 
                 if (last.value.coin == BigInteger.ZERO) {
                     viewModelScope.launch {
@@ -85,23 +76,23 @@ internal class TransactionViewModel : ViewModel() {
 
                 _uiState.update {
                     it.copy(
-                        values = it.values + operator + Value.Literal()
+                        values = it.values + operator + TransactionUiState.Value.Literal()
                     )
                 }
             }
 
-            is Value.Operator -> error("invalid values state ${value.values}")
+            is TransactionUiState.Value.Operator -> error("invalid values state ${value.values}")
         }
     }
 
-    fun backSpace() {
+    fun toBackSpace() {
         val state = uiState.value
         val values = state.values
 
         val (index, last) = values.lastWithIndex()
 
         when (last) {
-            is Value.Literal -> {
+            is TransactionUiState.Value.Literal -> {
                 if (index > 1 && last.value.coin == BigInteger.ZERO) {
                     _uiState.update {
                         it.copy(
@@ -118,7 +109,7 @@ internal class TransactionViewModel : ViewModel() {
                 }
             }
 
-            is Value.Operator -> {
+            is TransactionUiState.Value.Operator -> {
                 _uiState.update {
                     it.copy(
                         values = values.subList(0, index)
@@ -128,10 +119,10 @@ internal class TransactionViewModel : ViewModel() {
         }
     }
 
-    fun clearAll() {
+    fun toClearAll() {
         _uiState.update {
             it.copy(
-                values = listOf(Value.Literal())
+                values = listOf(TransactionUiState.Value.Literal())
             )
         }
     }
@@ -155,35 +146,40 @@ internal class TransactionViewModel : ViewModel() {
         }
     }
 
-    private fun getResolvedValue(): Resource<Value.Literal> {
+    private fun getResolvedValue(): Resource<TransactionUiState.Value.Literal> {
         val values = uiState.value.values.toMutableList()
 
-        fun getOperator(): Pair<Int, Value.Operator> {
+        fun getOperator(): Pair<Int, TransactionUiState.Value.Operator> {
 
-            val result = values.firstWithIndex {
-                it is Value.Operator.Times || it is Value.Operator.Divider
+            val (index, operator) = values.firstWithIndex {
+                it is TransactionUiState.Value.Operator.Times ||
+                        it is TransactionUiState.Value.Operator.Divider
             } ?: values.firstWithIndex {
-                it is Value.Operator.Plus || it is Value.Operator.Minus
+                it is TransactionUiState.Value.Operator.Plus ||
+                        it is TransactionUiState.Value.Operator.Minus
             } ?: error("no operator found in $values")
 
-            @Suppress("UNCHECKED_CAST")
-            return result as Pair<Int, Value.Operator>
+            if (operator !is TransactionUiState.Value.Operator) {
+                error("invalid operator")
+            }
+
+            return index to operator
         }
 
         while (values.size > 1) {
 
             val (index, operator) = getOperator()
 
-            val a = values[index - 1] as Value.Literal
-            val b = values[index + 1] as Value.Literal
+            val a = values[index - 1] as TransactionUiState.Value.Literal
+            val b = values[index + 1] as TransactionUiState.Value.Literal
 
             runCatching {
-                Value.Literal(
+                TransactionUiState.Value.Literal(
                     when (operator) {
-                        Value.Operator.Times -> a.value * b.value
-                        Value.Operator.Divider -> a.value / b.value
-                        Value.Operator.Minus -> a.value - b.value
-                        Value.Operator.Plus -> a.value + b.value
+                        TransactionUiState.Value.Operator.Times -> a.value * b.value
+                        TransactionUiState.Value.Operator.Divider -> a.value / b.value
+                        TransactionUiState.Value.Operator.Minus -> a.value - b.value
+                        TransactionUiState.Value.Operator.Plus -> a.value + b.value
                     }
                 )
             }.onFailure {
@@ -197,29 +193,13 @@ internal class TransactionViewModel : ViewModel() {
             }
         }
 
-        if (values.isEmpty()) {
-            error("invalid values state $values")
-        }
-
-        return Resource.Success(values[0] as Value.Literal)
-    }
-
-    fun toWithdrawTransaction() {
-        createTransaction()
-    }
-
-    fun toDepositTransaction() {
-        createTransaction()
+        return Resource.Success(values.first() as TransactionUiState.Value.Literal)
     }
 
     fun createTransaction() {
         when (val result = getResolvedValue()) {
             is Resource.Success -> {
-                _uiState.update {
-                    it.copy(
-                        values = listOf(result.data)
-                    )
-                }
+
             }
             is Resource.Error -> {
                 viewModelScope.launch {
@@ -228,35 +208,6 @@ internal class TransactionViewModel : ViewModel() {
                     )
                 }
             }
-        }
-    }
-
-    sealed class Value {
-
-        data class Literal(
-            val value: Coin = Coin()
-        ) : Value() {
-
-            fun updated(number: Int): Literal {
-
-                val up = value.coin * BigInteger.TEN
-                val coin = up + BigInteger("$number")
-
-                return Literal(Coin(coin))
-            }
-
-            fun backSpace(): Literal {
-                val down = value.coin / BigInteger.TEN
-
-                return Literal(Coin(down))
-            }
-        }
-
-        sealed class Operator : Value() {
-            object Plus : Operator()
-            object Minus : Operator()
-            object Times : Operator()
-            object Divider : Operator()
         }
     }
 }

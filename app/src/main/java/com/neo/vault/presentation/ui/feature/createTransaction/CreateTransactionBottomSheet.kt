@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -13,6 +14,7 @@ import com.neo.vault.R
 import com.neo.vault.databinding.FragmentTransactionBinding
 import com.neo.vault.presentation.ui.component.Item
 import com.neo.vault.presentation.ui.feature.createTransaction.viewModel.TransactionUiEffect
+import com.neo.vault.presentation.ui.feature.createTransaction.viewModel.TransactionUiState
 import com.neo.vault.presentation.ui.feature.createTransaction.viewModel.TransactionViewModel
 import com.neo.vault.utils.VibratorCompat
 import com.neo.vault.utils.extension.behavior
@@ -73,11 +75,11 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
         )
 
         binding.btnWithdraw.setOnClickListener {
-            viewModel.toWithdrawTransaction()
+            viewModel.createTransaction()
         }
 
         binding.btnSave.setOnClickListener {
-            viewModel.toDepositTransaction()
+            viewModel.createTransaction()
         }
 
         binding.keyboard.setKeys(
@@ -105,7 +107,7 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
                     Item.Key(
                         "+"
                     ) {
-                        viewModel.insertPlus()
+                        viewModel.insertOperator(TransactionUiState.Value.Operator.Plus)
                         vibrate()
                     },
                 ),
@@ -132,7 +134,7 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
                     Item.Key(
                         "-"
                     ) {
-                        viewModel.insertMinus()
+                        viewModel.insertOperator(TransactionUiState.Value.Operator.Minus)
                         vibrate()
                     },
                 ),
@@ -159,7 +161,7 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
                     Item.Key(
                         "*"
                     ) {
-                        viewModel.insertTimes()
+                        viewModel.insertOperator(TransactionUiState.Value.Operator.Times)
                         vibrate()
                     }
                 ),
@@ -167,11 +169,11 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
                     Item.Key(
                         R.drawable.ic_backspace,
                         onClick = {
-                            viewModel.backSpace()
+                            viewModel.toBackSpace()
                             vibrate()
                         },
                         onLongClick = {
-                            viewModel.clearAll()
+                            viewModel.toClearAll()
                             vibrate()
                         }
                     ),
@@ -191,7 +193,7 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
                     Item.Key(
                         "/"
                     ) {
-                        viewModel.insertDivider()
+                        viewModel.insertOperator(TransactionUiState.Value.Operator.Divider)
                         vibrate()
                     }
                 )
@@ -200,6 +202,8 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun setupObservers() {
+        fun EditText.selectedEnd() = setSelection(length())
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(
                 Lifecycle.State.STARTED
@@ -208,11 +212,11 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
                     viewModel.uiState.collect { state ->
                         binding.etValuePortrait?.apply {
                             setText(state.formatted())
-                            setSelection(length())
+                            selectedEnd()
                         }
                         binding.etValueLand?.apply {
                             setText(state.formatted(true))
-                            setSelection(length())
+                            selectedEnd()
                         }
                     }
                 }
