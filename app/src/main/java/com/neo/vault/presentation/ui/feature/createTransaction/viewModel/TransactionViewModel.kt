@@ -193,7 +193,13 @@ internal class TransactionViewModel : ViewModel() {
             }
         }
 
-        return Resource.Success(values.first() as TransactionUiState.Value.Literal)
+        val result = values.first()
+
+        if (result !is TransactionUiState.Value.Literal) {
+            error("invalid value result $result")
+        }
+
+        return Resource.Success(result)
     }
 
     fun createTransaction() {
