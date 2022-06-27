@@ -3,11 +3,11 @@ release 1.0.0 : mvp -> modo offline
 - suporte a português
 - suporte a real, dólar, euro
 
-[] cofrinhos
+[_] cofrinhos
    [x] criar, editar e excluir cofrinhos
        * não permitir editar moeda se tiver transações
-   [] ver cofrinhos
-   [] criar, editar e excluir transações
+   [x] ver cofrinhos
+   [_] criar, editar e excluir transações
 
 [] metas
    ...
