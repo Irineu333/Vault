@@ -205,11 +205,30 @@ internal class TransactionViewModel : ViewModel() {
     }
 
     fun toWithdrawTransaction() {
-        val result = getResolvedValue()
+        createTransaction()
     }
 
     fun toDepositTransaction() {
-        val result = getResolvedValue()
+        createTransaction()
+    }
+
+    fun createTransaction() {
+        when (val result = getResolvedValue()) {
+            is Resource.Success -> {
+                _uiState.update {
+                    it.copy(
+                        values = listOf(result.data)
+                    )
+                }
+            }
+            is Resource.Error -> {
+                viewModelScope.launch {
+                    _uiEffect.send(
+                        TransactionUiEffect.Error.InvalidOperation
+                    )
+                }
+            }
+        }
     }
 
     sealed class Value {

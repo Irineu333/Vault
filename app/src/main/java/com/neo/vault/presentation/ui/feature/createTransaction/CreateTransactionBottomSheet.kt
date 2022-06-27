@@ -207,11 +207,11 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
                 launch {
                     viewModel.uiState.collect { state ->
                         binding.etValuePortrait?.apply {
-                            setText(state.formatted(" "))
+                            setText(state.formatted())
                             setSelection(length())
                         }
                         binding.etValueLand?.apply {
-                            setText(state.formatted("\n"))
+                            setText(state.formatted(true))
                             setSelection(length())
                         }
                     }

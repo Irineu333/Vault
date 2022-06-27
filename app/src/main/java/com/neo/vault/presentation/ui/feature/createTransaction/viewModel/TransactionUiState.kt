@@ -7,9 +7,13 @@ internal data class TransactionUiState(
         TransactionViewModel.Value.Literal()
     )
 ) {
-    fun formatted(separator: String) = buildString {
+    fun formatted(horizontal: Boolean = false) = buildString {
 
         append("  ")
+
+        if (horizontal) {
+            append("\n")
+        }
 
         for (value in values) {
             when (value) {
@@ -21,19 +25,24 @@ internal data class TransactionUiState(
                     )
                 }
                 TransactionViewModel.Value.Operator.Divider -> {
-                    append(" /$separator")
+                    append(" / ")
                 }
                 TransactionViewModel.Value.Operator.Minus -> {
-                    append(" -$separator")
+                    append(" - ")
                 }
                 TransactionViewModel.Value.Operator.Plus -> {
-                    append(" +$separator")
+                    append(" + ")
                 }
                 TransactionViewModel.Value.Operator.Times -> {
-                    append(" *$separator")
+                    append(" * ")
                 }
             }
+
+            if (horizontal) {
+                append("\n")
+            }
         }
+
 
         append("  ")
     }
