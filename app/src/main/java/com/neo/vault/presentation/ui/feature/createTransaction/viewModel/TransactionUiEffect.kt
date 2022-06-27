@@ -8,4 +8,3 @@ internal sealed class TransactionUiEffect {
         class Notice(val message: UiText) : Error()
     }
 }
-

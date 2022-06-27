@@ -2,18 +2,24 @@ package com.neo.vault.presentation.ui.feature.createTransaction.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.neo.vault.core.Resource
 import com.neo.vault.domain.model.Coin
 import com.neo.vault.utils.extension.firstWithIndex
 import com.neo.vault.utils.extension.lastWithIndex
 import com.neo.vault.utils.extension.toRaw
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.math.BigInteger
 
 internal class TransactionViewModel : ViewModel() {
 
-    private val _uiState: MutableStateFlow<TransactionUiState> = MutableStateFlow(TransactionUiState())
+    private val _uiState: MutableStateFlow<TransactionUiState> =
+        MutableStateFlow(TransactionUiState())
     val uiState: StateFlow<TransactionUiState> = _uiState.asStateFlow()
 
     private val _uiEffect: Channel<TransactionUiEffect> = Channel()
@@ -130,9 +136,27 @@ internal class TransactionViewModel : ViewModel() {
         }
     }
 
-    fun resolve() {
-        val state = uiState.value
-        var values = state.values
+    fun toResolve() {
+        when (val result = getResolvedValue()) {
+            is Resource.Success -> {
+                _uiState.update {
+                    it.copy(
+                        values = listOf(result.data)
+                    )
+                }
+            }
+            is Resource.Error -> {
+                viewModelScope.launch {
+                    _uiEffect.send(
+                        TransactionUiEffect.Error.InvalidOperation
+                    )
+                }
+            }
+        }
+    }
+
+    private fun getResolvedValue(): Resource<Value.Literal> {
+        val values = uiState.value.values.toMutableList()
 
         fun getOperator(): Pair<Int, Value.Operator> {
 
@@ -140,48 +164,57 @@ internal class TransactionViewModel : ViewModel() {
                 it is Value.Operator.Times || it is Value.Operator.Divider
             } ?: values.firstWithIndex {
                 it is Value.Operator.Plus || it is Value.Operator.Minus
-            } ?: error("no operator found")
+            } ?: error("no operator found in $values")
 
             @Suppress("UNCHECKED_CAST")
             return result as Pair<Int, Value.Operator>
         }
 
-        while (values.size >= 3) {
+        while (values.size > 1) {
 
             val (index, operator) = getOperator()
 
             val a = values[index - 1] as Value.Literal
             val b = values[index + 1] as Value.Literal
 
-            val result = runCatching {
-                when (operator) {
-                    Value.Operator.Times -> a.value * b.value
-                    Value.Operator.Divider -> a.value / b.value
-                    Value.Operator.Minus -> a.value - b.value
-                    Value.Operator.Plus -> a.value + b.value
-                }
+            runCatching {
+                Value.Literal(
+                    when (operator) {
+                        Value.Operator.Times -> a.value * b.value
+                        Value.Operator.Divider -> a.value / b.value
+                        Value.Operator.Minus -> a.value - b.value
+                        Value.Operator.Plus -> a.value + b.value
+                    }
+                )
             }.onFailure {
-                viewModelScope.launch {
-                    _uiEffect.send(
-                        TransactionUiEffect.Error.InvalidOperation
-                    )
-                }
-            }.getOrNull() ?: break
+                return Resource.Error(it)
+            }.onSuccess {
 
-            val beforeValues = values.subList(0, index - 1)
-            val afterValues = values.subList(index + 2, values.size)
+                values[index] = it
 
-            val newLiteral = Value.Literal(result)
-
-            values = beforeValues + newLiteral + afterValues
-
-            _uiState.update { it.copy(values = values) }
+                values.removeAt(index + 1)
+                values.removeAt(index - 1)
+            }
         }
+
+        if (values.isEmpty()) {
+            error("invalid values state $values")
+        }
+
+        return Resource.Success(values[0] as Value.Literal)
+    }
+
+    fun toWithdrawTransaction() {
+        val result = getResolvedValue()
+    }
+
+    fun toDepositTransaction() {
+        val result = getResolvedValue()
     }
 
     sealed class Value {
 
-        class Literal(
+        data class Literal(
             val value: Coin = Coin()
         ) : Value() {
 

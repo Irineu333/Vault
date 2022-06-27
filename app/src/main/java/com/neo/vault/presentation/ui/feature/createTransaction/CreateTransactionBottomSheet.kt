@@ -15,7 +15,11 @@ import com.neo.vault.presentation.ui.component.Item
 import com.neo.vault.presentation.ui.feature.createTransaction.viewModel.TransactionUiEffect
 import com.neo.vault.presentation.ui.feature.createTransaction.viewModel.TransactionViewModel
 import com.neo.vault.utils.VibratorCompat
-import com.neo.vault.utils.extension.*
+import com.neo.vault.utils.extension.behavior
+import com.neo.vault.utils.extension.dpToPx
+import com.neo.vault.utils.extension.expanded
+import com.neo.vault.utils.extension.showSnackbar
+import com.neo.vault.utils.extension.toRaw
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -64,9 +68,17 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
             dismiss()
         }
 
-        val space = Item.Space(
+        val itemSpace = Item.Space(
             16.dpToPx().toInt()
         )
+
+        binding.btnWithdraw.setOnClickListener {
+            viewModel.toWithdrawTransaction()
+        }
+
+        binding.btnSave.setOnClickListener {
+            viewModel.toDepositTransaction()
+        }
 
         binding.keyboard.setKeys(
             Item.Group.vertical(
@@ -89,7 +101,7 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
                         insertNumber(3)
                         vibrate()
                     },
-                    space,
+                    itemSpace,
                     Item.Key(
                         "+"
                     ) {
@@ -116,7 +128,7 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
                         insertNumber(6)
                         vibrate()
                     },
-                    space,
+                    itemSpace,
                     Item.Key(
                         "-"
                     ) {
@@ -143,7 +155,7 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
                         insertNumber(9)
                         vibrate()
                     },
-                    space,
+                    itemSpace,
                     Item.Key(
                         "*"
                     ) {
@@ -172,10 +184,10 @@ class CreateTransactionBottomSheet : BottomSheetDialogFragment() {
                     Item.Key(
                         "="
                     ) {
-                        viewModel.resolve()
+                        viewModel.toResolve()
                         vibrate()
                     },
-                    space,
+                    itemSpace,
                     Item.Key(
                         "/"
                     ) {
