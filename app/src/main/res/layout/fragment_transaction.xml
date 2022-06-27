@@ -30,7 +30,6 @@
                 android:id="@+id/et_value_portrait"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
                 android:background="@android:color/transparent"
                 android:cursorVisible="false"
                 android:focusable="false"
@@ -71,6 +70,7 @@
 
     <com.neo.vault.presentation.ui.component.KeyboardView
         android:id="@+id/keyboard"
+        android:minHeight="100dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp" />
